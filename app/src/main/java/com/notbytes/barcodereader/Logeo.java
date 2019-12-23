@@ -17,6 +17,7 @@ public class Logeo extends AppCompatActivity {
 
     private APIRetrofitInterface jsonPlaceHolderApi;
     private TextView TestApi;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

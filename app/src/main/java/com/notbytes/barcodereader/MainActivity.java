@@ -1,6 +1,5 @@
 package com.notbytes.barcodereader;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +8,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.SparseArray;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,6 +19,8 @@ import com.notbytes.barcode_reader.BarcodeReaderFragment;
 import com.notbytes.barcodereader.Model.Posts;
 import com.notbytes.barcodereader.io.APIRetrofitInterface;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -31,6 +34,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView mTvResult;
     private TextView mTvResultHeader;
     private TextView mJsonTxtView;
+    private ListView listView;
+    ArrayAdapter<String> adapter;
+    ArrayList<String> arrayList;
 
     private APIRetrofitInterface jsonPlaceHolderApi;
 
@@ -41,9 +47,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mJsonTxtView = findViewById(R.id.tv_result);
         findViewById(R.id.btn_activity).setOnClickListener(this);
         findViewById(R.id.btn_fragment).setOnClickListener(this);
+        mTvResultHeader = findViewById(R.id.tv_result_head);
         mTvResult = findViewById(R.id.tv_result);
 
-        mTvResultHeader = findViewById(R.id.tv_result_head);
+        //Lista--------------------------------------------------------
+        //Lista--------------------------------------------------------
+        listView= findViewById(R.id.listview);
+        String[]android_flavours={};
+        arrayList= new ArrayList<>(Arrays.asList(android_flavours));
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,arrayList);
+        listView.setAdapter(adapter);
+        // Result value = barcode.receiveScan();
+
+
+        //arrayList.add(barcode.rawValue);
+        for (int i = 0; i < android_flavours.length; i++) {
+            arrayList.add(android_flavours[i]);
+        }
+
+        //listarpro = findViewById(R.id.lista);
+        //String resul = mTvResult.getText().toString();
+
         //Retrofit-------------------------------------------------------
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -53,7 +77,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         jsonPlaceHolderApi = retrofit.create(APIRetrofitInterface.class);
 
         //createPost();
-
         // Redirección al Login
         //    if(true){
         //    startActivity(new Intent(this, LoginActivity.class));
@@ -63,7 +86,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void createPost(){
-        Posts posts = new Posts("49849294", "Juan", "Test123", "OK");
+        mTvResult = findViewById(R.id.tv_result);
+        listView= findViewById(R.id.listview);
+
+        //String itemValue = (String) listView.getItemAtPosition(position);
+        //String values=((TextView)view).getText().toString();
+
+        String resul = mTvResult.getText().toString();
+        Posts posts = new Posts(resul, "Juan", "CoordenadasOk", "OK");
         Call<Posts> call = jsonPlaceHolderApi.createPost(posts);
         call.enqueue(new Callback<Posts>() {
             @Override
@@ -97,10 +127,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-                case R.id.button:
-                    Intent i = new Intent(MainActivity.this, Logeo.class);
-                    startActivity(i);
-                    break;
+            case R.id.button:
+                Intent i = new Intent(MainActivity.this, Logeo.class);
+                startActivity(i);
+                break;
             case R.id.btn_fragment:
                 addBarcodeReaderFragment();
                 addBarcodeReaderFragment();
@@ -118,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btnConfirmarDatos:
                 createPost();
                 break;
-
         }
         //Re-dirige al activity principal(login)
         //Intent i = new Intent(MainActivity.this, LoginActivity.class);
@@ -131,18 +160,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode != Activity.RESULT_OK) {
-            Toast.makeText(this, "Error al escanear", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
         if (requestCode == BARCODE_READER_ACTIVITY_REQUEST && data != null) {
             Barcode barcode = data.getParcelableExtra(BarcodeReaderActivity.KEY_CAPTURED_BARCODE);
             Toast.makeText(this, barcode.rawValue, Toast.LENGTH_SHORT).show();
+
+            //Agrega datos al textview
+            mTvResult.setText(barcode.rawValue);
+            //Agregar datos a la list
+            arrayList.add(barcode.rawValue);
+            adapter.notifyDataSetChanged();
+
             mTvResultHeader.setText("On Activity Result");
             mTvResult.setText(barcode.rawValue);
         }
@@ -150,9 +180,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onScanned(Barcode barcode) {
+
         Toast.makeText(this, barcode.rawValue, Toast.LENGTH_SHORT).show();
         mTvResultHeader.setText("Barcode value from fragment");
+     /*   //Lista---------------------------------------------------------
+        listView= findViewById(R.id.listview);
+        String[]android_flavours={};
+        arrayList= new ArrayList<>(Arrays.asList(android_flavours));
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,arrayList);
+        listView.setAdapter(adapter);
+        // Result value = barcode.receiveScan();
+        //Agrega datos al textview
         mTvResult.setText(barcode.rawValue);
+
+        //arrayList.add(barcode.rawValue);
+        for (int i = 0; i < android_flavours.length; i++) {
+            arrayList.add(android_flavours[i]);
+            //Agregar datos a la list
+        }
+*/
+        //Agregar datos a la list
+        arrayList.add(barcode.rawValue);
+        adapter.notifyDataSetChanged();
+
     }
 
     @Override
