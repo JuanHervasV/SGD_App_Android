@@ -12,8 +12,6 @@ import com.notbytes.barcodereader.io.APIRetrofitInterface;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Logeo extends AppCompatActivity {
 
@@ -24,12 +22,12 @@ public class Logeo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logeo);
 
-        TestApi = findViewById(R.id.TestApi);
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://200.37.50.53/ApiCyT/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        jsonPlaceHolderApi = retrofit.create(APIRetrofitInterface.class);
+       // TestApi = findViewById(R.id.TestApi);
+        //Retrofit retrofit = new Retrofit.Builder()
+         //       .baseUrl("http://200.37.50.53/ApiCyT/api/")
+         //       .addConverterFactory(GsonConverterFactory.create())
+         //       .build();
+       // jsonPlaceHolderApi = retrofit.create(APIRetrofitInterface.class);
         //mJsonTxtView = findViewById(R.id.jsonText);
         //createPost();
     }

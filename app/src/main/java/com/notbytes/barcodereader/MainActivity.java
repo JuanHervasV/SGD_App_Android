@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .build();
         jsonPlaceHolderApi = retrofit.create(APIRetrofitInterface.class);
 
-        createPost();
+        //createPost();
 
         // Redirección al Login
         //    if(true){
@@ -115,6 +115,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 fragmentTransaction.commitAllowingStateLoss();
                 launchBarCodeActivity();
                 break;
+            case R.id.btnConfirmarDatos:
+                createPost();
+                break;
+
         }
         //Re-dirige al activity principal(login)
         //Intent i = new Intent(MainActivity.this, LoginActivity.class);
