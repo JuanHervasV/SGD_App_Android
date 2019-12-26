@@ -1,11 +1,15 @@
 package com.notbytes.barcodereader;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Looper;
+import android.provider.Settings;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -13,6 +17,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.notbytes.barcode_reader.BarcodeReaderActivity;
 import com.notbytes.barcode_reader.BarcodeReaderFragment;
@@ -37,6 +55,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ListView listView;
     ArrayAdapter<String> adapter;
     ArrayList<String> arrayList;
+    int PERMISSION_ID = 44;
+    FusedLocationProviderClient mFusedLocationClient;
+    TextView latTextView, lonTextView;
 
     private APIRetrofitInterface jsonPlaceHolderApi;
 
@@ -49,6 +70,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn_fragment).setOnClickListener(this);
         mTvResultHeader = findViewById(R.id.tv_result_head);
         mTvResult = findViewById(R.id.tv_result);
+
+        //GPS
+        latTextView = findViewById(R.id.latTextView);
+        lonTextView = findViewById(R.id.lonTextView);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        getLastLocation();
+        //GPS
 
         //Lista--------------------------------------------------------
         //Lista--------------------------------------------------------
@@ -91,28 +120,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //String itemValue = (String) listView.getItemAtPosition(position);
         //String values=((TextView)view).getText().toString();
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
+                mFusedLocationClient.getLastLocation().addOnCompleteListener(
+                        new OnCompleteListener<Location>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Location> task) {
+                                Location location = task.getResult();
+                                if (location == null) {
+                                    requestNewLocationData();
+                                } else {
+                                    String resul = mTvResult.getText().toString();
+                                    Posts posts = new Posts(resul, "Juan", "Lat:"+location.getLatitude()+"Long:"+location.getLatitude()+"", "CyT");
+                                    Call<Posts> call = jsonPlaceHolderApi.createPost(posts);
+                                    call.enqueue(new Callback<Posts>() {
+                                        @Override
+                                        public void onResponse(Call<Posts> call, Response<Posts> response) {
+                                            if(!response.isSuccessful()){
+                                                mJsonTxtView.setText("Codigo:" + response.code());
+                                                return;
+                                            }
+                                            Posts postsResponse = response.body();
+                                            String content = "";
+                                            content += "Estado:" + postsResponse.estado() + "\n";
+                                            content += "Mensaje:" + postsResponse.mensaje() + "\n";
+                                            mJsonTxtView.append(content);
+                                        }
+                                        @Override
+                                        public void onFailure(Call<Posts> call, Throwable t) {
+                                            mJsonTxtView.setText(t.getMessage());
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                );
+            } else {
+                Toast.makeText(this, "Turn on location", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        } else {
+            requestPermissions();
+        }
 
-        String resul = mTvResult.getText().toString();
-        Posts posts = new Posts(resul, "Juan", "CoordenadasOk", "OK");
-        Call<Posts> call = jsonPlaceHolderApi.createPost(posts);
-        call.enqueue(new Callback<Posts>() {
-            @Override
-            public void onResponse(Call<Posts> call, Response<Posts> response) {
-                if(!response.isSuccessful()){
-                    mJsonTxtView.setText("Codigo:" + response.code());
-                    return;
-                }
-                Posts postsResponse = response.body();
-                String content = "";
-                content += "Estado:" + postsResponse.estado() + "\n";
-                content += "Mensaje:" + postsResponse.mensaje() + "\n";
-                mJsonTxtView.append(content);
-            }
-            @Override
-            public void onFailure(Call<Posts> call, Throwable t) {
-                mJsonTxtView.setText(t.getMessage());
-            }
-        });
+
     }
 
     private void addBarcodeReaderFragment() {
@@ -224,4 +276,92 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onCameraPermissionDenied() {
         Toast.makeText(this, "Permiso de cámara denegado", Toast.LENGTH_LONG).show();
     }
+
+    //GPS
+    private boolean checkPermissions(){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isLocationEnabled() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(
+                LocationManager.NETWORK_PROVIDER
+        );
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getLastLocation(){
+        if (checkPermissions()) {
+            if (isLocationEnabled()) {
+                mFusedLocationClient.getLastLocation().addOnCompleteListener(
+                        new OnCompleteListener<Location>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Location> task) {
+                                Location location = task.getResult();
+                                if (location == null) {
+                                    requestNewLocationData();
+                                } else {
+                                    latTextView.setText(location.getLatitude()+"");
+                                    lonTextView.setText(location.getLongitude()+"");
+                                }
+                            }
+                        }
+                );
+            } else {
+                Toast.makeText(this, "Turn on location", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(intent);
+            }
+        } else {
+            requestPermissions();
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void requestNewLocationData(){
+
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(0);
+        mLocationRequest.setFastestInterval(0);
+        mLocationRequest.setNumUpdates(1);
+
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocationClient.requestLocationUpdates(
+                mLocationRequest, mLocationCallback,
+                Looper.myLooper()
+        );
+
+    }
+
+    private LocationCallback mLocationCallback = new LocationCallback() {
+        @Override
+        public void onLocationResult(LocationResult locationResult) {
+            Location mLastLocation = locationResult.getLastLocation();
+            latTextView.setText(mLastLocation.getLatitude()+"");
+            lonTextView.setText(mLastLocation.getLongitude()+"");
+        }
+    };
+
+    private void requestPermissions(){
+        ActivityCompat.requestPermissions(
+                this,
+                new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},
+                PERMISSION_ID
+        );
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        if (checkPermissions()) {
+            getLastLocation();
+        }
+
+    }
+    //FIN GPS
 }
