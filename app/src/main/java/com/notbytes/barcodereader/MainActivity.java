@@ -242,8 +242,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,arrayList);
         listView.setAdapter(adapter);
         // Result value = barcode.receiveScan();
-        //Agrega datos al textview
-        mTvResult.setText(barcode.rawValue);
+
 
         //arrayList.add(barcode.rawValue);
         for (int i = 0; i < android_flavours.length; i++) {
@@ -252,6 +251,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 */
         //Agregar datos a la list
+        //Agrega datos al textview
+        mTvResult.setText(barcode.rawValue);
         arrayList.add(barcode.rawValue);
         adapter.notifyDataSetChanged();
 
