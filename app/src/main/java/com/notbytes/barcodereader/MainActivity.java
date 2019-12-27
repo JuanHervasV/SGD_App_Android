@@ -130,27 +130,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 if (location == null) {
                                     requestNewLocationData();
                                 } else {
-                                    String resul = mTvResult.getText().toString();
-                                    Posts posts = new Posts(resul, "Juan", "Lat:"+location.getLatitude()+"Long:"+location.getLatitude()+"", "CyT");
-                                    Call<Posts> call = jsonPlaceHolderApi.createPost(posts);
-                                    call.enqueue(new Callback<Posts>() {
-                                        @Override
-                                        public void onResponse(Call<Posts> call, Response<Posts> response) {
-                                            if(!response.isSuccessful()){
-                                                mJsonTxtView.setText("Codigo:" + response.code());
-                                                return;
-                                            }
-                                            Posts postsResponse = response.body();
-                                            String content = "";
-                                            content += "Estado:" + postsResponse.estado() + "\n";
-                                            content += "Mensaje:" + postsResponse.mensaje() + "\n";
-                                            mJsonTxtView.append(content);
+
+                                        View parentView = null;
+                                        int position = 0;
+                                        for (int i = 0; i < listView.getCount(); i++) {
+                                            parentView = getViewByPosition(i, listView);
+
+
+                                            String textItemList = (String) listView.getItemAtPosition(position);
+                                            position++;
+                                            //Aqui enviar los datos
+                                            String resul = mTvResult.getText().toString();
+                                            Posts posts = new Posts(textItemList, "Juan", "Latitud: "+location.getLatitude()+". Longitud: "+location.getLatitude()+".", "CyT");
+                                            Call<Posts> call = jsonPlaceHolderApi.createPost(posts);
+                                            call.enqueue(new Callback<Posts>() {
+                                                @Override
+                                                public void onResponse(Call<Posts> call, Response<Posts> response) {
+                                                    if(!response.isSuccessful()){
+                                                        mJsonTxtView.setText("Codigo:" + response.code());
+                                                        return;
+                                                    }
+                                                    Posts postsResponse = response.body();
+                                                    String content = "";
+                                                    //content += "Estado:" + postsResponse.estado() + "\n";
+                                                    content += "Mensaje:" + postsResponse.mensaje() + "\n";
+                                                    mJsonTxtView.append(content);
+                                                }
+                                                @Override
+                                                public void onFailure(Call<Posts> call, Throwable t) {
+                                                    mJsonTxtView.setText(t.getMessage());
+                                                }
+                                            });
                                         }
-                                        @Override
-                                        public void onFailure(Call<Posts> call, Throwable t) {
-                                            mJsonTxtView.setText(t.getMessage());
-                                        }
-                                    });
                                 }
                             }
                         }
@@ -165,6 +176,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
 
+    }
+
+    public View getViewByPosition(int pos, ListView listView) {
+        final int firstListItemPosition = listView.getFirstVisiblePosition();
+        final int lastListItemPosition = firstListItemPosition
+                + listView.getChildCount() - 1;
+
+        if (pos < firstListItemPosition || pos > lastListItemPosition) {
+            return listView.getAdapter().getView(pos, null, listView);
+        } else {
+            final int childIndex = pos - firstListItemPosition;
+            return listView.getChildAt(childIndex);
+        }
     }
 
     private void addBarcodeReaderFragment() {
@@ -220,12 +244,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this, barcode.rawValue, Toast.LENGTH_SHORT).show();
 
             //Agrega datos al textview
-            mTvResult.setText(barcode.rawValue);
+            mTvResult.setText("Último valor scaneado: "+barcode.rawValue);
             //Agregar datos a la list
             arrayList.add(barcode.rawValue);
             adapter.notifyDataSetChanged();
 
-            mTvResultHeader.setText("On Activity Result");
+            mTvResultHeader.setText("Resultado");
             mTvResult.setText(barcode.rawValue);
         }
     }
@@ -234,7 +258,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onScanned(Barcode barcode) {
 
         Toast.makeText(this, barcode.rawValue, Toast.LENGTH_SHORT).show();
-        mTvResultHeader.setText("Barcode value from fragment");
+        mTvResultHeader.setText("Datos generales");
      /*   //Lista---------------------------------------------------------
         listView= findViewById(R.id.listview);
         String[]android_flavours={};
@@ -252,7 +276,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 */
         //Agregar datos a la list
         //Agrega datos al textview
-        mTvResult.setText(barcode.rawValue);
+        mTvResult.setText("Último valor scaneado: "+barcode.rawValue+".");
         arrayList.add(barcode.rawValue);
         adapter.notifyDataSetChanged();
 
@@ -306,8 +330,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 if (location == null) {
                                     requestNewLocationData();
                                 } else {
-                                    latTextView.setText(location.getLatitude()+"");
-                                    lonTextView.setText(location.getLongitude()+"");
+                                    latTextView.setText("Latitud actual: "+location.getLatitude()+".");
+                                    lonTextView.setText("Longitud actual: "+location.getLongitude()+".");
                                 }
                             }
                         }

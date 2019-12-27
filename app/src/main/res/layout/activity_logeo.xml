@@ -57,15 +57,14 @@
 
     <Button
         android:id="@+id/button_login_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Iniciar sesión"
+        android:layout_width="167dp"
+        android:layout_height="47dp"
         android:onClick="onClick"
+        android:text="Iniciar sesión"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_login_username"
-        app:layout_constraintVertical_bias="0.146" />
+        app:layout_constraintVertical_bias="0.224" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
