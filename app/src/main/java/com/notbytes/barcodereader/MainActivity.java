@@ -221,7 +221,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btnConfirmarDatos:
                 createPost();
-                arrayList.clear();
                 break;
         }
         //Re-dirige al activity principal(login)
