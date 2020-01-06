@@ -21,11 +21,18 @@ public class Logeo extends AppCompatActivity {
 
     private APIRetrofitInterface jsonPlaceHolderApi;
     private TextView TestApi;
+    private TextView LoginText;
+    private TextView PasswordText;
+    private String Usuario;
+    private String Pass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logeo);
+
+        LoginText = findViewById(R.id.editText_login_username);
+        PasswordText = findViewById(R.id.editText_login_password);
 
         TestApi = findViewById(R.id.TestApi);
         Retrofit retrofit = new Retrofit.Builder()
@@ -34,6 +41,7 @@ public class Logeo extends AppCompatActivity {
                 .build();
        jsonPlaceHolderApi = retrofit.create(APIRetrofitInterface.class);
     }
+
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_login_login:
@@ -42,7 +50,10 @@ public class Logeo extends AppCompatActivity {
         }
     }
     private void createPost(){
-        Vars vars = new Vars("12345678", "12345");
+
+        Vars vars = new Vars(LoginText.getText().toString(), PasswordText.getText().toString());
+        this.Usuario = LoginText.getText().toString();
+        this.Pass = PasswordText.getText().toString();
         Call<Vars> call = jsonPlaceHolderApi.createPost(vars);
         call.enqueue(new Callback<Vars>() {
             @Override
@@ -70,5 +81,12 @@ public class Logeo extends AppCompatActivity {
                 TestApi.setText(t.getMessage());
             }
         });
+    }
+    public String getUsuario() {
+        return this.Usuario;
+    }
+
+    public String getPassword() {
+        return this.Pass;
     }
 }

@@ -7,6 +7,8 @@ public class Posts {
     private String Estado;
     private String estado;
     private String mensaje;
+    private String Latitud;
+    private String Longitud;
 
     public String mensaje() {
         return mensaje;
@@ -14,10 +16,11 @@ public class Posts {
     public String estado() {
         return estado;
     }
-    public Posts(String codigo_barra, String usuario, String coordenadas, String estado) {
+    public Posts(String codigo_barra, String usuario, String latitud, String longitud, String estado) {
         Codigo_barra = codigo_barra;
         Usuario = usuario;
-        Coordenadas = coordenadas;
+        Latitud = latitud;
+        Longitud = longitud;
         Estado = estado;
     }
 }

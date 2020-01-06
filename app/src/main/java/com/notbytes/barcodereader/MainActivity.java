@@ -39,6 +39,7 @@ import com.notbytes.barcodereader.io.APIRetrofitInterface;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import retrofit2.Call;
@@ -91,6 +92,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //arrayList.add(barcode.rawValue);
         for (int i = 0; i < android_flavours.length; i++) {
             arrayList.add(android_flavours[i]);
+
+            HashSet<String> hashSet = new HashSet<String>();
+            hashSet.addAll(arrayList);
+            arrayList.clear();
+            arrayList.addAll(hashSet);
+
         }
 
         //listarpro = findViewById(R.id.lista);
@@ -117,6 +124,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTvResult = findViewById(R.id.tv_result);
         listView= findViewById(R.id.listview);
 
+        Logeo logeo = new Logeo();
+        final String Usuario = logeo.getUsuario();
+        final String Password = logeo.getPassword();
+
         //String itemValue = (String) listView.getItemAtPosition(position);
         //String values=((TextView)view).getText().toString();
         if (checkPermissions()) {
@@ -140,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             position++;
                                             //Aqui enviar los datos
                                             String resul = mTvResult.getText().toString();
-                                            Posts posts = new Posts(textItemList, "Juan", "Latitud: "+location.getLatitude()+". Longitud: "+location.getLatitude()+".", "CyT");
+                                            Posts posts = new Posts(textItemList, ""+Usuario, ""+location.getLatitude(),""+location.getLongitude()+"", "CyT");
                                             Call<Posts> call = jsonPlaceHolderApi.createPost(posts);
                                             call.enqueue(new Callback<Posts>() {
                                                 @Override
@@ -247,6 +258,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             arrayList.add(barcode.rawValue);
             adapter.notifyDataSetChanged();
 
+            HashSet<String> hashSet = new HashSet<String>();
+            hashSet.addAll(arrayList);
+            arrayList.clear();
+            arrayList.addAll(hashSet);
+
             mTvResultHeader.setText("Resultado");
             mTvResult.setText(barcode.rawValue);
         }
@@ -276,6 +292,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Agrega datos al textview
         mTvResult.setText("Último valor scaneado: "+barcode.rawValue+".");
         arrayList.add(barcode.rawValue);
+
+        HashSet<String> hashSet = new HashSet<String>();
+        hashSet.addAll(arrayList);
+        arrayList.clear();
+        arrayList.addAll(hashSet);
+
         adapter.notifyDataSetChanged();
 
     }

@@ -7,7 +7,7 @@ public class Vars {
     private String Estado;
     private String estado;
     private String mensaje;
-    private String NroIdentificacion;
+    private String Login;
     private String Password;
 
     public String mensaje() {
@@ -16,8 +16,8 @@ public class Vars {
     public String estado() {
         return estado;
     }
-    public Vars(String nroIdentificacion, String password) {
-        NroIdentificacion = nroIdentificacion;
+    public Vars(String login, String password) {
+        Login = login;
         Password = password;
     }
 }
