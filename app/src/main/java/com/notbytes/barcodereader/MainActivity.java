@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         listView.setAdapter(adapter);
         // Result value = barcode.receiveScan();
 
-
         //arrayList.add(barcode.rawValue);
         for (int i = 0; i < android_flavours.length; i++) {
             arrayList.add(android_flavours[i]);
@@ -175,7 +174,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             requestPermissions();
         }
 
-
     }
 
     public View getViewByPosition(int pos, ListView listView) {
@@ -223,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btnConfirmarDatos:
                 createPost();
+                arrayList.clear();
                 break;
         }
         //Re-dirige al activity principal(login)

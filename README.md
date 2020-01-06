@@ -1,8 +1,3 @@
-
-Aplicación Compra y Trae Scharff - Android
-
-Lector de barras
-
-Utiliza API de Google mobile vision, lector de barras y QR.
-
-27-12-19
+App de codigo de barras.
+Usa API Google vision.
+Modificado por Juan Hervas

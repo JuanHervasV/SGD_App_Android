@@ -21,4 +21,7 @@ public interface APIRetrofitInterface {
     @POST("Insertar")
     Call<Posts> createPost(@Body Posts posts);
 
+    @POST("Login")
+    Call<Vars> createPost(@Body Vars vars);
+
 }
