@@ -20,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Logeo extends AppCompatActivity {
 
     private APIRetrofitInterface jsonPlaceHolderApi;
-    private TextView TestApi;
+    //private TextView TestApi;
     private TextView LoginText;
     private TextView PasswordText;
     private String Usuario;
@@ -34,12 +34,15 @@ public class Logeo extends AppCompatActivity {
         LoginText = findViewById(R.id.editText_login_username);
         PasswordText = findViewById(R.id.editText_login_password);
 
-        TestApi = findViewById(R.id.TestApi);
+        //TestApi = findViewById(R.id.TestApi);
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://200.37.50.53/ApiCyT/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
        jsonPlaceHolderApi = retrofit.create(APIRetrofitInterface.class);
+
+        this.Usuario = LoginText.getText().toString();
+        this.Pass = PasswordText.getText().toString();
     }
 
     public void onClick(View v) {
@@ -52,21 +55,20 @@ public class Logeo extends AppCompatActivity {
     private void createPost(){
 
         Vars vars = new Vars(LoginText.getText().toString(), PasswordText.getText().toString());
-        this.Usuario = LoginText.getText().toString();
-        this.Pass = PasswordText.getText().toString();
+
         Call<Vars> call = jsonPlaceHolderApi.createPost(vars);
         call.enqueue(new Callback<Vars>() {
             @Override
             public void onResponse(Call<Vars> call, Response<Vars> response) {
                 if(!response.isSuccessful()){
-                    TestApi.setText("Codigo:" + response.code());
+                    //TestApi.setText("Codigo:" + response.code());
                     return;
                 }
                 Vars postsResponse = response.body();
                 String content = "";
                 content += "Estado:" + postsResponse.estado() + "\n";
                 content += "Mensaje:" + postsResponse.mensaje() + "\n";
-                TestApi.append(content);
+                //TestApi.append(content);
                 if(postsResponse.estado() == "true") {
                     Toast.makeText(Logeo.this, "Autentificación correcta", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(Logeo.this, MenuPrincipal.class);
@@ -78,7 +80,7 @@ public class Logeo extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<Vars> call, Throwable t) {
-                TestApi.setText(t.getMessage());
+                //TestApi.setText(t.getMessage());
             }
         });
     }

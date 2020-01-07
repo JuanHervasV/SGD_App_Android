@@ -32,19 +32,11 @@
             android:layout_height="wrap_content"
             android:text="Scanear pantalla completa" />
 
-        <TextView
-            android:id="@+id/tv_result_head"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_result"
-            android:layout_width="403dp"
-            android:layout_height="68dp"
-            android:layout_margin="4dp" />
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="fill_parent"
+            android:layout_height="128dp"
+            android:drawSelectorOnTop="false" />
 
         <Button
             android:id="@+id/addBtn"
@@ -59,11 +51,20 @@
             android:onClick="onClick"
             android:text="Cerrar sesión" />
 
-        <ListView
-            android:id="@+id/list"
-            android:layout_width="fill_parent"
-            android:drawSelectorOnTop="false"
-            android:layout_height="fill_parent" />
+        <TextView
+            android:id="@+id/tv_result_head"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_result"
+            android:layout_width="403dp"
+            android:layout_height="68dp"
+            android:layout_margin="4dp" />
+
 
     </LinearLayout>
 

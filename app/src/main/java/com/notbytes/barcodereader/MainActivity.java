@@ -14,6 +14,7 @@ import android.util.SparseArray;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int PERMISSION_ID = 44;
     FusedLocationProviderClient mFusedLocationClient;
     TextView latTextView, lonTextView;
+    private Spinner spin;
+    ArrayList<String> list2;
 
     private APIRetrofitInterface jsonPlaceHolderApi;
 
@@ -80,7 +83,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getLastLocation();
         //GPS
 
-        //Lista--------------------------------------------------------
         //Lista--------------------------------------------------------
         listView= findViewById(R.id.listview);
         String[]android_flavours={};
@@ -118,11 +120,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //    finish();
         //    return;
        // }
+
+        //Fill Spinner
+        FillSpinner();
+    }
+
+    private void FillSpinner(){
+
+        spin = findViewById(R.id.spinner);
+        //String[] wee = list2.toArray(new String[list2.size()]);
+        //final String[] str={"Report 1","Report 2","Report 3","Report 4","Report 5"};
+        ArrayList<String> str = new ArrayList<>();
+        str.add(new String("Recibido en MIAMI"));
+        str.add(new String("En tránsito"));
+        str.add(new String("En almacén Scharff(LIMA)"));
+        str.add(new String("Entregado"));
+
+        ArrayAdapter<String> adapter =
+                new ArrayAdapter<String>(this,  android.R.layout.simple_spinner_dropdown_item, str);
+        adapter.setDropDownViewResource( android.R.layout.simple_spinner_dropdown_item);
+// Spinner spinYear = (Spinner)findViewById(R.id.spin);
+        spin.setAdapter(adapter);
     }
 
     private void createPost(){
         mTvResult = findViewById(R.id.tv_result);
         listView= findViewById(R.id.listview);
+        Spinner mySpinner = findViewById(R.id.spinner);
+        final String Estado = mySpinner.getSelectedItem().toString();
 
         Logeo logeo = new Logeo();
         final String Usuario = logeo.getUsuario();
@@ -151,23 +176,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             position++;
                                             //Aqui enviar los datos
                                             String resul = mTvResult.getText().toString();
-                                            Posts posts = new Posts(textItemList, ""+Usuario, ""+location.getLatitude(),""+location.getLongitude()+"", "CyT");
+                                            Posts posts = new Posts(textItemList, "ADMIN"/*+Usuario*/, ""+location.getLatitude(),""+location.getLongitude()+"", ""+Estado);
                                             Call<Posts> call = jsonPlaceHolderApi.createPost(posts);
                                             call.enqueue(new Callback<Posts>() {
                                                 @Override
                                                 public void onResponse(Call<Posts> call, Response<Posts> response) {
                                                     if(!response.isSuccessful()){
                                                         mJsonTxtView.setText("Codigo:" + response.code());
+                                                        Toast.makeText(getApplicationContext(),"Datos ingresados exitosamente",Toast.LENGTH_SHORT).show();
                                                         return;
                                                     }
                                                     Posts postsResponse = response.body();
                                                     String content = "";
                                                     //content += "Estado:" + postsResponse.estado() + "\n";
                                                     content += "Mensaje:" + postsResponse.mensaje() + "\n";
+                                                    Toast.makeText(getApplicationContext(),"Datos ingresados exitosamente",Toast.LENGTH_SHORT).show();
                                                     mJsonTxtView.append(content);
+
                                                 }
                                                 @Override
                                                 public void onFailure(Call<Posts> call, Throwable t) {
+                                                    Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
                                                     mJsonTxtView.setText(t.getMessage());
                                                 }
                                             });
