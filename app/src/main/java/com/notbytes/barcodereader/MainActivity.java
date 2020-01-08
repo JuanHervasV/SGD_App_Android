@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView mTvResultHeader;
     private TextView mJsonTxtView;
     private ListView listView;
+    private TextView contarelementos;
+    int totalelementoslist = 1;
     ArrayAdapter<String> adapter;
     ArrayList<String> arrayList;
     int PERMISSION_ID = 44;
@@ -65,15 +67,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private APIRetrofitInterface jsonPlaceHolderApi;
 
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mJsonTxtView = findViewById(R.id.tv_result);
+        //btones
         findViewById(R.id.btn_activity).setOnClickListener(this);
         findViewById(R.id.btn_fragment).setOnClickListener(this);
+        //txtvws
+        mJsonTxtView = findViewById(R.id.tv_result);
         mTvResultHeader = findViewById(R.id.tv_result_head);
         mTvResult = findViewById(R.id.tv_result);
+        contarelementos = findViewById(R.id.contarelementos);
 
         //GPS
         latTextView = findViewById(R.id.latTextView);
@@ -99,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             hashSet.addAll(arrayList);
             arrayList.clear();
             arrayList.addAll(hashSet);
-
         }
 
         //listarpro = findViewById(R.id.lista);
@@ -123,6 +128,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Fill Spinner
         FillSpinner();
+        //Llamar datos usuario
+        Bundle b = getIntent().getExtras();
+        String receivingdata = b.getString("Key");
+        TextView tv = (TextView)findViewById(R.id.usuario);
+        //tv.append(receivingdata);
+
     }
 
     private void FillSpinner(){
@@ -149,10 +160,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Spinner mySpinner = findViewById(R.id.spinner);
         final String Estado = mySpinner.getSelectedItem().toString();
 
-        Logeo logeo = new Logeo();
-        final String Usuario = logeo.getUsuario();
-        final String Password = logeo.getPassword();
-
         //String itemValue = (String) listView.getItemAtPosition(position);
         //String values=((TextView)view).getText().toString();
         if (checkPermissions()) {
@@ -162,6 +169,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             @Override
                             public void onComplete(@NonNull Task<Location> task) {
                                 Location location = task.getResult();
+                                //Llamar datos usuario--------------------------
+                                Bundle b = getIntent().getExtras();
+                                String receivingdata = b.getString("Key");
+                                TextView tv = (TextView)findViewById(R.id.usuario);
+                                //tv.append(receivingdata);
+                                //----------------------------------------------
+
                                 if (location == null) {
                                     requestNewLocationData();
                                 } else {
@@ -171,12 +185,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         for (int i = 0; i < listView.getCount(); i++) {
                                             parentView = getViewByPosition(i, listView);
 
-
                                             String textItemList = (String) listView.getItemAtPosition(position);
                                             position++;
                                             //Aqui enviar los datos
                                             String resul = mTvResult.getText().toString();
-                                            Posts posts = new Posts(textItemList, "ADMIN"/*+Usuario*/, ""+location.getLatitude(),""+location.getLongitude()+"", ""+Estado);
+                                            Posts posts = new Posts(textItemList, ""+receivingdata/*+Usuario*/, ""+location.getLatitude(),""+location.getLongitude()+"", ""+Estado);
                                             Call<Posts> call = jsonPlaceHolderApi.createPost(posts);
                                             call.enqueue(new Callback<Posts>() {
                                                 @Override
@@ -284,6 +297,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //Agrega datos al textview
             mTvResult.setText("Último valor scaneado: "+barcode.rawValue);
             //Agregar datos a la list
+            int count = listView.getAdapter().getCount();
+            int ctf= totalelementoslist+count;
+            contarelementos.setText(""+ctf);
             arrayList.add(barcode.rawValue);
             adapter.notifyDataSetChanged();
 
@@ -293,6 +309,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             arrayList.addAll(hashSet);
 
             mTvResultHeader.setText("Resultado");
+
             mTvResult.setText(barcode.rawValue);
         }
     }
@@ -320,6 +337,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Agregar datos a la list
         //Agrega datos al textview
         mTvResult.setText("Último valor scaneado: "+barcode.rawValue+".");
+        int count = listView.getAdapter().getCount();
+        int ctf= totalelementoslist+count;
+        contarelementos.setText(""+ctf);
         arrayList.add(barcode.rawValue);
 
         HashSet<String> hashSet = new HashSet<String>();

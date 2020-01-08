@@ -72,7 +72,8 @@ public class Logeo extends AppCompatActivity {
                 if(postsResponse.estado() == "true") {
                     Toast.makeText(Logeo.this, "Autentificación correcta", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(Logeo.this, MenuPrincipal.class);
-                    startActivity(i);
+                    RecuperarUsuario();
+                    //startActivity(i);
                 }
                 else{
                     Toast.makeText(Logeo.this, "Fallo al autenticarse", Toast.LENGTH_SHORT).show();
@@ -84,6 +85,17 @@ public class Logeo extends AppCompatActivity {
             }
         });
     }
+
+    public void RecuperarUsuario(){
+        String passingdata = LoginText.getText().toString();
+        //Intent i = new Intent(Logeo.this, MainActivity.class);
+        Intent i = new Intent(Logeo.this, MainActivity.class);
+        Bundle b = new Bundle();
+        b.putString("Key", passingdata);
+        i.putExtras(b);
+        startActivity(i);
+    }
+
     public String getUsuario() {
         return this.Usuario;
     }
