@@ -10,7 +10,7 @@
         android:layout_height="4dp"
         android:layout_margin="4dp"
         android:layout_weight=".2"
-        android:background="@color/skyblue"
+        android:background="@drawable/rounded_cornersscharff"
         android:visibility="visible" />
 
     <LinearLayout
@@ -26,28 +26,31 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_fragment"
-                android:layout_width="199dp"
+                android:id="@+id/btn_activity"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="204dp"
                 android:layout_height="wrap_content"
-                android:background="@color/black"
-                android:text="Scaneo rápido"
-                android:textColor="@color/white"
+                android:background="@drawable/rounded_cornersscharff"
+                android:text="Scaneo de paquetes"
+                android:textColor="@color/black"
                 android:visibility="visible" />
 
             <Button
-                android:id="@+id/btn_activity"
+                android:id="@+id/btn_fragment"
+                style="@style/Widget.AppCompat.Button.Colored"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/black"
-                android:text="Scaneo en singular "
-                android:textColor="@color/white"
+                android:background="@drawable/rounded_cornersscharff"
+
+                android:text="Scaneo masivo"
+                android:textColor="@color/black"
                 android:visibility="visible" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="336dp"
+            android:layout_height="373dp"
             android:orientation="horizontal">
 
             <ListView
@@ -57,8 +60,8 @@
                 android:textAlignment="center" />
 
             <LinearLayout
-                android:layout_width="199dp"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
@@ -67,63 +70,42 @@
                     android:layout_height="124dp"
                     android:text="Total de paquetes escaneados: "
                     android:textAlignment="center"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
 
                 <TextView
                     android:id="@+id/contarelementos"
                     android:layout_width="match_parent"
-                    android:layout_height="53dp"
+                    android:layout_height="197dp"
                     android:text="0"
                     android:textAlignment="center"
+                    android:textColor="@color/black"
                     android:textSize="20sp" />
+
+                <Button
+                    android:id="@+id/btnConfirmarDatos"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rounded_cornersscharff"
+                    android:onClick="onClick"
+                    android:text="Enviar datos"
+                    android:textAlignment="center"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btnConfirmarDatos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/black"
-            android:onClick="onClick"
-            android:textColor="@color/white"
-            android:text="Enviar datos scaneados" />
 
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="@color/black"
             android:onClick="onClick"
+            android:background="@drawable/rounded_cornersscharff"
             android:text="Cerrar sesión"
-            android:textColor="@color/white"/>
-
-        <TextView
-            android:id="@+id/tv_result_head"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/latTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-
-        <TextView
-            android:id="@+id/lonTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-
-        <TextView
-            android:id="@+id/tv_result"
-            android:layout_width="403dp"
-            android:layout_height="15dp"
-            android:layout_margin="4dp" />
+            android:textColor="@color/black"
+            style="@style/Widget.AppCompat.Button.Colored"/>
 
     </LinearLayout>
 

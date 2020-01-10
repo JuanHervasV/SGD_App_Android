@@ -76,15 +76,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn_activity).setOnClickListener(this);
         findViewById(R.id.btn_fragment).setOnClickListener(this);
         //txtvws
-        mJsonTxtView = findViewById(R.id.tv_result);
-        mTvResultHeader = findViewById(R.id.tv_result_head);
-        mTvResult = findViewById(R.id.tv_result);
+        //mJsonTxtView = findViewById(R.id.tv_result);
+        //mTvResultHeader = findViewById(R.id.tv_result_head);
+        //mTvResult = findViewById(R.id.tv_result);
         contarelementos = findViewById(R.id.contarelementos);
         Usuario = findViewById(R.id.usuarios);
 
         //GPS
-        latTextView = findViewById(R.id.latTextView);
-        lonTextView = findViewById(R.id.lonTextView);
+        //latTextView = findViewById(R.id.latTextView);
+        //lonTextView = findViewById(R.id.lonTextView);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         getLastLocation();
         //GPS
@@ -158,8 +158,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 */
     private void createPost(){
-        mTvResult = findViewById(R.id.tv_result);
-        listView= findViewById(R.id.listview);
+        //mTvResult = findViewById(R.id.tv_result);
+        //listView= findViewById(R.id.listview);
         //Spinner mySpinner = findViewById(R.id.spinner);
         //final String Estado = mySpinner.getSelectedItem().toString();
 
@@ -193,14 +193,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             String textItemList = (String) listView.getItemAtPosition(position);
                                             position++;
                                             //Aqui enviar los datos
-                                            String resul = mTvResult.getText().toString();
+                                            //String resul = mTvResult.getText().toString();
                                             Posts posts = new Posts(textItemList, ""+receivingdata, ""+location.getLatitude(),""+location.getLongitude()+"", ""+spinnerdata/*+Estado*/);
                                             Call<Posts> call = jsonPlaceHolderApi.createPost(posts);
                                             call.enqueue(new Callback<Posts>() {
                                                 @Override
                                                 public void onResponse(Call<Posts> call, Response<Posts> response) {
                                                     if(!response.isSuccessful()){
-                                                        mJsonTxtView.setText("Codigo:" + response.code());
+                                                        //mJsonTxtView.setText("Codigo:" + response.code());
                                                         Toast.makeText(getApplicationContext(),"Datos ingresados exitosamente",Toast.LENGTH_SHORT).show();
                                                         return;
                                                     }
@@ -209,13 +209,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                                     //content += "Estado:" + postsResponse.estado() + "\n";
                                                     content += "Mensaje:" + postsResponse.mensaje() + "\n";
                                                     Toast.makeText(getApplicationContext(),"Datos ingresados exitosamente",Toast.LENGTH_SHORT).show();
-                                                    mJsonTxtView.append(content);
+                                                    //mJsonTxtView.append(content);
 
                                                 }
                                                 @Override
                                                 public void onFailure(Call<Posts> call, Throwable t) {
                                                     Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
-                                                    mJsonTxtView.setText(t.getMessage());
+                                                    //mJsonTxtView.setText(t.getMessage());
                                                 }
                                             });
                                         }
@@ -300,11 +300,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this, barcode.rawValue, Toast.LENGTH_SHORT).show();
 
             //Agrega datos al textview
-            mTvResult.setText("Último valor scaneado: "+barcode.rawValue);
+            //mTvResult.setText("Último valor scaneado: "+barcode.rawValue);
             //Agregar datos a la list
-            int count = listView.getAdapter().getCount();
-            int ctf= totalelementoslist+count;
-            contarelementos.setText(""+ctf);
+
             arrayList.add(barcode.rawValue);
             adapter.notifyDataSetChanged();
 
@@ -312,10 +310,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             hashSet.addAll(arrayList);
             arrayList.clear();
             arrayList.addAll(hashSet);
+            //Contar elementos del spinner ~
+            int count = listView.getAdapter().getCount();
+            int ctf= totalelementoslist+count;
+            contarelementos.setText(""+count);
+            //---
+            //mTvResultHeader.setText("Resultado");
 
-            mTvResultHeader.setText("Resultado");
-
-            mTvResult.setText(barcode.rawValue);
+            //mTvResult.setText(barcode.rawValue);
         }
     }
 
@@ -323,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onScanned(Barcode barcode) {
 
         Toast.makeText(this, barcode.rawValue, Toast.LENGTH_SHORT).show();
-        mTvResultHeader.setText("Datos generales");
+        //mTvResultHeader.setText("Datos generales");
      /*   //Lista---------------------------------------------------------
         listView= findViewById(R.id.listview);
         String[]android_flavours={};
@@ -341,16 +343,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 */
         //Agregar datos a la list
         //Agrega datos al textview
-        mTvResult.setText("Último valor scaneado: "+barcode.rawValue+".");
-        int count = listView.getAdapter().getCount();
-        int ctf= totalelementoslist+count;
-        contarelementos.setText(""+ctf);
+        //mTvResult.setText("Último valor scaneado: "+barcode.rawValue+".");
         arrayList.add(barcode.rawValue);
 
         HashSet<String> hashSet = new HashSet<String>();
         hashSet.addAll(arrayList);
         arrayList.clear();
         arrayList.addAll(hashSet);
+
+        //Contar elementos del spinner ~
+        int count = listView.getAdapter().getCount();
+        int ctf= totalelementoslist+count;
+        contarelementos.setText(""+count);
+        //---
 
         adapter.notifyDataSetChanged();
 
@@ -404,8 +409,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 if (location == null) {
                                     requestNewLocationData();
                                 } else {
-                                    latTextView.setText("Latitud actual: "+location.getLatitude()+".");
-                                    lonTextView.setText("Longitud actual: "+location.getLongitude()+".");
+                                    //latTextView.setText("Latitud actual: "+location.getLatitude()+".");
+                                    //lonTextView.setText("Longitud actual: "+location.getLongitude()+".");
                                 }
                             }
                         }
@@ -441,8 +446,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onLocationResult(LocationResult locationResult) {
             Location mLastLocation = locationResult.getLastLocation();
-            latTextView.setText(mLastLocation.getLatitude()+"");
-            lonTextView.setText(mLastLocation.getLongitude()+"");
+            //latTextView.setText(mLastLocation.getLatitude()+"");
+            //lonTextView.setText(mLastLocation.getLongitude()+"");
         }
     };
 
