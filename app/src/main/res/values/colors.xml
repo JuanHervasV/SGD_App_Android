@@ -4,8 +4,10 @@
     <color name="colorPrimaryDark">#FF7177</color>
     <color name="colorAccent">#FF7177</color>
 
-    <color name="dimBackgroundColor">#40000000</color>
-    <color name="brightBackgroundColor">#ffffffff</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="grey">#808080</color>
+    <color name="skyblue">#87CEFA</color>
     <color name="colorRowSeparator">#cccccc</color>
     <color name="filterBackground">#cccccc</color>
     <color name="filterText">#3366cc</color>

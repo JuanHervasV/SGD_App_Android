@@ -14,7 +14,6 @@ import android.util.SparseArray;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView mTvResult;
     private TextView mTvResultHeader;
     private TextView mJsonTxtView;
+    private TextView Usuario;
     private ListView listView;
     private TextView contarelementos;
     int totalelementoslist = 1;
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int PERMISSION_ID = 44;
     FusedLocationProviderClient mFusedLocationClient;
     TextView latTextView, lonTextView;
-    private Spinner spin;
+    //private Spinner spin;
     ArrayList<String> list2;
 
     private APIRetrofitInterface jsonPlaceHolderApi;
@@ -80,12 +80,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTvResultHeader = findViewById(R.id.tv_result_head);
         mTvResult = findViewById(R.id.tv_result);
         contarelementos = findViewById(R.id.contarelementos);
+        Usuario = findViewById(R.id.usuarios);
 
         //GPS
         latTextView = findViewById(R.id.latTextView);
         lonTextView = findViewById(R.id.lonTextView);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
         getLastLocation();
         //GPS
 
@@ -108,9 +108,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         //listarpro = findViewById(R.id.lista);
-        //String resul = mTvResult.getText().toString();
+        //String resul = mTvResult.getText().toString();----------------
 
-        //Retrofit-------------------------------------------------------
+        //Retrofit------------------------------------------------------
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://200.37.50.53/ApiCyT/api/")
@@ -124,18 +124,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //    startActivity(new Intent(this, LoginActivity.class));
         //    finish();
         //    return;
-       // }
+        // }
 
-        //Fill Spinner
-        FillSpinner();
-        //Llamar datos usuario
+        //Fill Spinner----------------------------------
+        //FillSpinner();
+        //----------------------------------------------
+        //Llamar datos usuario--------------------------
         Bundle b = getIntent().getExtras();
         String receivingdata = b.getString("Key");
-        TextView tv = (TextView)findViewById(R.id.usuario);
+        //String usu = receivingdata.toString();
+        //TextView tv = findViewById(R.id.usuarios);
         //tv.append(receivingdata);
+        //----------------------------------------------
 
     }
-
+/*
     private void FillSpinner(){
 
         spin = findViewById(R.id.spinner);
@@ -153,12 +156,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 // Spinner spinYear = (Spinner)findViewById(R.id.spin);
         spin.setAdapter(adapter);
     }
-
+*/
     private void createPost(){
         mTvResult = findViewById(R.id.tv_result);
         listView= findViewById(R.id.listview);
-        Spinner mySpinner = findViewById(R.id.spinner);
-        final String Estado = mySpinner.getSelectedItem().toString();
+        //Spinner mySpinner = findViewById(R.id.spinner);
+        //final String Estado = mySpinner.getSelectedItem().toString();
 
         //String itemValue = (String) listView.getItemAtPosition(position);
         //String values=((TextView)view).getText().toString();
@@ -172,7 +175,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 //Llamar datos usuario--------------------------
                                 Bundle b = getIntent().getExtras();
                                 String receivingdata = b.getString("Key");
-                                TextView tv = (TextView)findViewById(R.id.usuario);
+                                String spinnerdata= b.getString("Key2");
+                                //String usu = receivingdata.toString();
+                                //TextView tv = findViewById(R.id.usuarios);
                                 //tv.append(receivingdata);
                                 //----------------------------------------------
 
@@ -189,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                             position++;
                                             //Aqui enviar los datos
                                             String resul = mTvResult.getText().toString();
-                                            Posts posts = new Posts(textItemList, ""+receivingdata/*+Usuario*/, ""+location.getLatitude(),""+location.getLongitude()+"", ""+Estado);
+                                            Posts posts = new Posts(textItemList, ""+receivingdata, ""+location.getLatitude(),""+location.getLongitude()+"", ""+spinnerdata/*+Estado*/);
                                             Call<Posts> call = jsonPlaceHolderApi.createPost(posts);
                                             call.enqueue(new Callback<Posts>() {
                                                 @Override

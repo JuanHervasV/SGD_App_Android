@@ -20,17 +20,24 @@
         android:layout_weight=".4"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_fragment"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Scanear por fragmentos" />
+            android:layout_height="60sp"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_activity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Scanear pantalla completa" />
+            <Button
+                android:id="@+id/btn_fragment"
+                android:layout_width="199dp"
+                android:layout_height="60dp"
+                android:text="Scanear por fragmentos" />
+
+            <Button
+                android:id="@+id/btn_activity"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:text="Scanear pantalla completa" />
+
+        </LinearLayout>
 
         <ListView
             android:id="@+id/list"
@@ -64,7 +71,6 @@
             android:layout_width="403dp"
             android:layout_height="68dp"
             android:layout_margin="4dp" />
-
 
     </LinearLayout>
 
