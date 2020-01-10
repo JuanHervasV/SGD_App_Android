@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //private Spinner spin;
     ArrayList<String> list2;
 
+
     private APIRetrofitInterface jsonPlaceHolderApi;
 
     @SuppressLint("WrongViewCast")
@@ -72,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         //btones
         findViewById(R.id.btn_activity).setOnClickListener(this);
         findViewById(R.id.btn_fragment).setOnClickListener(this);
@@ -136,6 +139,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //TextView tv = findViewById(R.id.usuarios);
         //tv.append(receivingdata);
         //----------------------------------------------
+
+        //Sonido beep
+        //final MediaPlayer mp = MediaPlayer.create(this,R.raw.beep);
 
     }
 /*
@@ -315,6 +321,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             int ctf= totalelementoslist+count;
             contarelementos.setText(""+count);
             //---
+
+            //Sonido beep
+            final MediaPlayer mp = MediaPlayer.create(this, R.raw.beeps);
+            mp.start();
+            //--
             //mTvResultHeader.setText("Resultado");
 
             //mTvResult.setText(barcode.rawValue);
@@ -356,6 +367,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int ctf= totalelementoslist+count;
         contarelementos.setText(""+count);
         //---
+
+        //Sonido beep
+        final MediaPlayer mp = MediaPlayer.create(this, R.raw.beeps);
+        mp.start();
+        //--
 
         adapter.notifyDataSetChanged();
 
