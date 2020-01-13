@@ -89,7 +89,7 @@ public class Logeo extends AppCompatActivity {
     public void RecuperarUsuario(){
         String passingdata = LoginText.getText().toString();
         //Intent i = new Intent(Logeo.this, MainActivity.class);
-        Intent i = new Intent(Logeo.this, Pre_estado.class);
+        Intent i = new Intent(Logeo.this, MenuPrincipal.class);
         //Intent a = new Intent(Logeo.this, Pre_estado.class);
         Bundle c = new Bundle();
         c.putString("Key", passingdata);

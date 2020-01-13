@@ -7,13 +7,29 @@
     android:background="@color/colorPrimary"
     tools:context=".MenuPrincipal">
 
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="229dp"
+        android:layout_height="62dp"
+        android:background="@drawable/rounded_cornersscharff"
+        android:text="Menú principal"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.112"
+        tools:ignore="OnClick" />
+
     <Button
         android:id="@+id/btnCyT"
         android:layout_width="196dp"
         android:layout_height="87dp"
-        android:background="@color/white"
+        android:background="@drawable/rounded_cornersscharff"
         android:onClick="onClick"
-        android:text="Compra y Trae"
+        android:text="Despachar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
@@ -25,29 +41,16 @@
         android:id="@+id/btnSinamet"
         android:layout_width="196dp"
         android:layout_height="87dp"
-        android:background="@color/black"
+        android:background="@drawable/rounded_cornersscharff"
         android:onClick="onClick"
-        android:text="Sinamet"
-        android:textColor="@color/white"
+        android:text="Consultar"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.673" />
+        app:layout_constraintVertical_bias="0.694" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="213dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="60dp"
-        android:text="Menú principal"
-        android:textAlignment="center"
-        android:textSize="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnCyT"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.05"
-        tools:ignore="OnClick" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

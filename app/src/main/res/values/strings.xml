@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CyT Scharff</string>
+    <string name="app_name">SGD Scharff</string>
     <string name="title_activity_login">Iniciar sesión</string>
     <string name="prompt_email">Número de identificación</string>
     <string name="prompt_password">Contraseña</string>

@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     //private Spinner spin;
     ArrayList<String> list2;
 
-
     private APIRetrofitInterface jsonPlaceHolderApi;
 
     @SuppressLint("WrongViewCast")

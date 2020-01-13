@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Barcode-Reader-master.iml" filepath="$PROJECT_DIR$/Barcode-Reader-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SGD-App.iml" filepath="$PROJECT_DIR$/SGD-App.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/barcode-reader/barcode-reader.iml" filepath="$PROJECT_DIR$/barcode-reader/barcode-reader.iml" />
     </modules>
