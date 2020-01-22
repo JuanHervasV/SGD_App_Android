@@ -24,7 +24,7 @@
         tools:ignore="OnClick" />
 
     <Button
-        android:id="@+id/btnCyT"
+        android:id="@+id/btnDespachar"
         android:layout_width="196dp"
         android:layout_height="87dp"
         android:background="@drawable/rounded_cornersscharff"
@@ -38,7 +38,7 @@
         app:layout_constraintVertical_bias="0.381" />
 
     <Button
-        android:id="@+id/btnSinamet"
+        android:id="@+id/btnConsultar"
         android:layout_width="196dp"
         android:layout_height="87dp"
         android:background="@drawable/rounded_cornersscharff"

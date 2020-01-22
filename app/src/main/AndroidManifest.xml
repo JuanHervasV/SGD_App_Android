@@ -15,7 +15,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Pre_estado"></activity>
+        <activity android:name=".DespacharFinal"></activity>
+        <activity android:name=".CerrarManifiestoAct" />
+        <activity android:name=".CerrarValijaAct" />
+        <activity android:name=".GuiaAct" />
+        <activity android:name=".ValijaAct" />
+        <activity android:name=".ManifiestoAct" />
+        <activity android:name=".Pre_estado" />
         <activity android:name=".sinametm" />
         <activity android:name=".Logeo">
             <intent-filter>
