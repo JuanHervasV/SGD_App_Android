@@ -62,31 +62,48 @@ public class GuiaAct extends AppCompatActivity {
                 fragmentTransaction.commitAllowingStateLoss();
                 launchBarCodeActivity();
                 break;
+            case R.id.btnCerrar:
+                PasarDatos();
+                break;
         }
+    }
+    public void AgregarGuia(){
+
     }
 
     private void createPost(){
         Guia = findViewById(R.id.txtGuia);
         Mensaje = findViewById(R.id.txtMensaje);
 
-        final String Gui = Guia.getText().toString();
+        Manifiesto = findViewById(R.id.txtMfto);
+        Valija = findViewById(R.id.txtValija);
+        //Llamar datos ----------------------------------------------------------
+        Bundle b = getIntent().getExtras();
+        String Valijas = b.getString("Valijas");
+        String Mfto = b.getString("Mfto");
+        String MftoAnio = b.getString("MftoAnio");
+        String MftoNro = b.getString("MftoNro");
+        String Suc = b.getString("Suc");
+        String PaisDes = b.getString("PaisDes");
+        String CiuDes = b.getString("CiuDes");
+        String Estado = b.getString("Estado");
+        //----------------------------------------------------------------------
+        String Gui = Guia.getText().toString();
+
+        Manifiesto.setText(Mfto+" "+MftoAnio+" "+MftoNro+" "+Suc+" "+Gui);
+        Valija.setText(Valijas);
 
         //Titulo = findViewById(R.id.txtTitulo);
         //Aqui enviar los datos
         //String resul = mTvResult.getText().toString();
-        ValidarGuia validarGuia = new ValidarGuia("2014","00000046","PEAQP01","0020120232");
+        ValidarGuia validarGuia = new ValidarGuia(""+MftoAnio,""+MftoNro,""+Suc,""+Gui);
         Call<ValidarGuia> call = jsonPlaceHolderApi.createPost(validarGuia);
         call.enqueue(new Callback<ValidarGuia>() {
             @Override
             public void onResponse(Call<ValidarGuia> call, Response<ValidarGuia> response) {
                 if(!response.isSuccessful()){
-                    //mJsonTxtView.setText("Codigo:" + response.code());
-                    ValidarGuia postsResponse = response.body();
-
-                    String Estado = postsResponse.estado();
-                    String Guia = postsResponse.Guias();
-                    Toast.makeText(getApplicationContext(),"Datos ingresado exitosamente",Toast.LENGTH_SHORT).show();
-                    PasarDatos();
+                    //TestApi.setText("Codigo:" + response.code());
+                    Toast.makeText(getApplicationContext(),"Something's wrong ~",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 ValidarGuia postsResponse = response.body();
@@ -95,15 +112,15 @@ public class GuiaAct extends AppCompatActivity {
                 String Guia = postsResponse.Guias();
                 Toast.makeText(getApplicationContext(),"Dato ingresado exitosamente",Toast.LENGTH_SHORT).show();
 
-                Intent i = new Intent(GuiaAct.this, CerrarValijaAct.class);
-                    Bundle c = new Bundle();
-                c.putString("Estado", Estado);
-                c.putString("Guia", Guia);
+                //Intent i = new Intent(GuiaAct.this, CerrarValijaAct.class);
+                //    Bundle c = new Bundle();
+                //c.putString("Estado", Estado);
+                //c.putString("Guia", Guia);
 
-                i.putExtras(c);
+                //i.putExtras(c);
                 Mensaje.append(""+postsResponse.estado());
                 Mensaje.append(""+postsResponse.Guias());
-                PasarDatos();
+                //PasarDatos();
                 //startActivity(i);
                 //Titulo.append(""+postsResponse.estado());
                 return;

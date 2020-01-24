@@ -1,5 +1,4 @@
-App de Compra y Trae Scharff
+App Android SGD - Sistema de Gestión de Despachos
 
-Código de barras funcional, usa API Google Vision, GPS y login/registro por medio de APIs.
+Scan código de barras utilizando Google Mobile Vision y consumo de API para el registro de Manifiestos / Valijas / Guias.
 
-06/01/2020
