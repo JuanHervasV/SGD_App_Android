@@ -33,16 +33,14 @@ public class CerrarValijaAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cerrar_valija);
-        //RecuperarDatos()
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://200.37.50.53/ApiSGD/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         jsonPlaceHolderApi = retrofit.create(APIRetrofitInterface.class);
-        //cerrarValija();
+        RecuperarDatos();
         ValijasContador();
-
     }
 
     public void onClick(View v) {
@@ -55,18 +53,41 @@ public class CerrarValijaAct extends AppCompatActivity {
     }
 
     public void RecuperarDatos(){
-        //Llamar datos ---------------------------------------
+        //Llamar datos -------------------------------------------------
         Bundle b = getIntent().getExtras();
-        final String Estado = b.getString("Estado");
-        final String Guias = b.getString("Guia");
-        //----------------------------------------------------
+        String Mfto = b.getString("Mft");
+        String Valijas = b.getString("Valijas");
+        String MftoAnio = b.getString("MftoAnio");
+        String MftoNro = b.getString("MftoNro");
+        String Suc = b.getString("Suc");
+        String PaisDes = b.getString("PaisDes");
+        String CiuDes = b.getString("CiuDes");
+        String Estado = b.getString("Estado");
+        //---------------------------------------------------------------
+
         Manifiesto = findViewById(R.id.txtMfto);
         //Manifiesto.setText(Mfto);
+        Manifiesto.setText(Suc+" "+MftoAnio+"-"+MftoNro);
         Valija = findViewById(R.id.txtValija);
-        //Valija.setText(Valijas);
+        Valija.append(""+Valijas+"?");
         Guia = findViewById(R.id.txtGuia);
-        Guia.append(Guias);
+        //String Guias = Guia.getText().toString();
 
+        //Enviar datos---------------------------------------------------
+        Intent i = new Intent(CerrarValijaAct.this, CerrarManifiestoAct.class);
+        //String passingdata = LoginText.getText().toString();
+        Bundle c = new Bundle();
+        c.putString("Valijas", Estado);
+        c.putString("Mfto", Mfto);
+        c.putString("MftoAnio", MftoAnio);
+        c.putString("MftoNro", MftoNro);
+        c.putString("Suc", Suc);
+        c.putString("PaisDes", PaisDes);
+        c.putString("CiuDes", CiuDes);
+        c.putString("Estado", Estado);
+        i.putExtras(c);
+        //startActivity(i);
+        //----------------------------------------------------------------
     }
 
     private void cerrarValija(){
@@ -93,7 +114,7 @@ public class CerrarValijaAct extends AppCompatActivity {
                     //i.putExtras(c);
                     //Mensaje.append(""+response.body());
                     //Mensaje.append(""+response.headers());
-                    startActivity(i);
+                    //startActivity(i);
                     //Titulo.append(""+postsResponse.estado());
                     return;
                 }
@@ -110,7 +131,7 @@ public class CerrarValijaAct extends AppCompatActivity {
                 i.putExtras(c);
                 //Mensaje.append(""+postsResponse.estado());
                 //Mensaje.append(""+postsResponse.Guias());
-                startActivity(i);
+                //startActivity(i);
                 //Titulo.append(""+postsResponse.estado());
                 return;
             }
@@ -179,6 +200,8 @@ public class CerrarValijaAct extends AppCompatActivity {
     private void ValijasContador() {
         //Aqui enviar los datos-------------------------------------------------------------------------------------------
         //String resul = mTvResult.getText().toString();
+        Guia = findViewById(R.id.txtGuia);
+
         ValijaContador valijaContador = new ValijaContador("145");
         Call<ValijaContador> call = jsonPlaceHolderApi.createPost(valijaContador);
         call.enqueue(new Callback<ValijaContador>() {
@@ -188,22 +211,30 @@ public class CerrarValijaAct extends AppCompatActivity {
                     //mJsonTxtView.setText("Codigo:" + response.code());
                     ValijaContador postsResponse = response.body();
 
+                    String Total = postsResponse.total();
+                    String Valija = postsResponse.valija();
+
                     //String Estado = postsResponse.estado();
                     //String Guia = postsResponse.Guias();
                     Toast.makeText(getApplicationContext(), "API Contador Iniciado", Toast.LENGTH_SHORT).show();
 
                     Intent i = new Intent(CerrarValijaAct.this, CerrarManifiestoAct.class);
                     Bundle c = new Bundle();
+
+
                     //c.putString("Estado", Estado);
                     //c.putString("Guia", Guia);
                     //i.putExtras(c);
                     //Mensaje.append(""+response.body());
                     //Mensaje.append(""+response.headers());
                     //startActivity(i);
-                    //Titulo.append(""+postsResponse.estado());
+                    Guia.append(" "+Total+" //// "+Valija);
                     return;
                 }
                 ValijaContador postsResponse = response.body();
+
+                String Total = postsResponse.total();
+                String Valija = postsResponse.valija();
 
                 //String Estado = postsResponse.estado();
                 //String Guia = postsResponse.Guias();
@@ -217,7 +248,7 @@ public class CerrarValijaAct extends AppCompatActivity {
                 //Mensaje.append(""+postsResponse.estado());
                 //Mensaje.append(""+postsResponse.Guias());
                 //startActivity(i);
-                //Titulo.append(""+postsResponse.estado());
+                Guia.append(" "+Total+" //// "+Valija);
                 return;
             }
 
@@ -229,7 +260,4 @@ public class CerrarValijaAct extends AppCompatActivity {
             }
         });
     }
-
-
-
 }

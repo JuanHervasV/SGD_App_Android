@@ -1,6 +1,7 @@
 package com.notbytes.barcodereader;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -8,7 +9,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.vision.barcode.Barcode;
+import com.notbytes.barcode_reader.BarcodeReaderActivity;
 import com.notbytes.barcodereader.Model.ValidarGuia;
 import com.notbytes.barcodereader.io.APIRetrofitInterface;
 
@@ -24,6 +30,7 @@ public class GuiaAct extends AppCompatActivity {
     private EditText Guia;
     private APIRetrofitInterface jsonPlaceHolderApi;
     private TextView Mensaje;
+    private static final int BARCODE_READER_ACTIVITY_REQUEST = 1208;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +43,7 @@ public class GuiaAct extends AppCompatActivity {
                 .build();
         jsonPlaceHolderApi = retrofit.create(APIRetrofitInterface.class);
 
-        //RecuperarDatos();
+        RecuperarDatos();
         //createPost();
     }
 
@@ -44,6 +51,16 @@ public class GuiaAct extends AppCompatActivity {
         switch (v.getId()){
             case R.id.btnAgregar:
                 createPost();
+                break;
+            case R.id.btnBr:
+                FragmentManager supportFragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+                Fragment fragmentById = supportFragmentManager.findFragmentById(R.id.fm_container);
+                if (fragmentById != null) {
+                    fragmentTransaction.remove(fragmentById);
+                }
+                fragmentTransaction.commitAllowingStateLoss();
+                launchBarCodeActivity();
                 break;
         }
     }
@@ -69,16 +86,7 @@ public class GuiaAct extends AppCompatActivity {
                     String Estado = postsResponse.estado();
                     String Guia = postsResponse.Guias();
                     Toast.makeText(getApplicationContext(),"Datos ingresado exitosamente",Toast.LENGTH_SHORT).show();
-
-                    Intent i = new Intent(GuiaAct.this, CerrarValijaAct.class);
-                    Bundle c = new Bundle();
-                    c.putString("Estado", Estado);
-                    c.putString("Guia", Guia);
-                    //i.putExtras(c);
-                    Mensaje.append(""+response.body());
-                    //Mensaje.append(""+response.headers());
-                    startActivity(i);
-                    //Titulo.append(""+postsResponse.estado());
+                    PasarDatos();
                     return;
                 }
                 ValidarGuia postsResponse = response.body();
@@ -95,7 +103,8 @@ public class GuiaAct extends AppCompatActivity {
                 i.putExtras(c);
                 Mensaje.append(""+postsResponse.estado());
                 Mensaje.append(""+postsResponse.Guias());
-                startActivity(i);
+                PasarDatos();
+                //startActivity(i);
                 //Titulo.append(""+postsResponse.estado());
                 return;
             }
@@ -108,24 +117,81 @@ public class GuiaAct extends AppCompatActivity {
         });
     }
 
-    public void RecuperarDatos(){
-        //Llamar datos ---------------------------------------
-        Bundle b = getIntent().getExtras();
-        final String Valijas = b.getString("Valijas");
-        final String Mfto = b.getString("Mft");
-        final String MftoAnio = b.getString("MftoAnio");
-        final String MftoNro = b.getString("MftoNro");
-        final String Suc = b.getString("Suc");
-        final String PaisDes = b.getString("PaisDes");
-        final String CiuDes = b.getString("CiuDes");
-        final String Estado = b.getString("Estado");
-        //----------------------------------------------------
-        Manifiesto = findViewById(R.id.txtMfto);
-        Manifiesto.setText(Mfto);
-        Valija = findViewById(R.id.txtValija);
-        Valija.setText(Valijas);
+    private void launchBarCodeActivity() {
+        Intent launchIntent = BarcodeReaderActivity.getLaunchIntent(this, true, false);
+        startActivityForResult(launchIntent, BARCODE_READER_ACTIVITY_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
         Guia = findViewById(R.id.txtGuia);
-        String Guias = Guia.getText().toString();
+
+        if (requestCode == BARCODE_READER_ACTIVITY_REQUEST && data != null) {
+            Barcode barcode = data.getParcelableExtra(BarcodeReaderActivity.KEY_CAPTURED_BARCODE);
+            Toast.makeText(this, barcode.rawValue, Toast.LENGTH_SHORT).show();
+
+            //Sonido beep
+            final MediaPlayer mp = MediaPlayer.create(this, R.raw.beeps);
+            mp.start();
+            //--
+            //mTvResultHeader.setText("Resultado");
+
+            Guia.setText(barcode.rawValue);
+        }
+    }
+
+    public void RecuperarDatos(){
+        Manifiesto = findViewById(R.id.txtMfto);
+        Valija = findViewById(R.id.txtValija);
+        //Llamar datos ----------------------------------------------------------
+        Bundle b = getIntent().getExtras();
+        String Valijas = b.getString("Valijas");
+        String Mfto = b.getString("Mfto");
+        String MftoAnio = b.getString("MftoAnio");
+        String MftoNro = b.getString("MftoNro");
+        String Suc = b.getString("Suc");
+        String PaisDes = b.getString("PaisDes");
+        String CiuDes = b.getString("CiuDes");
+        String Estado = b.getString("Estado");
+        //----------------------------------------------------------------------
+        Manifiesto.setText(Mfto);
+        Valija.setText(Valijas);
+    }
+
+    public void PasarDatos(){
+        Manifiesto = findViewById(R.id.txtMfto);
+        Valija = findViewById(R.id.txtValija);
+        //Llamar datos ----------------------------------------------------------
+        Bundle b = getIntent().getExtras();
+        String Valijas = b.getString("Valijas");
+        String Mfto = b.getString("Mfto");
+        String MftoAnio = b.getString("MftoAnio");
+        String MftoNro = b.getString("MftoNro");
+        String Suc = b.getString("Suc");
+        String PaisDes = b.getString("PaisDes");
+        String CiuDes = b.getString("CiuDes");
+        String Estado = b.getString("Estado");
+        //----------------------------------------------------------------------
+        Manifiesto.setText(Mfto);
+        Valija.setText(Valijas);
+
+        //Enviar datos----------------------------------------------------------
+        Intent i = new Intent(GuiaAct.this, CerrarValijaAct.class);
+        //String passingdata = LoginText.getText().toString();
+        Bundle c = new Bundle();
+        c.putString("Valijas", Valijas);
+        c.putString("Mfto", Mfto);
+        c.putString("MftoAnio", MftoAnio);
+        c.putString("MftoNro", MftoNro);
+        c.putString("Suc", Suc);
+        c.putString("PaisDes", PaisDes);
+        c.putString("CiuDes", CiuDes);
+        c.putString("Estado", Estado);
+        i.putExtras(c);
+        startActivity(i);
+        //----------------------------------------------------------------------
 
     }
 

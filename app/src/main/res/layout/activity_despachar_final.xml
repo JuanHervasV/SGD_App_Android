@@ -22,7 +22,7 @@
         android:id="@+id/txtMfto"
         android:layout_width="186dp"
         android:layout_height="39dp"
-        android:text="Se ha cerrado el .."
+        android:text="Se ha cerrado el manifiesto 011600025111"
         app:layout_constraintBottom_toTopOf="@+id/btnCerrar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

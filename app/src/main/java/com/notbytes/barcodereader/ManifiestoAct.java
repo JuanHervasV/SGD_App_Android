@@ -1,6 +1,7 @@
 package com.notbytes.barcodereader;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.vision.barcode.Barcode;
 import com.notbytes.barcode_reader.BarcodeReaderActivity;
 import com.notbytes.barcodereader.Model.ValidarMfto;
 import com.notbytes.barcodereader.io.APIRetrofitInterface;
@@ -54,7 +56,6 @@ public class ManifiestoAct extends AppCompatActivity {
                 createPost();
                 break;
             case  R.id.btnBr:
-            case R.id.btn_activity:
                 FragmentManager supportFragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
                 Fragment fragmentById = supportFragmentManager.findFragmentById(R.id.fm_container);
@@ -72,7 +73,41 @@ public class ManifiestoAct extends AppCompatActivity {
         startActivityForResult(launchIntent, BARCODE_READER_ACTIVITY_REQUEST);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Mfto = findViewById(R.id.mfto);
 
+        if (requestCode == BARCODE_READER_ACTIVITY_REQUEST && data != null) {
+            Barcode barcode = data.getParcelableExtra(BarcodeReaderActivity.KEY_CAPTURED_BARCODE);
+            Toast.makeText(this, barcode.rawValue, Toast.LENGTH_SHORT).show();
+
+            //Agrega datos al textview
+            //mTvResult.setText("Último valor scaneado: "+barcode.rawValue);
+            //Agregar datos a la list
+
+            //arrayList.add(barcode.rawValue);
+            //adapter.notifyDataSetChanged();
+
+            //HashSet<String> hashSet = new HashSet<String>();
+            //hashSet.addAll(arrayList);
+            //arrayList.clear();
+            //arrayList.addAll(hashSet);
+            //Contar elementos del spinner ~
+            //int count = listView.getAdapter().getCount();
+            //int ctf= totalelementoslist+count;
+            //contarelementos.setText(""+count);
+            //---
+
+            //Sonido beep
+            final MediaPlayer mp = MediaPlayer.create(this, R.raw.beeps);
+            mp.start();
+            //--
+            //mTvResultHeader.setText("Resultado");
+
+            Mfto.setText(barcode.rawValue);
+        }
+    }
 
     private void createPost(){
         Mfto = findViewById(R.id.mfto);
@@ -101,6 +136,8 @@ public class ManifiestoAct extends AppCompatActivity {
 
                     Intent i = new Intent(ManifiestoAct.this, ValijaAct.class);
                     Bundle c = new Bundle();
+                    String Mftf = Mfto.getText().toString();
+                    c.putString("Mft", Mftf);
                     c.putString("MftoAnio", MftoAnio);
                     c.putString("MftoNro", MftoNro);
                     c.putString("Suc", Suc);
@@ -110,7 +147,7 @@ public class ManifiestoAct extends AppCompatActivity {
                     i.putExtras(c);
                     startActivity(i);
 
-                    Titulo.append(""+postsResponse.estado());
+                    Titulo.append(""+postsResponse.ciuDes());
                     return;
                 }
                 ValidarMfto postsResponse = response.body();

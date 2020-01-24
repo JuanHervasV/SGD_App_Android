@@ -1,6 +1,7 @@
 package com.notbytes.barcodereader;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -8,7 +9,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.vision.barcode.Barcode;
+import com.notbytes.barcode_reader.BarcodeReaderActivity;
 import com.notbytes.barcodereader.Model.ValijaAdicionar;
 import com.notbytes.barcodereader.io.APIRetrofitInterface;
 
@@ -23,11 +29,27 @@ public class ValijaAct extends AppCompatActivity {
     private TextView Manifiesto;
     private TextView Destino;
     private EditText Valija;
+    private static final int BARCODE_READER_ACTIVITY_REQUEST = 1208;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_valija);
+
+        //Retrofit------------------------------------------------------
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://200.37.50.53/ApiSGD/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        jsonPlaceHolderApi = retrofit.create(APIRetrofitInterface.class);
+
+        RecuperarDatos();
+
+        //createPost();
+    }
+
+    private void RecuperarDatos(){
 
         Manifiesto = findViewById(R.id.txtMfto);
         Destino = findViewById(R.id.txtDestino);
@@ -43,25 +65,69 @@ public class ValijaAct extends AppCompatActivity {
         String Estado = b.getString("Estado");
         //----------------------------------------------
 
-        Manifiesto.setText(Suc+""+MftoAnio+"-"+MftoNro);
-        Destino.setText(PaisDes+""+CiuDes);
+        Manifiesto.setText(Suc+" "+MftoAnio+"-"+MftoNro);
+        Destino.setText(""+CiuDes);
 
-        //Retrofit------------------------------------------------------
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://200.37.50.53/ApiSGD/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        jsonPlaceHolderApi = retrofit.create(APIRetrofitInterface.class);
-
-        //createPost();
+        //
 
     }
+
     public void onClick(View v){
         switch (v.getId()) {
             case R.id.btnAsignar:
                 createPost();
                 break;
+            case R.id.btnBr:
+                FragmentManager supportFragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+                Fragment fragmentById = supportFragmentManager.findFragmentById(R.id.fm_container);
+                if (fragmentById != null) {
+                    fragmentTransaction.remove(fragmentById);
+                }
+                fragmentTransaction.commitAllowingStateLoss();
+                launchBarCodeActivity();
+                break;
+        }
+    }
+
+    private void launchBarCodeActivity() {
+        Intent launchIntent = BarcodeReaderActivity.getLaunchIntent(this, true, false);
+        startActivityForResult(launchIntent, BARCODE_READER_ACTIVITY_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Valija = findViewById(R.id.txtValija);
+
+        if (requestCode == BARCODE_READER_ACTIVITY_REQUEST && data != null) {
+            Barcode barcode = data.getParcelableExtra(BarcodeReaderActivity.KEY_CAPTURED_BARCODE);
+            Toast.makeText(this, barcode.rawValue, Toast.LENGTH_SHORT).show();
+
+            //Agrega datos al textview
+            //mTvResult.setText("Último valor scaneado: "+barcode.rawValue);
+            //Agregar datos a la list
+
+            //arrayList.add(barcode.rawValue);
+            //adapter.notifyDataSetChanged();
+
+            //HashSet<String> hashSet = new HashSet<String>();
+            //hashSet.addAll(arrayList);
+            //arrayList.clear();
+            //arrayList.addAll(hashSet);
+            //Contar elementos del spinner ~
+            //int count = listView.getAdapter().getCount();
+            //int ctf= totalelementoslist+count;
+            //contarelementos.setText(""+count);
+            //---
+
+            //Sonido beep
+            final MediaPlayer mp = MediaPlayer.create(this, R.raw.beeps);
+            mp.start();
+            //--
+            //mTvResultHeader.setText("Resultado");
+
+            Valija.setText(barcode.rawValue);
         }
     }
 

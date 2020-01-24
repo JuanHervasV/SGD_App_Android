@@ -65,7 +65,7 @@ public class Pre_estado extends AppCompatActivity {
         //TextView tv = findViewById(R.id.usuarios);
         //tv.append(receivingdata);
         //----------------------------------------------
-        String passingdata="Hola";
+        //String passingdata="Hola";
         //Intent i = new Intent(Logeo.this, MainActivity.class);
         Intent i = new Intent(Pre_estado.this, MainActivity.class);
         //Intent a = new Intent(Logeo.this, Pre_estado.class);

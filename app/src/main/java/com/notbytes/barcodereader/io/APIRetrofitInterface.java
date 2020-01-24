@@ -59,5 +59,4 @@ public interface APIRetrofitInterface {
 
     @POST("MftoValijas")
     Call<ManifiestoValija> createPost(@Body ManifiestoValija manifiestoValija);
-
 }
