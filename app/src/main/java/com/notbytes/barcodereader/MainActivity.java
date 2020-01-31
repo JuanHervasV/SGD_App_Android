@@ -133,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //----------------------------------------------
         //Llamar datos usuario--------------------------
         Bundle b = getIntent().getExtras();
+
         String receivingdata = b.getString("Key");
         //String usu = receivingdata.toString();
         //TextView tv = findViewById(R.id.usuarios);

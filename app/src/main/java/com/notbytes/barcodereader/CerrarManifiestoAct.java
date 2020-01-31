@@ -2,9 +2,10 @@ package com.notbytes.barcodereader;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,10 @@ public class CerrarManifiestoAct extends AppCompatActivity {
     private TextView Manifiesto;
 
     private APIRetrofitInterface jsonPlaceHolderApi;
+    private TextView Valija;
+    private TextView Guia;
+    private Button CerrarMfto;
+    private Button Volver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +48,89 @@ public class CerrarManifiestoAct extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         jsonPlaceHolderApi = retrofit.create(APIRetrofitInterface.class);
+        RecuperarDatos();
         ManifiestoValijas();
-        RelletarTabla();
-        ContadorManifiestos();
+        //ContadorManifiestos();
+        //RelletarTabla();
+        onTouch();
+    }
 
-        //ManifiestoValijas();
+    public void onTouch() {
 
+        CerrarMfto = findViewById(R.id.btnCerrar);
+        Volver = findViewById(R.id.btnVolver);
+
+        CerrarMfto.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
+                    v.setBackgroundResource(R.drawable.rounded_cornerneutral);
+                    //v.setBackgroundColor(Color.parseColor("#9C9C9C"));
+                }
+
+                if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    v.setBackgroundResource(R.drawable.rounded_cornersscharff);
+                    //v.setBackgroundColor(Color.parseColor("#FF7177"));
+                }
+                return false;
+            }
+        });
+
+        Volver.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
+                    v.setBackgroundResource(R.drawable.rounded_cornerneutral);
+                    //v.setBackgroundColor(Color.parseColor("#9C9C9C"));
+                }
+
+                if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    v.setBackgroundResource(R.drawable.rounded_cornersscharff);
+                    //v.setBackgroundColor(Color.parseColor("#FF7177"));
+                }
+                return false;
+            }
+        });
+    }
+
+    public void RecuperarDatos(){
+        //Llamar datos --------------------------------------------------
+        Bundle b = getIntent().getExtras();
+        String Mfto = b.getString("Mft");
+        String Valijas = b.getString("Valijas");
+        String MftoAnio = b.getString("MftoAnio");
+        String MftoNro = b.getString("MftoNro");
+        String Suc = b.getString("Suc");
+        String PaisDes = b.getString("PaisDes");
+        String CiuDes = b.getString("CiuDes");
+        String Estado = b.getString("Estado");
+        //---------------------------------------------------------------
+
+        Manifiesto = findViewById(R.id.txtMfto);
+        //Manifiesto.setText(Mfto);
+        Manifiesto.setText("¿Desea cerrar el manifiesto 0111600025111? ");//+Mfto);
+        /*Valija = findViewById(R.id.txtValija);
+        Valija.append(""+Valijas+"?");
+        Guia = findViewById(R.id.txtGuia);*/
+        //String Guias = Guia.getText().toString();
+
+        //Enviar datos---------------------------------------------------
+        Intent i = new Intent(CerrarManifiestoAct.this, MenuPrincipal.class);
+        //String passingdata = LoginText.getText().toString();
+        Bundle c = new Bundle();
+        c.putString("Valijas", Estado);
+        c.putString("Mfto", Mfto);
+        c.putString("MftoAnio", MftoAnio);
+        c.putString("MftoNro", MftoNro);
+        c.putString("Suc", Suc);
+        c.putString("PaisDes", PaisDes);
+        c.putString("CiuDes", CiuDes);
+        c.putString("Estado", Estado);
+        i.putExtras(c);
+        //startActivity(i);
+        //----------------------------------------------------------------
     }
 
     public void RelletarTabla(){
@@ -203,10 +285,10 @@ public class CerrarManifiestoAct extends AppCompatActivity {
     }
 
     private void ManifiestoValijas(){
-        final TableRow row = new TableRow(this);
+        /*inal TableRow row = new TableRow(this);
         final TextView tv1=new TextView(this);
         final TextView tv2=new TextView(this);
-        final TextView tv3=new TextView(this);
+        final TextView tv3=new TextView(this);*/
 
         Manifiesto = findViewById(R.id.txtMfto);
         //Aqui enviar los datos-------------------------------------------------------------------------------------------

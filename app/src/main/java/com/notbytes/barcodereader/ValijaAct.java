@@ -3,7 +3,9 @@ package com.notbytes.barcodereader;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.notbytes.barcode_reader.BarcodeReaderActivity;
 import com.notbytes.barcodereader.Model.ValijaAdicionar;
+import com.notbytes.barcodereader.Model.ValijaValidar;
 import com.notbytes.barcodereader.io.APIRetrofitInterface;
 
 import retrofit2.Call;
@@ -30,6 +33,8 @@ public class ValijaAct extends AppCompatActivity {
     private TextView Destino;
     private EditText Valija;
     private static final int BARCODE_READER_ACTIVITY_REQUEST = 1208;
+    private Button Asignar;
+    private Button Cerrar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +50,47 @@ public class ValijaAct extends AppCompatActivity {
         jsonPlaceHolderApi = retrofit.create(APIRetrofitInterface.class);
 
         RecuperarDatos();
-
+        onTouch();
         //createPost();
+    }
+
+    public void onTouch() {
+        Asignar = findViewById(R.id.btnAsignar);
+        Cerrar = findViewById(R.id.btnCerrar);
+
+        Asignar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
+                    v.setBackgroundResource(R.drawable.rounded_cornerneutral);
+                    //v.setBackgroundColor(Color.parseColor("#9C9C9C"));
+                }
+
+                if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    v.setBackgroundResource(R.drawable.rounded_corners);
+                    //v.setBackgroundColor(Color.parseColor("#FF7177"));
+                }
+                return false;
+            }
+        });
+
+        Cerrar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
+                    v.setBackgroundResource(R.drawable.rounded_cornerneutral);
+                    //v.setBackgroundColor(Color.parseColor("#9C9C9C"));
+                }
+
+                if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    v.setBackgroundResource(R.drawable.rounded_corners);
+                    //v.setBackgroundColor(Color.parseColor("#FF7177"));
+                }
+                return false;
+            }
+        });
     }
 
     private void RecuperarDatos(){
@@ -75,7 +119,7 @@ public class ValijaAct extends AppCompatActivity {
     public void onClick(View v){
         switch (v.getId()) {
             case R.id.btnAsignar:
-                createPost();
+                ValijaValidar();
                 break;
             case R.id.btnBr:
                 FragmentManager supportFragmentManager = getSupportFragmentManager();
@@ -175,6 +219,7 @@ public class ValijaAct extends AppCompatActivity {
                         c.putString("CiuDes", CiuDes);
                         c.putString("Estado", Estado);
                         i.putExtras(c);
+                        //ValijaValidar();
                         startActivity(i);
                     }
                     else{
@@ -187,6 +232,92 @@ public class ValijaAct extends AppCompatActivity {
                 }
             });
 
+    }
+
+    public void ValijaValidar(){
+        Valija = findViewById(R.id.txtValija);
+        final String Valijas = Valija.getText().toString();
+
+        //Llamar datos ---------------------------------------
+        Bundle b = getIntent().getExtras();
+        final String Mfto = b.getString("Mft");
+        final String MftoAnio = b.getString("MftoAnio");
+        final String MftoNro = b.getString("MftoNro");
+        final String Suc = b.getString("Suc");
+        final String PaisDes = b.getString("PaisDes");
+        final String CiuDes = b.getString("CiuDes");
+        final String Estado = b.getString("Estado");
+        //----------------------------------------------------
+
+        //Aqui enviar los datos-------------------------------------------------------------------------------------------
+        //String resul = mTvResult.getText().toString();
+        ValijaValidar valijaValidar = new ValijaValidar(Valijas);
+        Call<ValijaValidar> call = jsonPlaceHolderApi.createPost(valijaValidar);
+        call.enqueue(new Callback<ValijaValidar>() {
+            @Override
+            public void onResponse(Call<ValijaValidar> call, Response<ValijaValidar> response) {
+                if(!response.isSuccessful()){
+                    //mJsonTxtView.setText("Codigo:" + response.code());
+                    ValijaValidar postsResponse = response.body();
+
+                    String Estado = postsResponse.Estado();
+                    String Anio = postsResponse.Anio();
+                    String Existe = postsResponse.Existe();
+                    String Nro = postsResponse.Nro();
+                    String Suc = postsResponse.Suc();
+                    String ValijaID = postsResponse.ValijaID();
+
+                    Toast.makeText(getApplicationContext(),"Validador ok",Toast.LENGTH_SHORT).show();
+                    //Bundle c = new Bundle();
+                    //c.putString("Estado", Estado);
+                    //c.putString("Guia", Guia);
+                    //i.putExtras(c);
+                    //Mensaje.append(""+response.body());
+                    //Mensaje.append(""+response.headers());
+                    //startActivity(i);
+                    //Titulo.append(""+postsResponse.estado());
+                    return;
+                }
+                ValijaValidar postsResponse = response.body();
+
+                String Estado = postsResponse.Estado();
+                String Anio = postsResponse.Anio();
+                String Existe = postsResponse.Existe();
+                String Nro = postsResponse.Nro();
+                String Suc = postsResponse.Suc();
+                String ValijaID = postsResponse.ValijaID();
+
+                //String Estado = postsResponse.estado();
+                //String Guia = postsResponse.Guias();
+                Toast.makeText(getApplicationContext(),"Contador Ok",Toast.LENGTH_SHORT).show();
+
+                Intent i = new Intent(ValijaAct.this, GuiaAct.class);
+                //String passingdata = LoginText.getText().toString();
+                Bundle c = new Bundle();
+                c.putString("Valijas", Valijas);
+                c.putString("Mfto", Mfto);
+                c.putString("MftoAnio", MftoAnio);
+                c.putString("MftoNro", MftoNro);
+                c.putString("Suc", Suc);
+                c.putString("PaisDes", PaisDes);
+                c.putString("CiuDes", CiuDes);
+                c.putString("Estado", Estado);
+                c.putString("ValijaID", ValijaID);
+                i.putExtras(c);
+                //Mensaje.append(""+postsResponse.estado());
+                //Mensaje.append(""+postsResponse.Guias());
+                //createPost();
+                startActivity(i);
+                //Titulo.append(""+postsResponse.estado());
+                return;
+            }
+            @Override
+            public void onFailure(Call<ValijaValidar> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
+                //Titulo.setText(t.getMessage());
+                return;
+            }
+        });
     }
 
 }

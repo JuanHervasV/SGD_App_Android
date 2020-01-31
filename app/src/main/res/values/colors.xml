@@ -11,4 +11,7 @@
     <color name="colorRowSeparator">#cccccc</color>
     <color name="filterBackground">#cccccc</color>
     <color name="filterText">#3366cc</color>
+    <color name="AmarilloScharff">#FFC35A</color>
+    <color name="VerdeScharff">#5ACC99</color>
+    <color name="CelesteScharff">#00B4DB</color>
 </resources>

@@ -68,7 +68,7 @@
                     android:id="@+id/usuarios"
                     android:layout_width="match_parent"
                     android:layout_height="124dp"
-                    android:text="Total de paquetes escaneados: "
+                    android:text="Total de guias escaneadas: "
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="20sp" />
@@ -89,7 +89,7 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/rounded_cornersscharff"
                     android:onClick="onClick"
-                    android:text="Enviar datos"
+                    android:text="Agregar guías"
                     android:textAlignment="center"
                     android:textColor="@color/black" />
             </LinearLayout>

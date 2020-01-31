@@ -3,9 +3,9 @@ package com.notbytes.barcodereader.Model;
 public class ValijaCerrar {
     private String estado;
     private String mensaje;
-    private int IDValija;
+    private String IDValija;
 
-    public ValijaCerrar(int iDValija){
+    public ValijaCerrar(String iDValija){
         IDValija = iDValija;
     }
 

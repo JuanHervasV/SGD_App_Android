@@ -10,6 +10,7 @@ import com.notbytes.barcodereader.Model.ValijaAdicionar;
 import com.notbytes.barcodereader.Model.ValijaCerrar;
 import com.notbytes.barcodereader.Model.ValijaContador;
 import com.notbytes.barcodereader.Model.ValijaStatus;
+import com.notbytes.barcodereader.Model.ValijaValidar;
 import com.notbytes.barcodereader.Model.Vars;
 
 import java.util.List;
@@ -59,4 +60,7 @@ public interface APIRetrofitInterface {
 
     @POST("MftoValijas")
     Call<ManifiestoValija> createPost(@Body ManifiestoValija manifiestoValija);
+
+    @POST("ValijaValidar")
+    Call<ValijaValidar> createPost(@Body ValijaValidar valijaValidar);
 }

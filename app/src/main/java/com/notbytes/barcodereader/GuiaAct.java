@@ -3,7 +3,9 @@ package com.notbytes.barcodereader;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +33,8 @@ public class GuiaAct extends AppCompatActivity {
     private APIRetrofitInterface jsonPlaceHolderApi;
     private TextView Mensaje;
     private static final int BARCODE_READER_ACTIVITY_REQUEST = 1208;
+    private Button Agregar;
+    private Button Cerrar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +48,48 @@ public class GuiaAct extends AppCompatActivity {
         jsonPlaceHolderApi = retrofit.create(APIRetrofitInterface.class);
 
         RecuperarDatos();
+        onTouch();
         //createPost();
+    }
+
+    public void onTouch() {
+
+        Agregar = findViewById(R.id.btnAgregar);
+        Cerrar = findViewById(R.id.btnCerrar);
+
+        Agregar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
+                    v.setBackgroundResource(R.drawable.rounded_cornerneutral);
+                    //v.setBackgroundColor(Color.parseColor("#9C9C9C"));
+                }
+
+                if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    v.setBackgroundResource(R.drawable.rounded_corners);
+                    //v.setBackgroundColor(Color.parseColor("#FF7177"));
+                }
+                return false;
+            }
+        });
+
+        Cerrar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
+                    v.setBackgroundResource(R.drawable.rounded_cornerneutral);
+                    //v.setBackgroundColor(Color.parseColor("#9C9C9C"));
+                }
+
+                if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    v.setBackgroundResource(R.drawable.rounded_corners);
+                    //v.setBackgroundColor(Color.parseColor("#FF7177"));
+                }
+                return false;
+            }
+        });
     }
 
     public void onClick(View v) {
@@ -65,10 +110,11 @@ public class GuiaAct extends AppCompatActivity {
             case R.id.btnCerrar:
                 PasarDatos();
                 break;
+
         }
     }
-    public void AgregarGuia(){
 
+    public void AgregarGuia(){
     }
 
     private void createPost(){
@@ -87,6 +133,7 @@ public class GuiaAct extends AppCompatActivity {
         String PaisDes = b.getString("PaisDes");
         String CiuDes = b.getString("CiuDes");
         String Estado = b.getString("Estado");
+        String ValijaID = b.getString("ValijaID");
         //----------------------------------------------------------------------
         String Gui = Guia.getText().toString();
 
@@ -96,14 +143,14 @@ public class GuiaAct extends AppCompatActivity {
         //Titulo = findViewById(R.id.txtTitulo);
         //Aqui enviar los datos
         //String resul = mTvResult.getText().toString();
-        ValidarGuia validarGuia = new ValidarGuia(""+MftoAnio,""+MftoNro,""+Suc,""+Gui);
+        ValidarGuia validarGuia = new ValidarGuia("2014"/*+MftoAnio*/,"00000046"/*+MftoNro*/,"PEAQP01"/*+Suc*/,""+Gui);
         Call<ValidarGuia> call = jsonPlaceHolderApi.createPost(validarGuia);
         call.enqueue(new Callback<ValidarGuia>() {
             @Override
             public void onResponse(Call<ValidarGuia> call, Response<ValidarGuia> response) {
                 if(!response.isSuccessful()){
                     //TestApi.setText("Codigo:" + response.code());
-                    Toast.makeText(getApplicationContext(),"Something's wrong ~",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Algo está mal ~",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 ValidarGuia postsResponse = response.body();
@@ -118,7 +165,7 @@ public class GuiaAct extends AppCompatActivity {
                 //c.putString("Guia", Guia);
 
                 //i.putExtras(c);
-                Mensaje.append(""+postsResponse.estado());
+                //Mensaje.append(""+postsResponse.estado());
                 Mensaje.append(""+postsResponse.Guias());
                 //PasarDatos();
                 //startActivity(i);
@@ -172,9 +219,10 @@ public class GuiaAct extends AppCompatActivity {
         String PaisDes = b.getString("PaisDes");
         String CiuDes = b.getString("CiuDes");
         String Estado = b.getString("Estado");
+        String ValijaID = b.getString("ValijaID");
         //----------------------------------------------------------------------
         Manifiesto.setText(Mfto);
-        Valija.setText(Valijas);
+        Valija.setText(Valijas+"/"+ValijaID);
     }
 
     public void PasarDatos(){
@@ -190,10 +238,10 @@ public class GuiaAct extends AppCompatActivity {
         String PaisDes = b.getString("PaisDes");
         String CiuDes = b.getString("CiuDes");
         String Estado = b.getString("Estado");
+        String ValijaID = b.getString("ValijaID");
         //----------------------------------------------------------------------
         Manifiesto.setText(Mfto);
-        Valija.setText(Valijas);
-
+        Valija.setText(Valijas + "/" +ValijaID);
         //Enviar datos----------------------------------------------------------
         Intent i = new Intent(GuiaAct.this, CerrarValijaAct.class);
         //String passingdata = LoginText.getText().toString();
@@ -206,10 +254,11 @@ public class GuiaAct extends AppCompatActivity {
         c.putString("PaisDes", PaisDes);
         c.putString("CiuDes", CiuDes);
         c.putString("Estado", Estado);
+        c.putString("ValijaID", ValijaID);
         i.putExtras(c);
+
         startActivity(i);
         //----------------------------------------------------------------------
-
     }
 
 

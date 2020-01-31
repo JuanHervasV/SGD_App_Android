@@ -43,7 +43,7 @@
             android:id="@+id/list"
             android:layout_width="fill_parent"
             android:layout_height="128dp"
-            android:drawSelectorOnTop="false" />
+            android:drawSelectorOnTop="false"/>
 
         <Button
             android:id="@+id/addBtn"

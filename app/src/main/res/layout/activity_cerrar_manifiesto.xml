@@ -4,72 +4,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/rounded_cornersscharff"
     tools:context="com.notbytes.barcodereader.CerrarManifiestoAct">
 
     <TextView
         android:id="@+id/txtTitulo"
-        android:layout_width="174dp"
-        android:layout_height="34dp"
-        android:text="SGD - Cerrar Manifiesto"
+        android:layout_width="327dp"
+        android:layout_height="50dp"
         android:onClick="onClick"
+        android:text="Cerrar Manifiesto"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="25dp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.081" />
+        app:layout_constraintVertical_bias="0.145" />
 
     <TextView
         android:id="@+id/txtMfto"
-        android:layout_width="395dp"
-        android:layout_height="98dp"
+        android:layout_width="350dp"
+        android:layout_height="66dp"
         android:text="Manifiesto"
+        android:textAlignment="center"
+        android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.172" />
-
+        app:layout_constraintVertical_bias="0.275" />
 
     <Button
         android:id="@+id/btnCerrar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="181dp"
+        android:layout_height="36dp"
         android:layout_marginTop="18dp"
+        android:background="@drawable/rounded_corners"
         android:onClick="onClick"
         android:text="Cerrar Manifiesto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tabla"
-        app:layout_constraintVertical_bias="0.029" />
+        app:layout_constraintVertical_bias="0.108" />
 
     <Button
         android:id="@+id/btnVolver"
-        android:layout_width="86dp"
-        android:layout_height="34dp"
-        android:layout_marginTop="45dp"
+        android:layout_width="95dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginBottom="60dp"
+        android:background="@drawable/rounded_corners"
         android:onClick="onClick"
         android:text="Volver"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnCerrar"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.094" />
 
     <TableLayout
         android:id="@+id/tabla"
-        android:layout_width="394dp"
-        android:layout_height="348dp"
+        android:layout_width="292dp"
+        android:layout_height="79dp"
         android:layout_marginTop="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintHorizontal_bias="0.579"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtMfto"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0.076">
 
         <TableRow
             android:layout_width="match_parent"

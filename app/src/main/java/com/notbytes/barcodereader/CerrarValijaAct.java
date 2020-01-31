@@ -2,6 +2,7 @@ package com.notbytes.barcodereader;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -41,6 +42,47 @@ public class CerrarValijaAct extends AppCompatActivity {
         jsonPlaceHolderApi = retrofit.create(APIRetrofitInterface.class);
         RecuperarDatos();
         ValijasContador();
+        onTouch();
+    }
+
+    public void onTouch() {
+
+        CerrarValija = findViewById(R.id.btnCerrar);
+        Volver = findViewById(R.id.btnVolver);
+
+        CerrarValija.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
+                    v.setBackgroundResource(R.drawable.rounded_cornerneutral);
+                    //v.setBackgroundColor(Color.parseColor("#9C9C9C"));
+                }
+
+                if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    v.setBackgroundResource(R.drawable.rounded_cornersscharff);
+                    //v.setBackgroundColor(Color.parseColor("#FF7177"));
+                }
+                return false;
+            }
+        });
+
+        Volver.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
+                    v.setBackgroundResource(R.drawable.rounded_cornerneutral);
+                    //v.setBackgroundColor(Color.parseColor("#9C9C9C"));
+                }
+
+                if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    v.setBackgroundResource(R.drawable.rounded_cornersscharff);
+                    //v.setBackgroundColor(Color.parseColor("#FF7177"));
+                }
+                return false;
+            }
+        });
     }
 
     public void onClick(View v) {
@@ -49,7 +91,45 @@ public class CerrarValijaAct extends AppCompatActivity {
                 cerrarValija();
                 cerrarStatus();
                 break;
+            case R.id.btnVolver:
+                Intent i = new Intent(CerrarValijaAct.this, GuiaAct.class);
+                startActivity(i);
         }
+    }
+
+    public void PasarDatos(){
+        Manifiesto = findViewById(R.id.txtMfto);
+        Valija = findViewById(R.id.txtValija);
+        //Llamar datos ----------------------------------------------------------
+        Bundle b = getIntent().getExtras();
+        String Valijas = b.getString("Valijas");
+        String Mfto = b.getString("Mfto");
+        String MftoAnio = b.getString("MftoAnio");
+        String MftoNro = b.getString("MftoNro");
+        String Suc = b.getString("Suc");
+        String PaisDes = b.getString("PaisDes");
+        String CiuDes = b.getString("CiuDes");
+        String Estado = b.getString("Estado");
+        //----------------------------------------------------------------------
+        Manifiesto.setText(Mfto);
+        Valija.setText(Valijas);
+
+        //Enviar datos----------------------------------------------------------
+        Intent i = new Intent(CerrarValijaAct.this, CerrarManifiestoAct.class);
+        //String passingdata = LoginText.getText().toString();
+        Bundle c = new Bundle();
+        c.putString("Valijas", Valijas);
+        c.putString("Mfto", Mfto);
+        c.putString("MftoAnio", MftoAnio);
+        c.putString("MftoNro", MftoNro);
+        c.putString("Suc", Suc);
+        c.putString("PaisDes", PaisDes);
+        c.putString("CiuDes", CiuDes);
+        c.putString("Estado", Estado);
+        i.putExtras(c);
+        startActivity(i);
+        //----------------------------------------------------------------------
+
     }
 
     public void RecuperarDatos(){
@@ -63,11 +143,12 @@ public class CerrarValijaAct extends AppCompatActivity {
         String PaisDes = b.getString("PaisDes");
         String CiuDes = b.getString("CiuDes");
         String Estado = b.getString("Estado");
+        String ValijaID = b.getString("ValijaID");
         //---------------------------------------------------------------
 
         Manifiesto = findViewById(R.id.txtMfto);
         //Manifiesto.setText(Mfto);
-        Manifiesto.setText(Suc+" "+MftoAnio+"-"+MftoNro);
+        Manifiesto.setText("Manifiesto: "+Suc+" "+MftoAnio+"-"+MftoNro);
         Valija = findViewById(R.id.txtValija);
         Valija.append(""+Valijas+"?");
         Guia = findViewById(R.id.txtGuia);
@@ -85,16 +166,28 @@ public class CerrarValijaAct extends AppCompatActivity {
         c.putString("PaisDes", PaisDes);
         c.putString("CiuDes", CiuDes);
         c.putString("Estado", Estado);
+        c.putString("ValijaID", ValijaID);
         i.putExtras(c);
         //startActivity(i);
         //----------------------------------------------------------------
     }
 
     private void cerrarValija(){
-
         //Aqui enviar los datos-------------------------------------------------------------------------------------------
         //String resul = mTvResult.getText().toString();
-        ValijaCerrar valijaCerrar = new ValijaCerrar(145);
+        //Llamar datos -------------------------------------------------
+        Bundle b = getIntent().getExtras();
+        String Mfto = b.getString("Mft");
+        String Valijas = b.getString("Valijas");
+        String MftoAnio = b.getString("MftoAnio");
+        String MftoNro = b.getString("MftoNro");
+        String Suc = b.getString("Suc");
+        String PaisDes = b.getString("PaisDes");
+        String CiuDes = b.getString("CiuDes");
+        String Estado = b.getString("Estado");
+        String ValijaID = b.getString("ValijaID");
+        //---------------------------------------------------------------
+        ValijaCerrar valijaCerrar = new ValijaCerrar(ValijaID);
         Call<ValijaCerrar> call = jsonPlaceHolderApi.createPost(valijaCerrar);
         call.enqueue(new Callback<ValijaCerrar>() {
             @Override
@@ -167,7 +260,8 @@ public class CerrarValijaAct extends AppCompatActivity {
                     //i.putExtras(c);
                     //Mensaje.append(""+response.body());
                     //Mensaje.append(""+response.headers());
-                    startActivity(i);
+                    //startActivity(i);
+                    PasarDatos();
                     //Titulo.append(""+postsResponse.estado());
                     return;
                 }
@@ -202,7 +296,12 @@ public class CerrarValijaAct extends AppCompatActivity {
         //String resul = mTvResult.getText().toString();
         Guia = findViewById(R.id.txtGuia);
 
-        ValijaContador valijaContador = new ValijaContador("145");
+        //Llamar datos -------------------------------------------------
+        Bundle c = getIntent().getExtras();
+        String ValijaID = c.getString("ValijaID");
+        //---------------------------------------------------------------
+
+        ValijaContador valijaContador = new ValijaContador("149");
         Call<ValijaContador> call = jsonPlaceHolderApi.createPost(valijaContador);
         call.enqueue(new Callback<ValijaContador>() {
             @Override
