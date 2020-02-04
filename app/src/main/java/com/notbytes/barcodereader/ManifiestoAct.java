@@ -1,5 +1,6 @@
 package com.notbytes.barcodereader;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class ManifiestoAct extends AppCompatActivity {
     private TextView Titulo;
     private static final int BARCODE_READER_ACTIVITY_REQUEST = 1208;
 
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,8 +148,10 @@ public class ManifiestoAct extends AppCompatActivity {
             public void onResponse(Call<ValidarMfto> call, Response<ValidarMfto> response) {
                 if(!response.isSuccessful()){
                     //mJsonTxtView.setText("Codigo:" + response.code());
-                    ValidarMfto postsResponse = response.body();
 
+                    Toast.makeText(getApplicationContext(),"Manifiesto no encontrado",Toast.LENGTH_SHORT).show();
+
+                    /*ValidarMfto postsResponse = response.body();
                     String MftoAnio = postsResponse.mftoAnio();
                     String MftoNro = postsResponse.mftoNro();
                     String Suc = postsResponse.suc();
@@ -169,7 +173,7 @@ public class ManifiestoAct extends AppCompatActivity {
                     i.putExtras(c);
                     startActivity(i);
 
-                    Titulo.append(""+postsResponse.ciuDes());
+                    Titulo.append(""+postsResponse.ciuDes());*/
                     return;
                 }
                 ValidarMfto postsResponse = response.body();
@@ -204,7 +208,7 @@ public class ManifiestoAct extends AppCompatActivity {
             @Override
             public void onFailure(Call<ValidarMfto> call, Throwable t) {
                 Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
-                Titulo.setText(t.getMessage());
+                //Titulo.setText(t.getMessage());
                 return;
             }
         });

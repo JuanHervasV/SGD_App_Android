@@ -7,6 +7,17 @@
     android:background="@drawable/rounded_cornersscharff"
     tools:context="com.notbytes.barcodereader.CerrarManifiestoAct">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/txtTitulo"
         android:layout_width="327dp"
@@ -39,8 +50,8 @@
 
     <Button
         android:id="@+id/btnCerrar"
-        android:layout_width="181dp"
-        android:layout_height="36dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:background="@drawable/rounded_corners"
         android:onClick="onClick"
@@ -53,8 +64,8 @@
 
     <Button
         android:id="@+id/btnVolver"
-        android:layout_width="95dp"
-        android:layout_height="28dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="23dp"
         android:layout_marginBottom="60dp"
         android:background="@drawable/rounded_corners"

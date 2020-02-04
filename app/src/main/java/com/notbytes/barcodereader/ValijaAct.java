@@ -258,7 +258,8 @@ public class ValijaAct extends AppCompatActivity {
             public void onResponse(Call<ValijaValidar> call, Response<ValijaValidar> response) {
                 if(!response.isSuccessful()){
                     //mJsonTxtView.setText("Codigo:" + response.code());
-                    ValijaValidar postsResponse = response.body();
+                    Toast.makeText(getApplicationContext(),"Código de valija incorrecto/No pertenece al manifiesto",Toast.LENGTH_SHORT).show();
+                    /*ValijaValidar postsResponse = response.body();
 
                     String Estado = postsResponse.Estado();
                     String Anio = postsResponse.Anio();
@@ -275,7 +276,7 @@ public class ValijaAct extends AppCompatActivity {
                     //Mensaje.append(""+response.body());
                     //Mensaje.append(""+response.headers());
                     //startActivity(i);
-                    //Titulo.append(""+postsResponse.estado());
+                    //Titulo.append(""+postsResponse.estado());*/
                     return;
                 }
                 ValijaValidar postsResponse = response.body();

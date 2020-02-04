@@ -19,27 +19,27 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/image_logo"
             android:layout_width="191dp"
             android:layout_height="74dp"
-            android:layout_marginTop="48dp"
             android:background="@drawable/logo_blanco"
             android:foreground="@drawable/logo_blanco"
             app:layout_constraintBottom_toTopOf="@+id/editText_login_username"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.452"/>
 
         <EditText
             android:id="@+id/editText_login_username"
-            android:layout_width="263dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="200dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="160dp"
+            android:layout_marginEnd="24dp"
             android:background="@drawable/rounded_corners"
             android:hint="@string/prompt_email"
             android:inputType="textEmailAddress"
@@ -51,9 +51,11 @@
 
         <EditText
             android:id="@+id/editText_login_password"
-            android:layout_width="263dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="35dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
             android:background="@drawable/rounded_corners"
             android:hint="@string/prompt_password"
             android:imeActionLabel="@string/action_sign_in_short"
@@ -61,18 +63,16 @@
             android:inputType="textPassword"
             android:selectAllOnFocus="true"
             android:text="12345"
-            app:layout_constraintBottom_toTopOf="@+id/button_login_login"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editText_login_username"
-            app:layout_constraintVertical_bias="0.273" />
+            app:layout_constraintTop_toBottomOf="@+id/editText_login_username" />
 
         <Button
             android:id="@+id/button_login_login"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="167dp"
             android:layout_height="47dp"
-            android:layout_marginTop="388dp"
+            android:layout_marginTop="35dp"
             android:background="@drawable/rounded_corners"
             android:onClick="onClick"
             android:text="Iniciar sesión"
@@ -80,7 +80,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText_login_password"
             app:layout_constraintVertical_bias="0.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

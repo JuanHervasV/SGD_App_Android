@@ -3,22 +3,31 @@ package com.notbytes.barcodereader;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.vision.barcode.Barcode;
 import com.notbytes.barcode_reader.BarcodeReaderActivity;
+import com.notbytes.barcode_reader.BarcodeReaderFragment;
 import com.notbytes.barcodereader.Model.ValidarGuia;
 import com.notbytes.barcodereader.io.APIRetrofitInterface;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -26,7 +35,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class GuiaAct extends AppCompatActivity {
+public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.BarcodeReaderListener {
     private TextView Manifiesto;
     private TextView Valija;
     private EditText Guia;
@@ -35,11 +44,38 @@ public class GuiaAct extends AppCompatActivity {
     private static final int BARCODE_READER_ACTIVITY_REQUEST = 1208;
     private Button Agregar;
     private Button Cerrar;
+    private FrameLayout Contenedor;
+    private ListView listView;
+    private TextView contarelementos;
+    int totalelementoslist = 1;
+    ArrayAdapter<String> adapter;
+    ArrayList<String> arrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guia);
+
+        //Lista--------------------------------------------------------
+        listView= findViewById(R.id.listview);
+        String[]android_flavours={"Hey","Hola"};
+        arrayList= new ArrayList<>(Arrays.asList(android_flavours));
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,arrayList);
+        listView.setAdapter(adapter);
+        // Result value = barcode.receiveScan();
+
+        //arrayList.add(barcode.rawValue);
+        for (int i = 0; i < android_flavours.length; i++) {
+            arrayList.add(android_flavours[i]);
+
+            HashSet<String> hashSet = new HashSet<String>();
+            hashSet.addAll(arrayList);
+            arrayList.clear();
+            arrayList.addAll(hashSet);
+        }
+
+        //listarpro = findViewById(R.id.lista);
+        //String resul = mTvResult.getText().toString();----------------
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://200.37.50.53/ApiSGD/api/")
@@ -98,21 +134,103 @@ public class GuiaAct extends AppCompatActivity {
                 createPost();
                 break;
             case R.id.btnBr:
-                FragmentManager supportFragmentManager = getSupportFragmentManager();
+                Guia = findViewById(R.id.txtGuia);
+                Guia.setVisibility(View.INVISIBLE);
+                Contenedor = findViewById(R.id.fm_container);
+                Contenedor.setVisibility(View.VISIBLE);
+                addBarcodeReaderFragment();
+                break;
+                /*FragmentManager supportFragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
                 Fragment fragmentById = supportFragmentManager.findFragmentById(R.id.fm_container);
                 if (fragmentById != null) {
                     fragmentTransaction.remove(fragmentById);
                 }
                 fragmentTransaction.commitAllowingStateLoss();
-                launchBarCodeActivity();
-                break;
+                launchBarCodeActivity();*/
             case R.id.btnCerrar:
                 PasarDatos();
                 break;
-
+            case R.id.btnTipear:
+                Guia = findViewById(R.id.txtGuia);
+                Guia.setVisibility(View.VISIBLE);
+                Contenedor = findViewById(R.id.fm_container);
+                Contenedor.setVisibility(View.INVISIBLE);
+                break;
         }
     }
+
+    private void addBarcodeReaderFragment() {
+        BarcodeReaderFragment readerFragment = BarcodeReaderFragment.newInstance(true, false, View.VISIBLE);
+        readerFragment.setListener(this);
+        FragmentManager supportFragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fm_container, readerFragment);
+        fragmentTransaction.commitAllowingStateLoss();
+    }
+
+    public void onScanned(Barcode barcode) {
+
+        Toast.makeText(this, barcode.rawValue, Toast.LENGTH_SHORT).show();
+        //mTvResultHeader.setText("Datos generales");
+     /*   //Lista---------------------------------------------------------
+        listView= findViewById(R.id.listview);
+        String[]android_flavours={};
+        arrayList= new ArrayList<>(Arrays.asList(android_flavours));
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,arrayList);
+        listView.setAdapter(adapter);
+        // Result value = barcode.receiveScan();
+
+
+        //arrayList.add(barcode.rawValue);
+        for (int i = 0; i < android_flavours.length; i++) {
+            arrayList.add(android_flavours[i]);
+            //Agregar datos a la list
+        }
+*/
+        //Agregar datos a la list
+        //Agrega datos al textview
+        //mTvResult.setText("Último valor scaneado: "+barcode.rawValue+".");
+        arrayList.add(barcode.rawValue);
+
+        HashSet<String> hashSet = new HashSet<String>();
+        hashSet.addAll(arrayList);
+        arrayList.clear();
+        arrayList.addAll(hashSet);
+
+        //Contar elementos del spinner ~
+        //int count = listView.getAdapter().getCount();
+        //int ctf= totalelementoslist+count;
+        //contarelementos.setText(""+count);
+        //---
+
+        //Sonido beep
+        final MediaPlayer mp = MediaPlayer.create(this, R.raw.beeps);
+        mp.start();
+        //--
+
+        adapter.notifyDataSetChanged();
+    }
+
+
+    public void onScannedMultiple(List<Barcode> barcodes) {
+
+    }
+
+
+    public void onBitmapScanned(SparseArray<Barcode> sparseArray) {
+
+    }
+
+
+    public void onScanError(String errorMessage) {
+
+    }
+
+    public void onCameraPermissionDenied() {
+        Toast.makeText(this, "Permiso de cámara denegado", Toast.LENGTH_LONG).show();
+    }
+
 
     public void AgregarGuia(){
     }
@@ -200,6 +318,9 @@ public class GuiaAct extends AppCompatActivity {
             final MediaPlayer mp = MediaPlayer.create(this, R.raw.beeps);
             mp.start();
             //--
+            //Sonido wrong
+            final MediaPlayer mp2 = MediaPlayer.create(this,R.raw.wrong);
+            mp2.start();
             //mTvResultHeader.setText("Resultado");
 
             Guia.setText(barcode.rawValue);
@@ -256,7 +377,6 @@ public class GuiaAct extends AppCompatActivity {
         c.putString("Estado", Estado);
         c.putString("ValijaID", ValijaID);
         i.putExtras(c);
-
         startActivity(i);
         //----------------------------------------------------------------------
     }
