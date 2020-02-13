@@ -147,18 +147,26 @@ public class ManifiestoAct extends AppCompatActivity {
             @Override
             public void onResponse(Call<ValidarMfto> call, Response<ValidarMfto> response) {
                 if(!response.isSuccessful()){
-                    //mJsonTxtView.setText("Codigo:" + response.code());
+                    Toast.makeText(getApplicationContext(),"Manifiesto no encontrado",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                ValidarMfto postsResponse = response.body();
 
-                    Toast.makeText(getApplicationContext(),"Manifiesto no encontrado",Toast.LENGTH_SHORT).show();
+                String MftoAnio = postsResponse.mftoAnio();
+                String MftoNro = postsResponse.mftoNro();
+                String Suc = postsResponse.suc();
+                String PaisDes = postsResponse.paisDes();
+                String CiuDes = postsResponse.ciuDes();
+                String Estado = postsResponse.estado();
+                //
 
-                    /*ValidarMfto postsResponse = response.body();
-                    String MftoAnio = postsResponse.mftoAnio();
-                    String MftoNro = postsResponse.mftoNro();
-                    String Suc = postsResponse.suc();
-                    String PaisDes = postsResponse.paisDes();
-                    String CiuDes = postsResponse.ciuDes();
-                    String Estado = postsResponse.estado();
-                    Toast.makeText(getApplicationContext(),"Dato ingresado exitosamente",Toast.LENGTH_SHORT).show();
+                if (Estado != "") {
+                    Toast.makeText(getApplicationContext(),"El manifiesto se encuentra cerrado.",Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                else{
+                    Toast.makeText(getApplicationContext(),"Manifiesto validado correctamente",Toast.LENGTH_LONG).show();
 
                     Intent i = new Intent(ManifiestoAct.this, ValijaAct.class);
                     Bundle c = new Bundle();
@@ -172,37 +180,10 @@ public class ManifiestoAct extends AppCompatActivity {
                     c.putString("Estado", Estado);
                     i.putExtras(c);
                     startActivity(i);
-
-                    Titulo.append(""+postsResponse.ciuDes());*/
+                    //Titulo.append(""+postsResponse.ciuDes());
                     return;
                 }
-                ValidarMfto postsResponse = response.body();
-                String content = "";
-                //content += "Estado:" + postsResponse.estado() + "\n";
-                content += "Mensaje:" + response.body()+ "\n";
-                String MftoAnio = postsResponse.mftoAnio();
-                String MftoNro = postsResponse.mftoNro();
-                String Suc = postsResponse.suc();
-                String PaisDes = postsResponse.paisDes();
-                String CiuDes = postsResponse.ciuDes();
-                String Estado = postsResponse.estado();
-                Toast.makeText(getApplicationContext(),"Datos ingresados exitosamente",Toast.LENGTH_SHORT).show();
 
-                Intent i = new Intent(ManifiestoAct.this, ValijaAct.class);
-                Bundle c = new Bundle();
-                String Mftf = Mfto.getText().toString();
-                c.putString("Mft", Mftf);
-                c.putString("MftoAnio", MftoAnio);
-                c.putString("MftoNro", MftoNro);
-                c.putString("Suc", Suc);
-                c.putString("PaisDes", PaisDes);
-                c.putString("CiuDes", CiuDes);
-                c.putString("Estado", Estado);
-                i.putExtras(c);
-                startActivity(i);
-
-                //Titulo.append(""+postsResponse.ciuDes());
-                return;
             }
 
             @Override

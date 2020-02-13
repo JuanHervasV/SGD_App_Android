@@ -10,10 +10,13 @@ public class ValijaAdicionar {
     private String Reg_Usu;
     private String mensaje;
     private String estado;
+    private int ID;
 
     public String Estado(){return estado;}
 
-    public String Mensaje() {return  mensaje;}
+    //public String Mensaje() {return  mensaje;}
+
+    public int ValijaID(){return ID;}
 
     public ValijaAdicionar(String codigo, String mfto_anio, String mftoNro, String sucursal, String destino, String reg_Usu) {
         Codigo = codigo;

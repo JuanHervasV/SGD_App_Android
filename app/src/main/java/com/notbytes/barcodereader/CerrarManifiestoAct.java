@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.notbytes.barcodereader.Model.ManifiestoCerrar;
 import com.notbytes.barcodereader.Model.ManifiestoContador;
-import com.notbytes.barcodereader.Model.ManifiestoValija;
+import com.notbytes.barcodereader.Model.MftoValijas;
 import com.notbytes.barcodereader.io.APIRetrofitInterface;
 
 import java.util.ArrayList;
@@ -42,21 +42,17 @@ public class CerrarManifiestoAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cerrar_manifiesto);
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://200.37.50.53/ApiSGD/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         jsonPlaceHolderApi = retrofit.create(APIRetrofitInterface.class);
         RecuperarDatos();
-        ManifiestoValijas();
-        //ContadorManifiestos();
-        //RelletarTabla();
+        //ManifiestoValija();
         onTouch();
     }
 
     public void onTouch() {
-
         CerrarMfto = findViewById(R.id.btnCerrar);
         Volver = findViewById(R.id.btnVolver);
 
@@ -135,31 +131,9 @@ public class CerrarManifiestoAct extends AppCompatActivity {
 
     public void RelletarTabla(){
         data.add("Valija");
-        //data.add("1");
-        //data1.add(1);
-        //data1.add("2");
         data2.add("Cerrado");
-        //data2.add("3");
-
         table = findViewById(R.id.tabla);
-        //ManifiestoValijas();
-        /*for(int i=0;i<data.size();i++)
-        //{
-            TableRow row=new TableRow(this);
-            String TValija = data.get(i);
-            //int TGuias = data1.get(i);
-            String TCerrado = data2.get(i);
-            TextView tv1=new TextView(this);
-            tv1.setText(TValija);
-            TextView tv2=new TextView(this);
-            //tv2.setText(TGuias);
-            TextView tv3=new TextView(this);
-            tv3.setText(TCerrado);
-            row.addView(tv1);
-            row.addView(tv2);
-            row.addView(tv3);
-            table.addView(row);
-        }*/
+
     }
 
     public void onClick(View view) {
@@ -177,47 +151,51 @@ public class CerrarManifiestoAct extends AppCompatActivity {
     }
 
         private void CerrarManifiesto(){
-            //Aqui enviar los datos-------------------------------------------------------------------------------------------
+
+        //Llamar datos --------------------------------------------------
+            Bundle b = getIntent().getExtras();
+            final String Mfto = b.getString("Mft");
+            String Valijas = b.getString("Valijas");
+            final String MftoAnio = b.getString("MftoAnio");
+            final String MftoNro = b.getString("MftoNro");
+            final String Suc = b.getString("Suc");
+            final String PaisDes = b.getString("PaisDes");
+            final String CiuDes = b.getString("CiuDes");
+            final String Estado = b.getString("Estado");
+        //---------------------------------------------------------------
+
+        //Aqui enviar los datos-------------------------------------------------------------------------------------------
             //String resul = mTvResult.getText().toString();
-                    ManifiestoCerrar manifiestoCerrar = new ManifiestoCerrar(1,"","","","","");
+                    ManifiestoCerrar manifiestoCerrar = new ManifiestoCerrar(""+MftoNro,""+Suc,""+MftoAnio,"pruebaUsuario","3619");
                     Call<ManifiestoCerrar> call = jsonPlaceHolderApi.createPost(manifiestoCerrar);
                     call.enqueue(new Callback<ManifiestoCerrar>() {
                 @Override
                 public void onResponse(Call<ManifiestoCerrar> call, Response<ManifiestoCerrar> response) {
                     if (!response.isSuccessful()) {
-                        //mJsonTxtView.setText("Codigo:" + response.code());
-                        ManifiestoCerrar postsResponse = response.body();
-
-                        //String Estado = postsResponse.estado();
-                        //String Guia = postsResponse.Guias();
-                        Toast.makeText(getApplicationContext(), "Hecho", Toast.LENGTH_SHORT).show();
-
-                        Intent i = new Intent(CerrarManifiestoAct.this, DespacharFinal.class);
-                        Bundle c = new Bundle();
-                        //c.putString("Estado", Estado);
-                        //c.putString("Guia", Guia);
-                        //i.putExtras(c);
-                        //Mensaje.append(""+response.body());
-                        //Mensaje.append(""+response.headers());
-                        startActivity(i);
-                        //Titulo.append(""+postsResponse.estado());
+                        Toast.makeText(getApplicationContext(), "Ha ocurrido un error con el manifiesto.", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     ManifiestoCerrar postsResponse = response.body();
 
                     String estado = postsResponse.Estado();
                     String mensaje = postsResponse.Mensaje();
-                    Toast.makeText(getApplicationContext(), "Hecho", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Manifiesto cerrado correctamente.", Toast.LENGTH_SHORT).show();
 
                     Intent i = new Intent(CerrarManifiestoAct.this, DespacharFinal.class);
                     Bundle c = new Bundle();
                     //c.putString("Estado", Estado);
-                    //c.putString("Guia", Guia);
+                    //Enviar datos---------------------------------------------------
+                    c.putString("Valijas", Estado);
+                    c.putString("Mfto", Mfto);
+                    c.putString("MftoAnio", MftoAnio);
+                    c.putString("MftoNro", MftoNro);
+                    c.putString("Suc", Suc);
+                    c.putString("PaisDes", PaisDes);
+                    c.putString("CiuDes", CiuDes);
+                    c.putString("Estado", Estado);
                     i.putExtras(c);
-                    //Mensaje.append(""+postsResponse.estado());
-                    //Mensaje.append(""+postsResponse.Guias());
                     startActivity(i);
-                    //Titulo.append(""+postsResponse.estado());
+                    //----------------------------------------------------------------
                     return;
                 }
 
@@ -284,89 +262,40 @@ public class CerrarManifiestoAct extends AppCompatActivity {
         });
     }
 
-    private void ManifiestoValijas(){
-        /*inal TableRow row = new TableRow(this);
-        final TextView tv1=new TextView(this);
-        final TextView tv2=new TextView(this);
-        final TextView tv3=new TextView(this);*/
-
+    private void ManifiestoValija(){
+        //Llamar datos ---------------------------------------------------------------------------------------------------
+        Bundle b = getIntent().getExtras();
+        final String Mfto = b.getString("Mft");
+        String Valijas = b.getString("Valijas");
+        final String MftoAnio = b.getString("MftoAnio");
+        final String MftoNro = b.getString("MftoNro");
+        final String Suc = b.getString("Suc");
+        final String PaisDes = b.getString("PaisDes");
+        final String CiuDes = b.getString("CiuDes");
+        final String Estado = b.getString("Estado");
+        //----------------------------------------------------------------------------------------------------------------
         Manifiesto = findViewById(R.id.txtMfto);
         //Aqui enviar los datos-------------------------------------------------------------------------------------------
-        //String resul = mTvResult.getText().toString();
-        ManifiestoValija manifiestoValija = new ManifiestoValija("00014000","PELIM01","2016");
-        Call<ManifiestoValija> call = jsonPlaceHolderApi.createPost(manifiestoValija);
-        call.enqueue(new Callback<ManifiestoValija>() {
+        MftoValijas mftoValijas = new MftoValijas(""+MftoNro,""+Suc,""+MftoAnio);
+        Call<MftoValijas> call = jsonPlaceHolderApi.createPost(mftoValijas);
+        call.enqueue(new Callback<MftoValijas>() {
             @Override
-            public void onResponse(Call<ManifiestoValija> call, Response<ManifiestoValija> response) {
+            public void onResponse(Call<MftoValijas> call, Response<MftoValijas> response) {
                 if (!response.isSuccessful()) {
-                    //mJsonTxtView.setText("Codigo:" + response.code());
-                    ManifiestoValija postsResponse = response.body();
-
-                    String Valija = postsResponse.valija();
-                    int Guia = postsResponse.total();
-                    String Cerrado = postsResponse.cerrado();
-
-                    /*  data.add(Valija);
-                    data1.add(Guia);
-                    data2.add(Cerrado);
-
-                    table = findViewById(R.id.tabla);
-                    //ManifiestoValijas();
-                    for(int i=0;i<data.size();i++)
-                    {
-                        String TValija = data.get(i);
-                        //int TGuias = data1.get(i);
-                        String TCerrado = data2.get(i);
-                        tv1.setText(TValija);
-                        //tv2.setText(TGuias);
-                        tv3.setText(TCerrado);
-                        row.addView(tv1);
-                        //row.addView(tv2);
-                        row.addView(tv3);
-                        table.addView(row);
-                    }*/
-
-                    Toast.makeText(getApplicationContext(), "Done", Toast.LENGTH_SHORT).show();
-
-                    Intent i = new Intent(CerrarManifiestoAct.this, DespacharFinal.class);
-                    Bundle c = new Bundle();
-
-                    Manifiesto.append(": "+Valija+" "+Guia+""+" "+Cerrado);
-
+                    Toast.makeText(getApplicationContext(), "Ocurrió un error en los datos", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                ManifiestoValija postsResponse = response.body();
+                MftoValijas postsResponse = response.body();
 
                 String Valija = postsResponse.valija();
                 int Guia = postsResponse.total();
                 String Cerrado = postsResponse.cerrado();
 
-                /*data.add(Valija);
-                data1.add(Guia);
-                data2.add(Cerrado);
+                Toast.makeText(getApplicationContext(), "Recuento de valijas iniciado", Toast.LENGTH_SHORT).show();
 
-                table = findViewById(R.id.tabla);
-                //ManifiestoValijas();
-                for(int i=0;i<data.size();i++){
-                    String TValija = data.get(i);
-                    //int TGuias = data1.get(i);
-                    String TCerrado = data2.get(i);
-                    tv1.setText(TValija);
-                    //tv2.setText(TGuias);
-                    tv3.setText(TCerrado);
-                    row.addView(tv1);
-                    //row.addView(tv2);
-                    row.addView(tv3);
-                    table.addView(row);
-                }*/
-
-                Toast.makeText(getApplicationContext(), "Done", Toast.LENGTH_SHORT).show();
-
-                Intent i = new Intent(CerrarManifiestoAct.this, DespacharFinal.class);
-                Bundle c = new Bundle();
-                //c.putString("Estado", Estado);
-                //c.putString("Guia", Guia);
-                i.putExtras(c);
+                //Intent i = new Intent(CerrarManifiestoAct.this, DespacharFinal.class);
+                //Bundle c = new Bundle();
+                //i.putExtras(c);
 
                 Manifiesto.append(": "+Valija+" "+Guia+""+" "+Cerrado);
 
@@ -374,9 +303,8 @@ public class CerrarManifiestoAct extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ManifiestoValija> call, Throwable t) {
+            public void onFailure(Call<MftoValijas> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
-                //Titulo.setText(t.getMessage());
                 return;
             }
         });

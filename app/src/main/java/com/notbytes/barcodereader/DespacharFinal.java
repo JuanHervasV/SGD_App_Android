@@ -21,6 +21,33 @@ public class DespacharFinal extends AppCompatActivity {
         switch (view.getId()) {
             case R.id.btnVolver:
                 Intent i = new Intent(DespacharFinal.this, MenuPrincipal.class);
+                //Llamar datos -------------------------------------------------
+                Bundle b = getIntent().getExtras();
+                final String Mfto = b.getString("Mft");
+                String Valijas = b.getString("Valijas");
+                final String MftoAnio = b.getString("MftoAnio");
+                final String MftoNro = b.getString("MftoNro");
+                final String Suc = b.getString("Suc");
+                final String PaisDes = b.getString("PaisDes");
+                final String CiuDes = b.getString("CiuDes");
+                final String Estado = b.getString("Estado");
+                final String ValijaID = b.getString("ValijaID");
+                //---------------------------------------------------------------
+
+                //Enviar datos---------------------------------------------------
+
+                Bundle c = new Bundle();
+                c.putString("Valijas", Estado);
+                c.putString("Mfto", Mfto);
+                c.putString("MftoAnio", MftoAnio);
+                c.putString("MftoNro", MftoNro);
+                c.putString("Suc", Suc);
+                c.putString("PaisDes", PaisDes);
+                c.putString("CiuDes", CiuDes);
+                c.putString("Estado", Estado);
+                c.putString("ValijaID", ValijaID);
+                i.putExtras(c);
+                //----------------------------------------------------------------
                 startActivity(i);
                 break;
         }

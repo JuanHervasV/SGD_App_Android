@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView Usuario;
     private ListView listView;
     private TextView contarelementos;
+    private TextView abc;
     int totalelementoslist = 1;
     ArrayAdapter<String> adapter;
     ArrayList<String> arrayList;

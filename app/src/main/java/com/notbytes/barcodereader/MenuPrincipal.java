@@ -56,17 +56,50 @@ public class MenuPrincipal extends AppCompatActivity {
 
     }
 
+    public void RecuperarDatos(){
+        //Llamar datos -------------------------------------------------
+        Bundle b = getIntent().getExtras();
+        String Mfto = b.getString("Mft");
+        String Valijas = b.getString("Valijas");
+        String MftoAnio = b.getString("MftoAnio");
+        String MftoNro = b.getString("MftoNro");
+        String Suc = b.getString("Suc");
+        String PaisDes = b.getString("PaisDes");
+        String CiuDes = b.getString("CiuDes");
+        String Estado = b.getString("Estado");
+        String ValijaID = b.getString("ValijaID");
+        //---------------------------------------------------------------
+        if (MftoAnio == "null"){
+            Intent i = new Intent(MenuPrincipal.this, ManifiestoAct.class);
+            startActivity(i);
+            return;
+        }
+        else{
+            Intent i = new Intent(MenuPrincipal.this, ManifiestoAct.class);
+            Bundle c = new Bundle();
+            c.putString("Valijas", Estado);
+            c.putString("Mfto", Mfto);
+            c.putString("MftoAnio", MftoAnio);
+            c.putString("MftoNro", MftoNro);
+            c.putString("Suc", Suc);
+            c.putString("PaisDes", PaisDes);
+            c.putString("CiuDes", CiuDes);
+            c.putString("Estado", Estado);
+            c.putString("ValijaID", ValijaID);
+            i.putExtras(c);
+            startActivity(i);
+            return;
+        }
+
+    }
+
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnDespachar:
-                //Intent i = new Intent(MenuPrincipal.this, MainActivity.class);
-                RecuperarUsuarioDespachar();
-                //startActivity(i);
+                RecuperarDatos();
                 break;
             case R.id.btnConsultar:
-                //Intent e = new Intent(MenuPrincipal.this, sinametm.class);
-                RecuperarUsuarioConsultar();
-                //startActivity(e);
+                RecuperarDatos();
                 break;
         }
 

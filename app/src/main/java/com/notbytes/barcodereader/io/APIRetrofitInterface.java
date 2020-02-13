@@ -1,14 +1,17 @@
 package com.notbytes.barcodereader.io;
 
+import com.notbytes.barcodereader.Model.AdicionarGuias;
+import com.notbytes.barcodereader.Model.GuiaSuc;
 import com.notbytes.barcodereader.Model.ManifiestoCerrar;
 import com.notbytes.barcodereader.Model.ManifiestoContador;
-import com.notbytes.barcodereader.Model.ManifiestoValija;
+import com.notbytes.barcodereader.Model.MftoValijas;
 import com.notbytes.barcodereader.Model.Posts;
 import com.notbytes.barcodereader.Model.ValidarGuia;
 import com.notbytes.barcodereader.Model.ValidarMfto;
 import com.notbytes.barcodereader.Model.ValijaAdicionar;
 import com.notbytes.barcodereader.Model.ValijaCerrar;
 import com.notbytes.barcodereader.Model.ValijaContador;
+import com.notbytes.barcodereader.Model.ValijaGDNValidar;
 import com.notbytes.barcodereader.Model.ValijaStatus;
 import com.notbytes.barcodereader.Model.ValijaValidar;
 import com.notbytes.barcodereader.Model.Vars;
@@ -59,8 +62,17 @@ public interface APIRetrofitInterface {
     Call<ManifiestoContador> createPost(@Body ManifiestoContador manifiestoContador);
 
     @POST("MftoValijas")
-    Call<ManifiestoValija> createPost(@Body ManifiestoValija manifiestoValija);
+    Call<MftoValijas> createPost(@Body MftoValijas mftoValijas);
 
     @POST("ValijaValidar")
     Call<ValijaValidar> createPost(@Body ValijaValidar valijaValidar);
+
+    @POST("AdicionarGuias")
+    Call<AdicionarGuias> createPost(@Body AdicionarGuias adicionarGuias);
+
+    @POST("GuiaSuc")
+    Call<GuiaSuc> createPost(@Body GuiaSuc guiaSuc);
+
+    @POST("ValijaGDNValidar")
+    Call<ValijaGDNValidar> createPost(@Body ValijaGDNValidar valijaGDNValidar);
 }

@@ -4,21 +4,23 @@ public class ValijaValidar {
     private String codigo;
     private String Existe;
     private String ValijaID;
-    private String Estado;
+    private int Estado;
     private String Anio;
     private String Nro;
     private String Suc;
+    private int ID;
 
     public ValijaValidar(String Codigo){
 
         codigo = Codigo;
+
     }
 
     public String Existe(){return Existe;}
 
     public String ValijaID(){return ValijaID;}
 
-    public String Estado(){return Estado;}
+    public int Estado(){return Estado;}
 
     public String Anio(){return Anio;}
 

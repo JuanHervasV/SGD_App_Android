@@ -37,7 +37,6 @@ public class BarcodeFragment extends Fragment implements BarcodeReaderFragment.B
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_barcode, container, false);
-
         barcodeReader = (BarcodeReaderFragment) getChildFragmentManager().findFragmentById(R.id.barcode_fragment);
         barcodeReader.setListener(this);
         return view;

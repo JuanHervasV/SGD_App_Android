@@ -17,7 +17,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.vision.barcode.Barcode;
 import com.notbytes.barcode_reader.BarcodeReaderActivity;
+import com.notbytes.barcodereader.Model.ManifiestoCerrar;
 import com.notbytes.barcodereader.Model.ValijaAdicionar;
+import com.notbytes.barcodereader.Model.ValijaGDNValidar;
 import com.notbytes.barcodereader.Model.ValijaValidar;
 import com.notbytes.barcodereader.io.APIRetrofitInterface;
 
@@ -131,6 +133,9 @@ public class ValijaAct extends AppCompatActivity {
                 fragmentTransaction.commitAllowingStateLoss();
                 launchBarCodeActivity();
                 break;
+            case R.id.btnCerrar:
+                CerrarManifiesto();
+                break;
         }
     }
 
@@ -175,7 +180,7 @@ public class ValijaAct extends AppCompatActivity {
         }
     }
 
-    public void createPost(){
+    public void Añadirvalija(){
 
         Valija = findViewById(R.id.txtValija);
         final String Valijas = Valija.getText().toString();
@@ -203,7 +208,7 @@ public class ValijaAct extends AppCompatActivity {
                     ValijaAdicionar postsResponse = response.body();
                     String content = "";
                     content += "Estado:" + postsResponse.Estado() + "\n";
-                    content += "Mensaje:" + postsResponse.Mensaje() + "\n";
+                    //content += "Mensaje:" + postsResponse.Mensaje() + "\n";
                     //TestApi.append(content);
                     if(postsResponse.Estado() == "true") {
                         Toast.makeText(ValijaAct.this, "Valija asignada correctamente", Toast.LENGTH_SHORT).show();
@@ -234,10 +239,11 @@ public class ValijaAct extends AppCompatActivity {
 
     }
 
-    public void ValijaValidar(){
+    public void ValijaValidarGDN(){
+
+        //------------------------------------------------------------------------------------------------------------------------
         Valija = findViewById(R.id.txtValija);
         final String Valijas = Valija.getText().toString();
-
         //Llamar datos ---------------------------------------
         Bundle b = getIntent().getExtras();
         final String Mfto = b.getString("Mft");
@@ -248,6 +254,65 @@ public class ValijaAct extends AppCompatActivity {
         final String CiuDes = b.getString("CiuDes");
         final String Estado = b.getString("Estado");
         //----------------------------------------------------
+        ValijaGDNValidar valijaGDNValidar = new ValijaGDNValidar(""+Valijas);
+
+        Call<ValijaGDNValidar> call = jsonPlaceHolderApi.createPost(valijaGDNValidar);
+        call.enqueue(new Callback<ValijaGDNValidar>() {
+            @Override
+            public void onResponse(Call<ValijaGDNValidar> call, Response<ValijaGDNValidar> response) {
+                if(!response.isSuccessful()){
+                    Toast.makeText(ValijaAct.this, "No existe la valija", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                ValijaGDNValidar postsResponse = response.body();
+                //String content = "";
+                //content += "Estado:" + postsResponse.Estado() + "\n";
+                //content += "Mensaje:" + postsResponse.Mensaje() + "\n";
+                //TestApi.append(content);
+                String existe = postsResponse.Existe();
+                String id = postsResponse.ID();
+                String codigo = postsResponse.Codigo();
+                String usuario = postsResponse.Usuario();
+
+                Toast.makeText(ValijaAct.this, "Valija asignada correctamente", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(ValijaAct.this, GuiaAct.class);
+                    //String passingdata = LoginText.getText().toString();
+                    Bundle c = new Bundle();
+                    c.putString("Valijas", Valijas);
+                    c.putString("Mfto", Mfto);
+                    c.putString("MftoAnio", MftoAnio);
+                    c.putString("MftoNro", MftoNro);
+                    c.putString("Suc", Suc);
+                    c.putString("PaisDes", PaisDes);
+                    c.putString("CiuDes", CiuDes);
+                    c.putString("Estado", Estado);
+                    c.putString("id", id);
+                    i.putExtras(c);
+                    startActivity(i);
+            }
+            @Override
+            public void onFailure(Call<ValijaGDNValidar> call, Throwable t) {
+                Toast.makeText(ValijaAct.this, "Fallo al asignar valjia", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    public void ValijaValidar(){
+
+        Valija = findViewById(R.id.txtValija);
+        final String Valijas = Valija.getText().toString();
+
+        //Llamar datos ---------------------------------------------------------------------------------------------------
+        Bundle b = getIntent().getExtras();
+        final String Mfto = b.getString("Mft");
+        final String MftoAnio = b.getString("MftoAnio");
+        final String MftoNro = b.getString("MftoNro");
+        final String Suc = b.getString("Suc");
+        final String PaisDes = b.getString("PaisDes");
+        final String CiuDes = b.getString("CiuDes");
+        final String Estado = b.getString("Estado");
+        //----------------------------------------------------------------------------------------------------------------
 
         //Aqui enviar los datos-------------------------------------------------------------------------------------------
         //String resul = mTvResult.getText().toString();
@@ -257,45 +322,207 @@ public class ValijaAct extends AppCompatActivity {
             @Override
             public void onResponse(Call<ValijaValidar> call, Response<ValijaValidar> response) {
                 if(!response.isSuccessful()){
-                    //mJsonTxtView.setText("Codigo:" + response.code());
-                    Toast.makeText(getApplicationContext(),"Código de valija incorrecto/No pertenece al manifiesto",Toast.LENGTH_SHORT).show();
-                    /*ValijaValidar postsResponse = response.body();
 
-                    String Estado = postsResponse.Estado();
-                    String Anio = postsResponse.Anio();
-                    String Existe = postsResponse.Existe();
-                    String Nro = postsResponse.Nro();
-                    String Suc = postsResponse.Suc();
-                    String ValijaID = postsResponse.ValijaID();
+                    //------------------------------------------------------------------------------------------------------------------------
+                    Valija = findViewById(R.id.txtValija);
+                    final String Valijas = Valija.getText().toString();
+                    //Llamar datos ---------------------------------------
+                    Bundle b = getIntent().getExtras();
+                    final String Mfto = b.getString("Mft");
+                    final String MftoAnio = b.getString("MftoAnio");
+                    final String MftoNro = b.getString("MftoNro");
+                    final String Suc = b.getString("Suc");
+                    final String PaisDes = b.getString("PaisDes");
+                    final String CiuDes = b.getString("CiuDes");
+                    final String Estado = b.getString("Estado");
+                    //----------------------------------------------------
+                    ValijaGDNValidar valijaGDNValidar = new ValijaGDNValidar(""+Valijas);
 
-                    Toast.makeText(getApplicationContext(),"Validador ok",Toast.LENGTH_SHORT).show();
-                    //Bundle c = new Bundle();
-                    //c.putString("Estado", Estado);
-                    //c.putString("Guia", Guia);
-                    //i.putExtras(c);
-                    //Mensaje.append(""+response.body());
-                    //Mensaje.append(""+response.headers());
-                    //startActivity(i);
-                    //Titulo.append(""+postsResponse.estado());*/
+                    Call<ValijaGDNValidar> callu = jsonPlaceHolderApi.createPost(valijaGDNValidar);
+                    callu.enqueue(new Callback<ValijaGDNValidar>() {
+                        @Override
+                        public void onResponse(Call<ValijaGDNValidar> call, Response<ValijaGDNValidar> response) {
+                            if(!response.isSuccessful()){
+                                Toast.makeText(ValijaAct.this, "No existe la valija", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
+                            Valija = findViewById(R.id.txtValija);
+                            final String Valijas = Valija.getText().toString();
+                            //Llamar datos ---------------------------------------
+                            Bundle b = getIntent().getExtras();
+                            final String Mfto = b.getString("Mft");
+                            final String MftoAnio = b.getString("MftoAnio");
+                            final String MftoNro = b.getString("MftoNro");
+                            final String Suc = b.getString("Suc");
+                            final String PaisDes = b.getString("PaisDes");
+                            final String CiuDes = b.getString("CiuDes");
+                            final String Estado = b.getString("Estado");
+                            //----------------------------------------------------
+
+                            ValijaAdicionar valijaAdicionar = new ValijaAdicionar(""+Valijas,""+MftoAnio,""+MftoNro,""+Suc,""+CiuDes,"pruebaUsuario");
+
+                            Call<ValijaAdicionar> callo = jsonPlaceHolderApi.createPost(valijaAdicionar);
+                            callo.enqueue(new Callback<ValijaAdicionar>() {
+                                @Override
+                                public void onResponse(Call<ValijaAdicionar> call, Response<ValijaAdicionar> response) {
+                                    if(!response.isSuccessful()){
+                                        Toast.makeText(ValijaAct.this, "La valija no se pudo asignar", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                    ValijaAdicionar postsResponse = response.body();
+                                    String content = "";
+                                    content += "Estado:" + postsResponse.Estado() + "\n";
+                                    //content += "Mensaje:" + postsResponse.Mensaje() + "\n";
+                                    int ValijaID = postsResponse.ValijaID();
+                                    //TestApi.append(content);
+                                    if(postsResponse.Estado() == "true") {
+                                        Toast.makeText(ValijaAct.this, "Valija asignada correctamente", Toast.LENGTH_SHORT).show();
+                                        Intent i = new Intent(ValijaAct.this, GuiaAct.class);
+                                        //String passingdata = LoginText.getText().toString();
+                                        Bundle c = new Bundle();
+                                        c.putString("Valijas", Valijas);
+                                        c.putString("Mfto", Mfto);
+                                        c.putString("MftoAnio", MftoAnio);
+                                        c.putString("MftoNro", MftoNro);
+                                        c.putString("Suc", Suc);
+                                        c.putString("PaisDes", PaisDes);
+                                        c.putString("CiuDes", CiuDes);
+                                        c.putString("Estado", Estado);
+                                        c.putInt("ValijaID",ValijaID);
+                                        i.putExtras(c);
+                                        startActivity(i);
+                                    }
+                                    else{
+                                        Toast.makeText(ValijaAct.this, "Fallo al asignar valjia", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                                @Override
+                                public void onFailure(Call<ValijaAdicionar> call, Throwable t) {
+                                    Toast.makeText(ValijaAct.this, "Fallo al asignar valjia", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                            ValijaGDNValidar postsResponse = response.body();
+                            //String content = "";
+                            //content += "Estado:" + postsResponse.Estado() + "\n";
+                            //content += "Mensaje:" + postsResponse.Mensaje() + "\n";
+                            //TestApi.append(content);
+                            String existe = postsResponse.Existe();
+                            String id = postsResponse.ID();
+                            String codigo = postsResponse.Codigo();
+                            String usuario = postsResponse.Usuario();
+
+                            Toast.makeText(ValijaAct.this, "Valija asignada correctamente", Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(ValijaAct.this, GuiaAct.class);
+                            //String passingdata = LoginText.getText().toString();
+                            Bundle c = new Bundle();
+                            c.putString("Valijas", Valijas);
+                            c.putString("Mfto", Mfto);
+                            c.putString("MftoAnio", MftoAnio);
+                            c.putString("MftoNro", MftoNro);
+                            c.putString("Suc", Suc);
+                            c.putString("PaisDes", PaisDes);
+                            c.putString("CiuDes", CiuDes);
+                            c.putString("Estado", Estado);
+                            c.putString("ValijaID", id);
+                            i.putExtras(c);
+                            startActivity(i);
+                        }
+                        @Override
+                        public void onFailure(Call<ValijaGDNValidar> call, Throwable t) {
+                            Toast.makeText(ValijaAct.this, "Fallo al asignar valjia", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    //Toast.makeText(getApplicationContext(),"Código de valija incorrecto/No pertenece al manifiesto",Toast.LENGTH_SHORT).show();
                     return;
+
                 }
                 ValijaValidar postsResponse = response.body();
 
-                String Estado = postsResponse.Estado();
+                int Estado = postsResponse.Estado();
+                //int est = Estado.replace(" ", "");
                 String Anio = postsResponse.Anio();
                 String Existe = postsResponse.Existe();
                 String Nro = postsResponse.Nro();
                 String Suc = postsResponse.Suc();
                 String ValijaID = postsResponse.ValijaID();
 
-                //String Estado = postsResponse.estado();
-                //String Guia = postsResponse.Guias();
-                Toast.makeText(getApplicationContext(),"Contador Ok",Toast.LENGTH_SHORT).show();
+                if(Estado == 3615){
+                    Toast.makeText(ValijaAct.this, "Ingreso correcto de la valija", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(ValijaAct.this, GuiaAct.class);
 
-                Intent i = new Intent(ValijaAct.this, GuiaAct.class);
-                //String passingdata = LoginText.getText().toString();
+                    Bundle c = new Bundle();
+                    c.putString("Valijas", Valijas);
+                    c.putString("Mfto", Mfto);
+                    c.putString("MftoAnio", MftoAnio);
+                    c.putString("MftoNro", MftoNro);
+                    c.putString("Suc", Suc);
+                    c.putString("PaisDes", PaisDes);
+                    c.putString("CiuDes", CiuDes);
+                    c.putInt("Estado", Estado);
+                    c.putString("ValijaID", ValijaID);
+                    i.putExtras(c);
+                    startActivity(i);
+
+                }
+                else if(Estado == 3616){
+                    Toast.makeText(ValijaAct.this, "La valija se encuentra cerrada.", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(ValijaAct.this, "Ha ocurrido un error con su valija: "+Estado, Toast.LENGTH_SHORT).show();
+                }
+
+                return;
+
+            }
+
+            @Override
+            public void onFailure(Call<ValijaValidar> call, Throwable t) {
+
+                Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
+
+                return;
+            }
+        });
+    }
+
+    private void CerrarManifiesto(){
+
+        //Llamar datos ---------------------------------------------------------------------------------------------------
+        Bundle b = getIntent().getExtras();
+        final String Mfto = b.getString("Mft");
+        String Valijas = b.getString("Valijas");
+        final String MftoAnio = b.getString("MftoAnio");
+        final String MftoNro = b.getString("MftoNro");
+        final String Suc = b.getString("Suc");
+        final String PaisDes = b.getString("PaisDes");
+        final String CiuDes = b.getString("CiuDes");
+        final String Estado = b.getString("Estado");
+        //----------------------------------------------------------------------------------------------------------------
+
+        //Aqui enviar los datos-------------------------------------------------------------------------------------------
+        //String resul = mTvResult.getText().toString();
+        ManifiestoCerrar manifiestoCerrar = new ManifiestoCerrar(""+MftoNro,""+Suc,""+MftoAnio,"pruebaUsuario","3619");
+        Call<ManifiestoCerrar> call = jsonPlaceHolderApi.createPost(manifiestoCerrar);
+        call.enqueue(new Callback<ManifiestoCerrar>() {
+            @Override
+            public void onResponse(Call<ManifiestoCerrar> call, Response<ManifiestoCerrar> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(getApplicationContext(), "Ha ocurrido un error con el manifiesto.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                ManifiestoCerrar postsResponse = response.body();
+
+                String estado = postsResponse.Estado();
+                String mensaje = postsResponse.Mensaje();
+                Toast.makeText(getApplicationContext(), "Manifiesto cerrado correctamente.", Toast.LENGTH_SHORT).show();
+
+                Intent i = new Intent(ValijaAct.this, DespacharFinal.class);
                 Bundle c = new Bundle();
-                c.putString("Valijas", Valijas);
+                //c.putString("Estado", Estado);
+                //Enviar datos---------------------------------------------------
+                c.putString("Valijas", Estado);
                 c.putString("Mfto", Mfto);
                 c.putString("MftoAnio", MftoAnio);
                 c.putString("MftoNro", MftoNro);
@@ -303,18 +530,15 @@ public class ValijaAct extends AppCompatActivity {
                 c.putString("PaisDes", PaisDes);
                 c.putString("CiuDes", CiuDes);
                 c.putString("Estado", Estado);
-                c.putString("ValijaID", ValijaID);
                 i.putExtras(c);
-                //Mensaje.append(""+postsResponse.estado());
-                //Mensaje.append(""+postsResponse.Guias());
-                //createPost();
                 startActivity(i);
-                //Titulo.append(""+postsResponse.estado());
+                //----------------------------------------------------------------
                 return;
             }
+
             @Override
-            public void onFailure(Call<ValijaValidar> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<ManifiestoCerrar> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
                 //Titulo.setText(t.getMessage());
                 return;
             }

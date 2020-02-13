@@ -89,7 +89,6 @@ public class CerrarValijaAct extends AppCompatActivity {
         switch (v.getId()){
             case R.id.btnCerrar:
                 cerrarValija();
-                cerrarStatus();
                 break;
             case R.id.btnVolver:
                 Intent i = new Intent(CerrarValijaAct.this, GuiaAct.class);
@@ -177,15 +176,15 @@ public class CerrarValijaAct extends AppCompatActivity {
         //String resul = mTvResult.getText().toString();
         //Llamar datos -------------------------------------------------
         Bundle b = getIntent().getExtras();
-        String Mfto = b.getString("Mft");
+        final String Mfto = b.getString("Mft");
         String Valijas = b.getString("Valijas");
-        String MftoAnio = b.getString("MftoAnio");
-        String MftoNro = b.getString("MftoNro");
-        String Suc = b.getString("Suc");
-        String PaisDes = b.getString("PaisDes");
-        String CiuDes = b.getString("CiuDes");
-        String Estado = b.getString("Estado");
-        String ValijaID = b.getString("ValijaID");
+        final String MftoAnio = b.getString("MftoAnio");
+        final String MftoNro = b.getString("MftoNro");
+        final String Suc = b.getString("Suc");
+        final String PaisDes = b.getString("PaisDes");
+        final String CiuDes = b.getString("CiuDes");
+        final String Estado = b.getString("Estado");
+        final String ValijaID = b.getString("ValijaID");
         //---------------------------------------------------------------
         ValijaCerrar valijaCerrar = new ValijaCerrar(ValijaID);
         Call<ValijaCerrar> call = jsonPlaceHolderApi.createPost(valijaCerrar);
@@ -193,39 +192,30 @@ public class CerrarValijaAct extends AppCompatActivity {
             @Override
             public void onResponse(Call<ValijaCerrar> call, Response<ValijaCerrar> response) {
                 if(!response.isSuccessful()){
-                    //mJsonTxtView.setText("Codigo:" + response.code());
-                    ValijaCerrar postsResponse = response.body();
-
-                    //String Estado = postsResponse.estado();
-                    //String Guia = postsResponse.Guias();
-                    Toast.makeText(getApplicationContext(),"Datos ingresado exitosamente 1",Toast.LENGTH_SHORT).show();
-
-                    Intent i = new Intent(CerrarValijaAct.this, CerrarManifiestoAct.class);
-                    Bundle c = new Bundle();
-                    //c.putString("Estado", Estado);
-                    //c.putString("Guia", Guia);
-                    //i.putExtras(c);
-                    //Mensaje.append(""+response.body());
-                    //Mensaje.append(""+response.headers());
-                    //startActivity(i);
-                    //Titulo.append(""+postsResponse.estado());
+                    Toast.makeText(getApplicationContext(),"Valija no correcta.",Toast.LENGTH_SHORT).show();
                     return;
                 }
                 ValijaCerrar postsResponse = response.body();
-
-                //String Estado = postsResponse.estado();
-                //String Guia = postsResponse.Guias();
-                Toast.makeText(getApplicationContext(),"Dato ingresado exitosamente 1",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Valija cerrada correctamente",Toast.LENGTH_SHORT).show();
 
                 Intent i = new Intent(CerrarValijaAct.this, CerrarManifiestoAct.class);
                 Bundle c = new Bundle();
-                //c.putString("Estado", Estado);
-                //c.putString("Guia", Guia);
+                //Enviar datos---------------------------------------------------
+                c.putString("Valijas", Estado);
+                c.putString("Mfto", Mfto);
+                c.putString("MftoAnio", MftoAnio);
+                c.putString("MftoNro", MftoNro);
+                c.putString("Suc", Suc);
+                c.putString("PaisDes", PaisDes);
+                c.putString("CiuDes", CiuDes);
+                c.putString("Estado", Estado);
+                c.putString("ValijaID", ValijaID);
                 i.putExtras(c);
-                //Mensaje.append(""+postsResponse.estado());
-                //Mensaje.append(""+postsResponse.Guias());
                 //startActivity(i);
-                //Titulo.append(""+postsResponse.estado());
+                //----------------------------------------------------------------
+                i.putExtras(c);
+                startActivity(i);
+
                 return;
             }
             @Override
@@ -246,46 +236,29 @@ public class CerrarValijaAct extends AppCompatActivity {
             @Override
             public void onResponse(Call<ValijaStatus> call, Response<ValijaStatus> response) {
                 if(!response.isSuccessful()){
-                    //mJsonTxtView.setText("Codigo:" + response.code());
-                    ValijaStatus postsResponse = response.body();
 
-                    //String Estado = postsResponse.estado();
-                    //String Guia = postsResponse.Guias();
-                    Toast.makeText(getApplicationContext(),"Datos ingresado exitosamente 2",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"No se pudo cambiar el status",Toast.LENGTH_SHORT).show();
 
-                    Intent i = new Intent(CerrarValijaAct.this, CerrarManifiestoAct.class);
-                    Bundle c = new Bundle();
-                    //c.putString("Estado", Estado);
-                    //c.putString("Guia", Guia);
-                    //i.putExtras(c);
-                    //Mensaje.append(""+response.body());
-                    //Mensaje.append(""+response.headers());
-                    //startActivity(i);
                     PasarDatos();
-                    //Titulo.append(""+postsResponse.estado());
+
                     return;
                 }
                 ValijaStatus postsResponse = response.body();
 
-                //String Estado = postsResponse.estado();
-                //String Guia = postsResponse.Guias();
-                Toast.makeText(getApplicationContext(),"Dato ingresado exitosamente 2",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Status cambiado exitosamente",Toast.LENGTH_SHORT).show();
 
                 Intent i = new Intent(CerrarValijaAct.this, CerrarManifiestoAct.class);
                 Bundle c = new Bundle();
-                //c.putString("Estado", Estado);
-                //c.putString("Guia", Guia);
+
                 i.putExtras(c);
-                //Mensaje.append(""+postsResponse.estado());
-                //Mensaje.append(""+postsResponse.Guias());
+
                 startActivity(i);
-                //Titulo.append(""+postsResponse.estado());
+
                 return;
             }
                 @Override
             public void onFailure(Call<ValijaStatus> call, Throwable t) {
                 Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
-                //Titulo.setText(t.getMessage());
                 return;
             }
         });
@@ -293,68 +266,50 @@ public class CerrarValijaAct extends AppCompatActivity {
 
     private void ValijasContador() {
         //Aqui enviar los datos-------------------------------------------------------------------------------------------
-        //String resul = mTvResult.getText().toString();
+
         Guia = findViewById(R.id.txtGuia);
 
         //Llamar datos -------------------------------------------------
         Bundle c = getIntent().getExtras();
         String ValijaID = c.getString("ValijaID");
+        String Valijas = c.getString("Valijas");
+        String Mfto = c.getString("Mfto");
+        String MftoAnio = c.getString("MftoAnio");
+        String MftoNro = c.getString("MftoNro");
+        String Suc = c.getString("Suc");
+        String PaisDes = c.getString("PaisDes");
+        String CiuDes = c.getString("CiuDes");
+        String Estado = c.getString("Estado");
         //---------------------------------------------------------------
 
-        ValijaContador valijaContador = new ValijaContador("149");
+        ValijaContador valijaContador = new ValijaContador(""+ValijaID);
         Call<ValijaContador> call = jsonPlaceHolderApi.createPost(valijaContador);
         call.enqueue(new Callback<ValijaContador>() {
             @Override
             public void onResponse(Call<ValijaContador> call, Response<ValijaContador> response) {
                 if (!response.isSuccessful()) {
-                    //mJsonTxtView.setText("Codigo:" + response.code());
-                    ValijaContador postsResponse = response.body();
 
-                    String Total = postsResponse.total();
-                    String Valija = postsResponse.valija();
-
-                    //String Estado = postsResponse.estado();
-                    //String Guia = postsResponse.Guias();
-                    Toast.makeText(getApplicationContext(), "API Contador Iniciado", Toast.LENGTH_SHORT).show();
-
-                    Intent i = new Intent(CerrarValijaAct.this, CerrarManifiestoAct.class);
-                    Bundle c = new Bundle();
-
-
-                    //c.putString("Estado", Estado);
-                    //c.putString("Guia", Guia);
-                    //i.putExtras(c);
-                    //Mensaje.append(""+response.body());
-                    //Mensaje.append(""+response.headers());
-                    //startActivity(i);
-                    Guia.append(" "+Total+" //// "+Valija);
+                    Toast.makeText(getApplicationContext(), "No existe la valija", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 ValijaContador postsResponse = response.body();
 
-                String Total = postsResponse.total();
                 String Valija = postsResponse.valija();
+                String Total = postsResponse.total();
 
-                //String Estado = postsResponse.estado();
-                //String Guia = postsResponse.Guias();
                 Toast.makeText(getApplicationContext(), "API Contador Iniciado", Toast.LENGTH_SHORT).show();
 
                 Intent i = new Intent(CerrarValijaAct.this, CerrarManifiestoAct.class);
                 Bundle c = new Bundle();
-                //c.putString("Estado", Estado);
-                //c.putString("Guia", Guia);
                 i.putExtras(c);
-                //Mensaje.append(""+postsResponse.estado());
-                //Mensaje.append(""+postsResponse.Guias());
-                //startActivity(i);
-                Guia.append(" "+Total+" //// "+Valija);
+                Guia.append(" "+Total+" // "+Valija);
                 return;
+
             }
 
             @Override
             public void onFailure(Call<ValijaContador> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
-                //Titulo.setText(t.getMessage());
                 return;
             }
         });
