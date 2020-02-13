@@ -9,15 +9,15 @@ public class MftoValijas {
     private int Total;
     private String Cerrado;
 
-    public MftoValijas(String mfto_nro, String suc_cod, String mfto_anio){
+    public MftoValijas(String mfto_nro, String suc_cod , String mfto_anio){
         Mfto_Nro = mfto_nro;
         Suc_cod = suc_cod;
         Mfto_anio = mfto_anio;
     }
 
-    public String valija(){return Valija;}
+    public String Valija(){return Valija;}
 
-    public int total(){return Total;}
+    public int Total(){return Total;}
 
-    public String cerrado(){return Cerrado;}
+    public String Cerrado(){return Cerrado;}
 }

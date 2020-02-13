@@ -64,14 +64,13 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
         mp2 = MediaPlayer.create(this, R.raw.wrong);
         mp = MediaPlayer.create(this, R.raw.beeps);
 
-        //Lista--------------------------------------------------------
+        //Lista------------------------------------------------------------------------------------------
         listView= findViewById(R.id.listview);
         String[]android_flavours={};
         arrayList= new ArrayList<>(Arrays.asList(android_flavours));
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,arrayList);
         listView.setAdapter(adapter);
         // Result value = barcode.receiveScan();
-
         //arrayList.add(barcode.rawValue);
         for (int i = 0; i < android_flavours.length; i++) {
             arrayList.add(android_flavours[i]);
@@ -81,10 +80,8 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
             arrayList.clear();
             arrayList.addAll(hashSet);
         }
-
         //listarpro = findViewById(R.id.lista);
-        //String resul = mTvResult.getText().toString();----------------
-
+        //String resul = mTvResult.getText().toString();-------------------------------------------------
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://200.37.50.53/ApiSGD/api/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -97,22 +94,18 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
     }
 
     public void onTouch() {
-
         Agregar = findViewById(R.id.btnAgregar);
         Cerrar = findViewById(R.id.btnCerrar);
-
         Agregar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
                 if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
                     v.setBackgroundResource(R.drawable.rounded_cornerneutral);
-                    //v.setBackgroundColor(Color.parseColor("#9C9C9C"));
                 }
 
                 if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
                     v.setBackgroundResource(R.drawable.rounded_corners);
-                    //v.setBackgroundColor(Color.parseColor("#FF7177"));
                 }
                 return false;
             }
@@ -124,12 +117,10 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
 
                 if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
                     v.setBackgroundResource(R.drawable.rounded_cornerneutral);
-                    //v.setBackgroundColor(Color.parseColor("#9C9C9C"));
                 }
 
                 if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
                     v.setBackgroundResource(R.drawable.rounded_corners);
-                    //v.setBackgroundColor(Color.parseColor("#FF7177"));
                 }
                 return false;
             }
@@ -151,7 +142,6 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
                 addBarcodeReaderFragment();
                 break;
             case R.id.btnCerrar:
-                //validarGuia();
                 PasarDatos();
                 break;
             case R.id.btnTipear:
@@ -192,7 +182,6 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
         Valija = findViewById(R.id.txtValija);
         final String Codi = Guia.getText().toString();
 
-        //final String Gui = Guia.getText().toString();
         final GuiaSuc valijaValidar = new GuiaSuc(""+Codi);
         Call<GuiaSuc> cal = jsonPlaceHolderApi.createPost(valijaValidar);
         cal.enqueue(new Callback<GuiaSuc>() {
@@ -240,8 +229,6 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
 
                         }
                         else{
-
-                            //Mensaje.append("" + postsResponse.Guias());
 
                             Guio = findViewById(R.id.txtGuia);
                             Mensaje = findViewById(R.id.txtMensaje);

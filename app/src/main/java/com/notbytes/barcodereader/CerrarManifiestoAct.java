@@ -94,7 +94,7 @@ public class CerrarManifiestoAct extends AppCompatActivity {
     public void RecuperarDatos(){
         //Llamar datos --------------------------------------------------
         Bundle b = getIntent().getExtras();
-        String Mfto = b.getString("Mft");
+        String Mfto = b.getString("Mfto");
         String Valijas = b.getString("Valijas");
         String MftoAnio = b.getString("MftoAnio");
         String MftoNro = b.getString("MftoNro");
@@ -106,7 +106,7 @@ public class CerrarManifiestoAct extends AppCompatActivity {
 
         Manifiesto = findViewById(R.id.txtMfto);
         //Manifiesto.setText(Mfto);
-        Manifiesto.setText("¿Desea cerrar el manifiesto 0111600025111? ");//+Mfto);
+        Manifiesto.setText("¿Desea cerrar el manifiesto "+Mfto);
         /*Valija = findViewById(R.id.txtValija);
         Valija.append(""+Valijas+"?");
         Guia = findViewById(R.id.txtGuia);*/
@@ -140,8 +140,10 @@ public class CerrarManifiestoAct extends AppCompatActivity {
 
         switch (view.getId()) {
             case R.id.btnVolver:
-                Intent i = new Intent(CerrarManifiestoAct.this, CerrarValijaAct.class);
-                startActivity(i);
+                ValijasMftos();
+                //ProcesarDatos();
+                //Intent i = new Intent(CerrarManifiestoAct.this, CerrarValijaAct.class);
+                //startActivity(i);
                 break;
             case R.id.btnCerrar:
                 CerrarManifiesto();
@@ -154,7 +156,7 @@ public class CerrarManifiestoAct extends AppCompatActivity {
 
         //Llamar datos --------------------------------------------------
             Bundle b = getIntent().getExtras();
-            final String Mfto = b.getString("Mft");
+            final String Mfto = b.getString("Mfto");
             String Valijas = b.getString("Valijas");
             final String MftoAnio = b.getString("MftoAnio");
             final String MftoNro = b.getString("MftoNro");
@@ -262,10 +264,10 @@ public class CerrarManifiestoAct extends AppCompatActivity {
         });
     }
 
-    private void ManifiestoValija(){
+    /*private void ProcesarDatos(){
         //Llamar datos ---------------------------------------------------------------------------------------------------
         Bundle b = getIntent().getExtras();
-        final String Mfto = b.getString("Mft");
+        final String Mfto = b.getString("Mfto");
         String Valijas = b.getString("Valijas");
         final String MftoAnio = b.getString("MftoAnio");
         final String MftoNro = b.getString("MftoNro");
@@ -276,7 +278,7 @@ public class CerrarManifiestoAct extends AppCompatActivity {
         //----------------------------------------------------------------------------------------------------------------
         Manifiesto = findViewById(R.id.txtMfto);
         //Aqui enviar los datos-------------------------------------------------------------------------------------------
-        MftoValijas mftoValijas = new MftoValijas(""+MftoNro,""+Suc,""+MftoAnio);
+        MftoValijas mftoValijas = new MftoValijas(MftoNro,Suc,MftoAnio);
         Call<MftoValijas> call = jsonPlaceHolderApi.createPost(mftoValijas);
         call.enqueue(new Callback<MftoValijas>() {
             @Override
@@ -287,9 +289,9 @@ public class CerrarManifiestoAct extends AppCompatActivity {
                 }
                 MftoValijas postsResponse = response.body();
 
-                String Valija = postsResponse.valija();
-                int Guia = postsResponse.total();
-                String Cerrado = postsResponse.cerrado();
+                String Valija = postsResponse.Valija();
+                int Guia = postsResponse.Total();
+                String Cerrado = postsResponse.Cerrado();
 
                 Toast.makeText(getApplicationContext(), "Recuento de valijas iniciado", Toast.LENGTH_SHORT).show();
 
@@ -305,6 +307,34 @@ public class CerrarManifiestoAct extends AppCompatActivity {
             @Override
             public void onFailure(Call<MftoValijas> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        });
+    }*/
+
+    private void ValijasMftos(){
+
+        MftoValijas mftoValijas = new MftoValijas("00025111","PELIM01","2016");
+        Call<MftoValijas> call = jsonPlaceHolderApi.createPostt(mftoValijas);
+        call.enqueue(new Callback<MftoValijas>() {
+            @Override
+            public void onResponse(Call<MftoValijas> call, Response<MftoValijas> response) {
+                if(!response.isSuccessful()){
+                    Toast.makeText(getApplicationContext(),"No correcto",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                MftoValijas postsResponse = response.body();
+
+                //String Mft_Ano = postsResponse.Valija();
+                //int Mft_Nro = postsResponse.Total();
+                //String Suc_Code = postsResponse.Cerrado();
+
+                Toast.makeText(getApplicationContext(),"Pasó correctamente ",Toast.LENGTH_SHORT).show();
+                return;
+            }
+            @Override
+            public void onFailure(Call<MftoValijas> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
                 return;
             }
         });

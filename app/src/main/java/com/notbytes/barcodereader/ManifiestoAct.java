@@ -171,7 +171,7 @@ public class ManifiestoAct extends AppCompatActivity {
                     Intent i = new Intent(ManifiestoAct.this, ValijaAct.class);
                     Bundle c = new Bundle();
                     String Mftf = Mfto.getText().toString();
-                    c.putString("Mft", Mftf);
+                    c.putString("Mfto", Mftf);
                     c.putString("MftoAnio", MftoAnio);
                     c.putString("MftoNro", MftoNro);
                     c.putString("Suc", Suc);

@@ -23,7 +23,7 @@ public class DespacharFinal extends AppCompatActivity {
                 Intent i = new Intent(DespacharFinal.this, MenuPrincipal.class);
                 //Llamar datos -------------------------------------------------
                 Bundle b = getIntent().getExtras();
-                final String Mfto = b.getString("Mft");
+                final String Mfto = b.getString("Mfto");
                 String Valijas = b.getString("Valijas");
                 final String MftoAnio = b.getString("MftoAnio");
                 final String MftoNro = b.getString("MftoNro");

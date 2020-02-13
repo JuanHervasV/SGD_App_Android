@@ -59,7 +59,7 @@ public class MenuPrincipal extends AppCompatActivity {
     public void RecuperarDatos(){
         //Llamar datos -------------------------------------------------
         Bundle b = getIntent().getExtras();
-        String Mfto = b.getString("Mft");
+        String Mfto = b.getString("Mfto");
         String Valijas = b.getString("Valijas");
         String MftoAnio = b.getString("MftoAnio");
         String MftoNro = b.getString("MftoNro");
