@@ -20,63 +20,65 @@
 
     <TextView
         android:id="@+id/textView10"
-        android:layout_width="120dp"
-        android:layout_height="21dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Escoger Manifiesto"
         android:textColor="@color/white"
-        android:textSize="11dp"
+        android:textSize="25dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/toolbar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.134"
+        app:layout_constraintHorizontal_bias="0.036"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.714" />
+        app:layout_constraintVertical_bias="0.727" />
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="48dp"
-        android:layout_height="11dp"
+        android:layout_width="110dp"
+        android:layout_height="38dp"
         android:layout_marginEnd="35dp"
         android:layout_marginRight="35dp"
         android:text="Manifiesto"
-        android:textSize="6dp"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnBr"
-        app:layout_constraintHorizontal_bias="0.23"
+        app:layout_constraintHorizontal_bias="0.195"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.732" />
+        app:layout_constraintVertical_bias="0.468" />
 
     <Button
         android:id="@+id/btnBr"
-        android:layout_width="46dp"
-        android:layout_height="14dp"
+        android:layout_width="86dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="220dp"
+        android:layout_marginLeft="220dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:drawableTop="@drawable/barcodesymbol"
         android:onClick="onClick"
         android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.628"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="0.711" />
+        app:layout_constraintVertical_bias="0.459" />
 
     <EditText
         android:id="@+id/mfto"
-        android:layout_width="55dp"
-        android:layout_height="15dp"
+        android:layout_width="134dp"
+        android:layout_height="43dp"
         android:background="@drawable/rounded_cornerneutral"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="011800000077"
-        android:textSize="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.53"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.744" />
+        app:layout_constraintVertical_bias="0.465" />
 
     <Button
         android:id="@+id/btnEnviar"
@@ -93,14 +95,16 @@
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="165dp"
-        android:layout_height="26dp"
-        android:layout_marginTop="68dp"
+        android:layout_width="334dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="92dp"
         android:text="Escriba o scanee su manifiesto a continuación: "
-        android:textSize="8dp"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnBr"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.727"
+        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.931" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

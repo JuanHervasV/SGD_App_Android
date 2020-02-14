@@ -62,7 +62,10 @@ public interface APIRetrofitInterface {
     Call<ManifiestoContador> createPost(@Body ManifiestoContador manifiestoContador);
 
     @POST("MftoValijas")
-    Call<MftoValijas> createPostt(@Body MftoValijas mftoValijas);
+    Call<List<MftoValijas>> mftoValijas();
+
+    @POST("MftoValijas")
+    Call<List<MftoValijas>> createPost(@Body MftoValijas mftoValijas);
 
     @POST("ValijaValidar")
     Call<ValijaValidar> createPost(@Body ValijaValidar valijaValidar);

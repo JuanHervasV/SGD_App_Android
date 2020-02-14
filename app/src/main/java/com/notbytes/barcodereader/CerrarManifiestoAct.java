@@ -17,6 +17,7 @@ import com.notbytes.barcodereader.Model.MftoValijas;
 import com.notbytes.barcodereader.io.APIRetrofitInterface;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,7 +32,6 @@ public class CerrarManifiestoAct extends AppCompatActivity {
     private ArrayList<String> data2 = new ArrayList<String>();
     private TableLayout table;
     private TextView Manifiesto;
-
     private APIRetrofitInterface jsonPlaceHolderApi;
     private TextView Valija;
     private TextView Guia;
@@ -264,76 +264,31 @@ public class CerrarManifiestoAct extends AppCompatActivity {
         });
     }
 
-    /*private void ProcesarDatos(){
-        //Llamar datos ---------------------------------------------------------------------------------------------------
-        Bundle b = getIntent().getExtras();
-        final String Mfto = b.getString("Mfto");
-        String Valijas = b.getString("Valijas");
-        final String MftoAnio = b.getString("MftoAnio");
-        final String MftoNro = b.getString("MftoNro");
-        final String Suc = b.getString("Suc");
-        final String PaisDes = b.getString("PaisDes");
-        final String CiuDes = b.getString("CiuDes");
-        final String Estado = b.getString("Estado");
-        //----------------------------------------------------------------------------------------------------------------
-        Manifiesto = findViewById(R.id.txtMfto);
-        //Aqui enviar los datos-------------------------------------------------------------------------------------------
-        MftoValijas mftoValijas = new MftoValijas(MftoNro,Suc,MftoAnio);
-        Call<MftoValijas> call = jsonPlaceHolderApi.createPost(mftoValijas);
-        call.enqueue(new Callback<MftoValijas>() {
-            @Override
-            public void onResponse(Call<MftoValijas> call, Response<MftoValijas> response) {
-                if (!response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Ocurrió un error en los datos", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                MftoValijas postsResponse = response.body();
-
-                String Valija = postsResponse.Valija();
-                int Guia = postsResponse.Total();
-                String Cerrado = postsResponse.Cerrado();
-
-                Toast.makeText(getApplicationContext(), "Recuento de valijas iniciado", Toast.LENGTH_SHORT).show();
-
-                //Intent i = new Intent(CerrarManifiestoAct.this, DespacharFinal.class);
-                //Bundle c = new Bundle();
-                //i.putExtras(c);
-
-                Manifiesto.append(": "+Valija+" "+Guia+""+" "+Cerrado);
-
-                return;
-            }
-
-            @Override
-            public void onFailure(Call<MftoValijas> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-        });
-    }*/
-
     private void ValijasMftos(){
 
-        MftoValijas mftoValijas = new MftoValijas("00025111","PELIM01","2016");
-        Call<MftoValijas> call = jsonPlaceHolderApi.createPostt(mftoValijas);
-        call.enqueue(new Callback<MftoValijas>() {
+        MftoValijas mftoValijas = new MftoValijas("00025111","PELIM01","2016");//
+        Call<List<MftoValijas>> call = jsonPlaceHolderApi.createPost(mftoValijas);
+        call.enqueue(new Callback<List<MftoValijas>>() {
+        //<MftoValijas> call = jsonPlaceHolderApi.createPost(mftoValijas);
+        //call.enqueue(new Callback<MftoValijas>() {
             @Override
-            public void onResponse(Call<MftoValijas> call, Response<MftoValijas> response) {
+            public void onResponse(Call<List<MftoValijas>> call, Response<List<MftoValijas>> response) {
                 if(!response.isSuccessful()){
                     Toast.makeText(getApplicationContext(),"No correcto",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                MftoValijas postsResponse = response.body();
-
-                //String Mft_Ano = postsResponse.Valija();
-                //int Mft_Nro = postsResponse.Total();
-                //String Suc_Code = postsResponse.Cerrado();
-
-                Toast.makeText(getApplicationContext(),"Pasó correctamente ",Toast.LENGTH_SHORT).show();
+                List<MftoValijas> rptas = response.body();
+                //SocialData data = response.body();
+                List<MftoValijas> datalist = new ArrayList<>();
+                //datalist = rptas.mftoValijas();
+                /*String Mft_Ano = postsResponse.mftoValijas();
+                int Mft_Nro = postsResponse.Total();
+                String Suc_Code = postsResponse.Cerrado();*/
+                Toast.makeText(getApplicationContext(),"Pasó correctamente"+rptas,Toast.LENGTH_SHORT).show();
                 return;
             }
             @Override
-            public void onFailure(Call<MftoValijas> call, Throwable t) {
+            public void onFailure(Call<List<MftoValijas>> call, Throwable t) {
                 Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
                 return;
             }

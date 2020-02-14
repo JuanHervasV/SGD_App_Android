@@ -1,6 +1,6 @@
 package com.notbytes.barcodereader.Model;
 
-public class MftoValijas {
+public class MftoValijas{
 
     private String Mfto_Nro;
     private String Suc_cod;
