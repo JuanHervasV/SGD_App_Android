@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PopupCerrarValija"></activity>
+        <activity android:name=".ganso"></activity>
+        <activity android:name=".PopupCerrarValija" />
         <activity android:name=".DespacharFinal" />
         <activity android:name=".CerrarManifiestoAct" />
         <activity android:name=".CerrarValijaAct" />

@@ -102,7 +102,7 @@ public class Logeo extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<Vars> call, Throwable t) {
-                //TestApi.setText(t.getMessage());
+                Toast.makeText(Logeo.this, "Error de red, revise su conexión a internet.", Toast.LENGTH_SHORT).show();
             }
         });
     }
