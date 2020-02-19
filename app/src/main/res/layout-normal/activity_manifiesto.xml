@@ -17,13 +17,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <TextView
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:text="Escoger Manifiesto"
         android:textColor="@color/white"
         android:textSize="19dp"
@@ -35,51 +36,59 @@
         android:id="@+id/btnBr"
         android:layout_width="51dp"
         android:layout_height="32dp"
-        android:layout_marginEnd="80dp"
-        android:layout_marginRight="80dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="12dp"
         android:background="@drawable/ic_barcordeamarillo"
         android:onClick="onClick"
         android:text=""
-        app:layout_constraintBottom_toBottomOf="@+id/mfto"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/layout_username"
+        app:layout_constraintEnd_toEndOf="@+id/textView3"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/mfto"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toEndOf="@+id/layout_username"
+        app:layout_constraintTop_toTopOf="@+id/layout_username" />
 
-    <EditText
-        android:id="@+id/mfto"
-        android:layout_width="200dp"
-        android:layout_height="36dp"
-        android:layout_alignBottom="@+id/mfto"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="92dp"
-        android:background="@drawable/rounded_cornerneutral"
-        android:ems="10"
-        android:hint="Manifiesto"
-        android:text="011800000071"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toStartOf="@+id/btnBr"
-        app:layout_constraintHorizontal_bias="0.687"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_username"
+        android:layout_width="199dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="64dp"
+        app:hintTextAppearance="@style/MyHintTextAmarillo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        tools:ignore="NotSibling" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+        <EditText
+            android:id="@+id/mfto"
+            android:layout_width="197dp"
+            android:layout_height="43dp"
+            android:layout_alignBottom="@+id/mfto"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:ems="10"
+            android:hint="Manifiesto"
+            android:textSize="20dp"
+            tools:ignore="NotSibling"
+            tools:layout_editor_absoluteX="30dp"
+            tools:layout_editor_absoluteY="246dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/btnEnviar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="272dp"
+        android:layout_width="141dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="76dp"
         android:background="@drawable/rounded_corneramarillo"
         android:onClick="onClick"
         android:text="Enviar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintHorizontal_bias="0.514"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnBr"
-        app:layout_constraintVertical_bias="0.429" />
+        app:layout_constraintTop_toBottomOf="@+id/layout_username"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView3"

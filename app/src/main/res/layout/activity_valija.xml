@@ -45,71 +45,56 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
+
     <Button
         android:id="@+id/btnBr"
         android:layout_width="51dp"
         android:layout_height="32dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginLeft="28dp"
-        android:layout_marginTop="57dp"
         android:background="@drawable/ic_barcorde"
         android:onClick="onClick"
         android:text=""
-        app:layout_constraintBottom_toBottomOf="@+id/txtValija"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.32"
-        app:layout_constraintStart_toEndOf="@+id/txtValija"
-        app:layout_constraintTop_toTopOf="@+id/txtValija"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintBottom_toBottomOf="@+id/layout_username"
+        app:layout_constraintEnd_toEndOf="@+id/textView8"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/layout_username"
+        app:layout_constraintTop_toTopOf="@+id/layout_username"
+        app:layout_constraintVertical_bias="0.583" />
 
     <Button
         android:id="@+id/btnCerrar"
         android:layout_width="153dp"
         android:layout_height="46dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginLeft="44dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginBottom="192dp"
-        android:background="@drawable/rounded_corners"
+        android:layout_marginTop="158dp"
+        android:layout_marginBottom="208dp"
+        android:background="@drawable/rounded_cornerverde"
         android:onClick="onClick"
         android:text="Cerrar Manifiesto"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtValija"
+        app:layout_constraintStart_toStartOf="@+id/layout_username"
+        app:layout_constraintTop_toBottomOf="@+id/textView8"
         app:layout_constraintVertical_bias="0.0" />
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/til_nombre"
-        android:layout_width="156dp"
-        android:layout_height="58dp"
-        tools:layout_editor_absoluteX="41dp"
-        tools:layout_editor_absoluteY="646dp"
-        tools:ignore="MissingConstraints">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_username"
+        android:layout_width="199dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="48dp"
+        app:hintTextAppearance="@style/MyHintText"
+        app:layout_constraintStart_toStartOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/textView8">
 
         <EditText
-            android:id="@+id/campo_nombre"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/hint_nombre"
-            android:inputType="text"
-            android:singleLine="true" />
-    </android.support.design.widget.TextInputLayout>
+            android:id="@+id/txtValija"
+            android:layout_width="197dp"
+            android:layout_height="43dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:hint="Valija"
+            android:textSize="18dp"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="427dp" />
 
-    <EditText
-        android:id="@+id/txtValija"
-        android:layout_width="207dp"
-        android:layout_height="32dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="44dp"
-        android:layout_marginLeft="44dp"
-        android:layout_marginTop="68dp"
-        android:background="@drawable/rounded_cornerneutral"
-        android:hint="Valija"
-        android:textSize="18dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnAsignar"
@@ -118,13 +103,14 @@
 
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
-        android:background="@drawable/rounded_corners"
+        android:layout_marginTop="158dp"
+        android:background="@drawable/rounded_cornerverde"
         android:onClick="onClick"
         android:text="Asignar"
         app:layout_constraintBottom_toBottomOf="@+id/btnCerrar"
+        app:layout_constraintEnd_toEndOf="@+id/btnBr"
         app:layout_constraintStart_toEndOf="@+id/btnCerrar"
-        app:layout_constraintTop_toTopOf="@+id/btnCerrar"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -200,6 +186,7 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
     <TextView
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
@@ -212,6 +199,8 @@
         app:layout_constraintHorizontal_bias="0.107"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

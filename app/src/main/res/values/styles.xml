@@ -15,6 +15,15 @@
     </style>
 
     <style name="MyHintText" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/VerdeScharff</item>
+    </style>
+    <style name="MyHintTextAmarillo" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/AmarilloScharff</item>
+    </style>
+    <style name="MyHintTextCeleste" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/CelesteScharff</item>
+    </style>
+    <style name="MyHintTextRosa" parent="TextAppearance.AppCompat.Small">
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 

@@ -129,7 +129,7 @@ public class ManifiestoAct extends AppCompatActivity {
             //--
             //mTvResultHeader.setText("Resultado");
 
-            Mfto.setText('0'+barcode.rawValue);
+            Mfto.setText(/*'0'+*/barcode.rawValue);
         }
     }
 
