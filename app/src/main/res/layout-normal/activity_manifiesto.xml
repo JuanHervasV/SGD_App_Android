@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/amarilloclaro"
     tools:context="com.notbytes.barcodereader.ManifiestoAct">
 
     <androidx.appcompat.widget.Toolbar
@@ -13,103 +12,88 @@
         android:layout_height="wrap_content"
         android:background="@color/AmarilloScharff"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" />
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="9dp"
-        android:layout_marginLeft="9dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="20dp"
         android:text="Escoger Manifiesto"
         android:textColor="@color/white"
-        android:textSize="25dp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="132dp"
-        android:layout_height="31dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="-1dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="366dp"
-        android:layout_toStartOf="@+id/mfto"
-        android:layout_toLeftOf="@+id/mfto"
-        android:text="Manifiesto"
-        android:textSize="20dp" />
+        android:textSize="19dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnBr"
-        android:layout_width="wrap_content"
-        android:layout_height="39dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginBottom="359dp"
-        android:layout_toEndOf="@+id/mfto"
-        android:layout_toRightOf="@+id/mfto"
-        android:drawableTop="@drawable/barcodesymbol"
+        android:layout_width="51dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginRight="80dp"
+        android:background="@drawable/ic_barcordeamarillo"
         android:onClick="onClick"
-        android:text="" />
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="@+id/mfto"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/mfto"
+        app:layout_constraintVertical_bias="0.0" />
 
     <EditText
         android:id="@+id/mfto"
-        android:layout_width="134dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btnEnviar"
-        android:layout_centerInParent="true"
-        android:layout_marginBottom="136dp"
+        android:layout_width="200dp"
+        android:layout_height="36dp"
+        android:layout_alignBottom="@+id/mfto"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="92dp"
         android:background="@drawable/rounded_cornerneutral"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="011800000077"
-        android:textSize="20dp" />
+        android:hint="Manifiesto"
+        android:text="011800000071"
+        android:textSize="20dp"
+        app:layout_constraintEnd_toStartOf="@+id/btnBr"
+        app:layout_constraintHorizontal_bias="0.687"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        tools:ignore="NotSibling" />
 
     <Button
         android:id="@+id/btnEnviar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="163dp"
-        android:layout_marginLeft="163dp"
-        android:layout_marginEnd="160dp"
-        android:layout_marginBottom="178dp"
-        android:background="@drawable/rounded_corners"
+        android:layout_marginBottom="272dp"
+        android:background="@drawable/rounded_corneramarillo"
         android:onClick="onClick"
-        android:text="Enviar" />
+        android:text="Enviar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnBr"
+        app:layout_constraintVertical_bias="0.429" />
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="341dp"
-        android:layout_height="61dp"
-        android:layout_above="@+id/mfto"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="183dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginBottom="137dp"
+        android:layout_width="301dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="72dp"
         android:text="Escriba o scanee su manifiesto a continuación: "
-        android:textSize="18dp" />
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.421"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
