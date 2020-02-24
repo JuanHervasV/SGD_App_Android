@@ -324,8 +324,8 @@ public class ValijaAct extends AppCompatActivity {
                 if(!response.isSuccessful()){
 
                     //------------------------------------------------------------------------------------------------------------------------
-                    Valija = findViewById(R.id.txtValija);
-                    final String Valijas = Valija.getText().toString();
+                    //Valija = findViewById(R.id.txtValija);
+                    //final String Valijas = Valija.getText().toString();
                     //Llamar datos ---------------------------------------
                     Bundle b = getIntent().getExtras();
                     final String Mfto = b.getString("Mfto");
@@ -336,7 +336,8 @@ public class ValijaAct extends AppCompatActivity {
                     final String CiuDes = b.getString("CiuDes");
                     final String Estado = b.getString("Estado");
                     //----------------------------------------------------
-                    ValijaGDNValidar valijaGDNValidar = new ValijaGDNValidar(""+Valijas);
+
+                    ValijaGDNValidar valijaGDNValidar = new ValijaGDNValidar(Valijas);
 
                     Call<ValijaGDNValidar> callu = jsonPlaceHolderApi.createPost(valijaGDNValidar);
                     callu.enqueue(new Callback<ValijaGDNValidar>() {
@@ -346,7 +347,6 @@ public class ValijaAct extends AppCompatActivity {
                                 Toast.makeText(ValijaAct.this, "No existe la valija", Toast.LENGTH_SHORT).show();
                                 return;
                             }
-
                             Valija = findViewById(R.id.txtValija);
                             final String Valijas = Valija.getText().toString();
                             //Llamar datos ---------------------------------------
@@ -427,7 +427,7 @@ public class ValijaAct extends AppCompatActivity {
                             c.putString("Estado", Estado);
                             c.putString("ValijaID", id);
                             i.putExtras(c);
-                            startActivity(i);
+                            //startActivity(i);
                         }
                         @Override
                         public void onFailure(Call<ValijaGDNValidar> call, Throwable t) {
@@ -521,7 +521,7 @@ public class ValijaAct extends AppCompatActivity {
                 Intent i = new Intent(ValijaAct.this, DespacharFinal.class);
                 Bundle c = new Bundle();
                 //c.putString("Estado", Estado);
-                //Enviar datos---------------------------------------------------
+                //Enviar datos----------------------------------------------------------------------
                 c.putString("Valijas", Estado);
                 c.putString("Mfto", Mfto);
                 c.putString("MftoAnio", MftoAnio);
@@ -532,7 +532,7 @@ public class ValijaAct extends AppCompatActivity {
                 c.putString("Estado", Estado);
                 i.putExtras(c);
                 startActivity(i);
-                //----------------------------------------------------------------
+                //----------------------------------------------------------------------------------
                 return;
             }
 

@@ -67,22 +67,6 @@ public class CerrarValijaAct extends AppCompatActivity {
             }
         });
 
-        Volver.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
-                    v.setBackgroundResource(R.drawable.rounded_cornerneutral);
-                    //v.setBackgroundColor(Color.parseColor("#9C9C9C"));
-                }
-
-                if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                    v.setBackgroundResource(R.drawable.rounded_cornersscharff);
-                    //v.setBackgroundColor(Color.parseColor("#FF7177"));
-                }
-                return false;
-            }
-        });
     }
 
     public void onClick(View v) {
@@ -90,9 +74,6 @@ public class CerrarValijaAct extends AppCompatActivity {
             case R.id.btnCerrar:
                 cerrarValija();
                 break;
-            case R.id.btnVolver:
-                Intent i = new Intent(CerrarValijaAct.this, GuiaAct.class);
-                startActivity(i);
         }
     }
 

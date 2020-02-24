@@ -5,13 +5,13 @@ public class ValijaGDNValidar {
     private String Codigo;
     private String Existe;
     private String ID;
-    private String codig;
+    private String codiGo;
     private String Usuario;
 
 
     public ValijaGDNValidar(String codigo){
 
-        codig = codigo;
+        codiGo = codigo;
 
     }
 

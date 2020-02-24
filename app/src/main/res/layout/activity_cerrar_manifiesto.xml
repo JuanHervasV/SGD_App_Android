@@ -36,58 +36,41 @@
 
     <TextView
         android:id="@+id/txtMfto"
-        android:layout_width="350dp"
+        android:layout_width="327dp"
         android:layout_height="66dp"
+        android:layout_marginTop="38dp"
         android:text="Manifiesto"
         android:textAlignment="center"
         android:textSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.275" />
+        app:layout_constraintEnd_toEndOf="@+id/txtTitulo"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/txtTitulo"
+        app:layout_constraintTop_toBottomOf="@+id/txtTitulo"
+        app:layout_constraintVertical_bias="0.058" />
 
     <Button
         android:id="@+id/btnCerrar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="75dp"
+        android:layout_marginBottom="384dp"
         android:background="@drawable/rounded_corners"
         android:onClick="onClick"
         android:text="Cerrar Manifiesto"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabla"
-        app:layout_constraintVertical_bias="0.108" />
-
-    <Button
-        android:id="@+id/btnVolver"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="23dp"
-        android:layout_marginBottom="60dp"
-        android:background="@drawable/rounded_corners"
-        android:onClick="onClick"
-        android:text="Volver"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCerrar"
-        app:layout_constraintVertical_bias="0.094" />
+        app:layout_constraintTop_toBottomOf="@+id/txtMfto" />
 
     <TableLayout
         android:id="@+id/tabla"
         android:layout_width="292dp"
         android:layout_height="79dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.579"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtMfto"
-        app:layout_constraintVertical_bias="0.076">
+        tools:layout_editor_absoluteY="528dp">
 
         <TableRow
             android:layout_width="match_parent"

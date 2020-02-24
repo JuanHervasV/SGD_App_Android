@@ -59,8 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="26949148"
+            android:hint="Guia"
             android:textSize="18dp"
             android:visibility="visible"
             tools:layout_editor_absoluteX="130dp"
@@ -70,16 +69,14 @@
 
     <ListView
         android:id="@+id/listview"
-        android:layout_width="253dp"
-        android:layout_height="232dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginLeft="48dp"
-        android:layout_marginTop="30dp"
+        android:layout_width="312dp"
+        android:layout_height="156dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/rounded_cornerneutral"
         android:scrollbarSize="12dp"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnAgregar" />
 
@@ -87,16 +84,15 @@
         android:id="@+id/btnCerrar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:background="@drawable/rounded_cornerceleste"
         android:onClick="onClick"
         android:text="Cerrar valija"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/listview"
-        app:layout_constraintVertical_bias="0.318" />
+        app:layout_constraintVertical_bias="0.14" />
 
     <Button
         android:id="@+id/btnAgregar"
@@ -107,6 +103,7 @@
         android:onClick="onClick"
         android:text="Agregar"
         android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/fm_container"
         app:layout_constraintEnd_toEndOf="@+id/fm_container"
         app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="@+id/fm_container"
@@ -114,14 +111,13 @@
 
     <Button
         android:id="@+id/btnTipear"
-        android:layout_width="43dp"
-        android:layout_height="29dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="61dp"
-        android:background="@drawable/letras"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/lapizceleste"
         android:onClick="onClick"
-        android:text=""
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView14" />
 
@@ -129,30 +125,26 @@
         android:id="@+id/btnBr"
         android:layout_width="43dp"
         android:layout_height="29dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="372dp"
+        android:layout_marginTop="28dp"
         android:background="@drawable/ic_barcordeceleste"
         android:onClick="onClick"
         android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/btnTipear"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/btnTipear"
-        app:layout_constraintTop_toBottomOf="@+id/btnTipear"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/btnTipear" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
-        android:layout_width="363dp"
+        android:layout_width="369dp"
         android:layout_height="122dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/rounded_cornerneutral"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.333"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintEnd_toEndOf="@+id/txtMensaje"
+        app:layout_constraintHorizontal_bias="0.437"
+        app:layout_constraintStart_toStartOf="@+id/txtMensaje"
+        app:layout_constraintTop_toBottomOf="@+id/txtMensaje">
 
         <TextView
             android:id="@+id/textView12"
@@ -210,10 +202,10 @@
 
     <FrameLayout
         android:id="@+id/fm_container"
-        android:layout_width="342dp"
-        android:layout_height="146dp"
+        android:layout_width="336dp"
+        android:layout_height="137dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/rounded_cornerneutral"
+        android:background="@drawable/rounded_cornercero"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -224,8 +216,9 @@
 
     <TextView
         android:id="@+id/txtMensaje"
-        android:layout_width="361dp"
-        android:layout_height="42dp"
+        android:layout_width="369dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
         android:text=""
         android:textAlignment="center"
         android:textColor="@color/white"

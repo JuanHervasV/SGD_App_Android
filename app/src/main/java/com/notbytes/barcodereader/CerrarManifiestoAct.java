@@ -73,22 +73,6 @@ public class CerrarManifiestoAct extends AppCompatActivity {
             }
         });
 
-        Volver.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                if (event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE) {
-                    v.setBackgroundResource(R.drawable.rounded_cornerneutral);
-                    //v.setBackgroundColor(Color.parseColor("#9C9C9C"));
-                }
-
-                if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                    v.setBackgroundResource(R.drawable.rounded_cornersscharff);
-                    //v.setBackgroundColor(Color.parseColor("#FF7177"));
-                }
-                return false;
-            }
-        });
     }
 
     public void RecuperarDatos(){
@@ -106,7 +90,7 @@ public class CerrarManifiestoAct extends AppCompatActivity {
 
         Manifiesto = findViewById(R.id.txtMfto);
         //Manifiesto.setText(Mfto);
-        Manifiesto.setText("¿Desea cerrar el manifiesto "+Mfto);
+        Manifiesto.setText("¿Desea cerrar el manifiesto "+Mfto+"?");
         /*Valija = findViewById(R.id.txtValija);
         Valija.append(""+Valijas+"?");
         Guia = findViewById(R.id.txtGuia);*/
@@ -139,12 +123,6 @@ public class CerrarManifiestoAct extends AppCompatActivity {
     public void onClick(View view) {
 
         switch (view.getId()) {
-            case R.id.btnVolver:
-                ValijasMftos();
-                //ProcesarDatos();
-                //Intent i = new Intent(CerrarManifiestoAct.this, CerrarValijaAct.class);
-                //startActivity(i);
-                break;
             case R.id.btnCerrar:
                 CerrarManifiesto();
                 break;

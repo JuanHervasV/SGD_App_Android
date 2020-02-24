@@ -167,7 +167,7 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
 
     private void cerrarBarCode() {
         BarcodeReaderFragment readerFragment = BarcodeReaderFragment.newInstance(false, false, View.GONE);
-        readerFragment.setListener(this);
+        readerFragment.setListener(null);
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fm_container, readerFragment);
@@ -181,8 +181,7 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
         Manifiesto = findViewById(R.id.txtMfto);
         Valija = findViewById(R.id.txtValija);
         final String Codi = Guia.getText().toString();
-
-        final GuiaSuc valijaValidar = new GuiaSuc(""+Codi);
+        final GuiaSuc valijaValidar = new GuiaSuc(Codi);
         Call<GuiaSuc> cal = jsonPlaceHolderApi.createPost(valijaValidar);
         cal.enqueue(new Callback<GuiaSuc>() {
             @Override
@@ -247,8 +246,8 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
                             final String Gui = Guio.getText().toString();
                             Integer ValijID = Integer.parseInt(ValijaID);
 
-                            Manifiesto.setText(Mfto+" "+MftoAnio+" "+MftoNro+" "+Suc+" "+Gui);
-                            Valija.setText(Valijas);
+                            //Manifiesto.setText(Mfto+" "+MftoAnio+" "+MftoNro+" "+Suc+" "+Gui);
+                            //Valija.setText(Valijas);
 
                             AdicionarGuias adicionarGuias = new AdicionarGuias(1234/*+MftoAnio*/,ValijID/*+MftoNro*/,Gui/*+Suc*/,"12345678");
                             Call<AdicionarGuias> calli = jsonPlaceHolderApi.createPost(adicionarGuias);
@@ -397,8 +396,8 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
                             final String Gui = Guio.getText().toString();
                             Integer ValijID = Integer.parseInt(ValijaID);
 
-                            Manifiesto.setText(Mfto+" "+MftoAnio+" "+MftoNro+" "+Suc+" "+Bardcodigo);
-                            Valija.setText(Valijas);
+                            //Manifiesto.setText(Mfto+" "+MftoAnio+" "+MftoNro+" "+Suc+" "+Bardcodigo);
+                            //Valija.setText(Valijas);
 
                             AdicionarGuias adicionarGuias = new AdicionarGuias(1234/*+MftoAnio*/,ValijID/*+MftoNro*/,Bardcodigo/*+Suc*/,"12345678");
                             Call<AdicionarGuias> calli = jsonPlaceHolderApi.createPost(adicionarGuias);
