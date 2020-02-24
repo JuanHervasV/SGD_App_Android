@@ -199,16 +199,17 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
                 String Mft_Ano = postsResponse.mft_ano();
                 String Mft_Nro = postsResponse.mft_nro();
                 String Suc_Code = postsResponse.suc_code();
-                String Guia_detid = postsResponse.guia_detid();
+                String Guia_det_nro_ref = postsResponse.guia_nro_ref();
+                String Guia_det_id = postsResponse.guia_det_id();
 
-                ValidarGuia validarGuia = new ValidarGuia("" + Mft_Ano/*+MftoAnio*/, ""+Mft_Nro, ""+Suc_Code/*+Suc*/, ""+Guia_detid);
+                ValidarGuia validarGuia = new ValidarGuia(""+Mft_Ano, ""+Mft_Nro, ""+Suc_Code, ""+Codi);
                 Call<ValidarGuia> cal = jsonPlaceHolderApi.createPost(validarGuia);
                 cal.enqueue(new Callback<ValidarGuia>() {
                     @Override
                     public void onResponse(Call<ValidarGuia> call, Response<ValidarGuia> response) {
                         if (!response.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), "Guia no correcta", Toast.LENGTH_SHORT).show();
-                            Mensaje.setText("La guia "+Codi+" ya pertenece a la valija ");
+                            Mensaje.setText("La guia "+Codi+" ya pertenece a la valija.");
                             Mensaje.setBackgroundColor(Color.parseColor("#ff0000"));
                             mp2.start();
                             return;
@@ -347,9 +348,10 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
                 String Mft_Ano = postsResponse.mft_ano();
                 String Mft_Nro = postsResponse.mft_nro();
                 String Suc_Code = postsResponse.suc_code();
-                String Guia_detid = postsResponse.guia_detid();
+                String Guia_det_nro_ref = postsResponse.guia_nro_ref();
+                String Guia_det_id = postsResponse.guia_det_id();
 
-                ValidarGuia validarGuia = new ValidarGuia("" + Mft_Ano, ""+Mft_Nro, ""+Suc_Code/*+Suc*/, ""+Guia_detid);
+                ValidarGuia validarGuia = new ValidarGuia("" + Mft_Ano, ""+Mft_Nro, ""+Suc_Code/*+Suc*/, ""+Bardcodigo);
                 Call<ValidarGuia> cal = jsonPlaceHolderApi.createPost(validarGuia);
                 cal.enqueue(new Callback<ValidarGuia>() {
                     @Override
@@ -486,74 +488,6 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
 
     public void onCameraPermissionDenied() {
         Toast.makeText(this, "Permiso de cámara denegado", Toast.LENGTH_LONG).show();
-    }
-
-
-    public void AgregarGuia(){
-    }
-
-    private void validarGuia(){
-
-        Guia = findViewById(R.id.txtGuia);
-        Mensaje = findViewById(R.id.txtMensaje);
-        Manifiesto = findViewById(R.id.txtMfto);
-        Valija = findViewById(R.id.txtValija);
-
-        final String Gui = Guia.getText().toString();
-        final GuiaSuc valijaValidar = new GuiaSuc(""+Gui);
-        Call<GuiaSuc> cal = jsonPlaceHolderApi.createPost(valijaValidar);
-        cal.enqueue(new Callback<GuiaSuc>() {
-            @Override
-            public void onResponse(Call<GuiaSuc> call, Response<GuiaSuc> response) {
-                if(!response.isSuccessful()){
-                    Toast.makeText(getApplicationContext(),"Guia no correct",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                GuiaSuc postsResponse = response.body();
-
-                String Mft_Ano = postsResponse.mft_ano();
-                String Mft_Nro = postsResponse.mft_nro();
-                String Suc_Code = postsResponse.suc_code();
-                String Guia_detid= postsResponse.guia_detid();
-
-                ValidarGuia validarGuia = new ValidarGuia(""+Mft_Ano/*+MftoAnio*/,""+Mft_Nro,""+Suc_Code/*+Suc*/,""+Guia_detid);
-                Call<ValidarGuia> cal = jsonPlaceHolderApi.createPost(validarGuia);
-                cal.enqueue(new Callback<ValidarGuia>() {
-                    @Override
-                    public void onResponse(Call<ValidarGuia> call, Response<ValidarGuia> response) {
-                        ValidarGuia postsResponse = response.body();
-                        if(!response.isSuccessful()){
-                            //Mensaje.setText("");
-                            Toast.makeText(getApplicationContext(),"Guia no correcta",Toast.LENGTH_SHORT).show();
-                            //String Estado = postsResponse.estado();
-                            //Mensaje.setText("La guia "+Gui+" ya pertenece a la valija "+Estado);
-                            return;
-                        }
-                        String Estado = postsResponse.estado();
-                        String Guia = postsResponse.Guias();
-                        //Toast.makeText(getApplicationContext(),"Guia validada correctamente",Toast.LENGTH_SHORT).show();
-
-                        Mensaje.setText("Guia correcta"+Gui);
-                        Mensaje.setBackgroundColor(Color.parseColor("#008f39"));
-
-                        return;
-                    }
-                    @Override
-                    public void onFailure(Call<ValidarGuia> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                });
-
-                //Toast.makeText(getApplicationContext(),"Guia validada correctamente "+Suc_Code,Toast.LENGTH_SHORT).show();
-                return;
-            }
-            @Override
-            public void onFailure(Call<GuiaSuc> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
-                return;
-            }
-        });
     }
 
     private void launchBarCodeActivity() {
