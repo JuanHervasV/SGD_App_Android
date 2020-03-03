@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.google.android.gms.vision.barcode.Barcode;
 import com.notbytes.barcode_reader.BarcodeReaderActivity;
 import com.notbytes.barcode_reader.BarcodeReaderFragment;
 import com.notbytes.barcodereader.Model.AdicionarGuias;
+import com.notbytes.barcodereader.Model.AgregarIncidencia;
 import com.notbytes.barcodereader.Model.GuiaSuc;
 import com.notbytes.barcodereader.Model.ValidarGuia;
 import com.notbytes.barcodereader.io.APIRetrofitInterface;
@@ -63,6 +65,12 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
         setContentView(R.layout.activity_guia);
         mp2 = MediaPlayer.create(this, R.raw.wrong);
         mp = MediaPlayer.create(this, R.raw.beeps);
+
+        Guia = findViewById(R.id.txtGuia);
+        Guia.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
+
+        //Contador elementos
+        contarelementos = findViewById(R.id.contarelementos);
 
         //Lista------------------------------------------------------------------------------------------
         listView= findViewById(R.id.listview);
@@ -105,7 +113,7 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
                 }
 
                 if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                    v.setBackgroundResource(R.drawable.rounded_corners);
+                    v.setBackgroundResource(R.drawable.rounded_cornerceleste);
                 }
                 return false;
             }
@@ -120,7 +128,7 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
                 }
 
                 if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                    v.setBackgroundResource(R.drawable.rounded_corners);
+                    v.setBackgroundResource(R.drawable.rounded_cornerceleste);
                 }
                 return false;
             }
@@ -176,9 +184,23 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
 
     private void AdicionarGuia(){
 
+        //Llamar datos ---------------------------------------------------------
+        Bundle b = getIntent().getExtras();
+        final String Valijas = b.getString("Valijas");
+        String Mfto = b.getString("Mfto");
+        final String MftoAnio = b.getString("MftoAnio");
+        final String MftoNro = b.getString("MftoNro");
+        final String Suc = b.getString("Suc");
+        final String CiuDesp = b.getString("CiuDes");
+        final String ValijaID = b.getString("ValijaID");
+        final String usuario = b.getString("usuario");
+        final String password = b.getString("password");
+        final String CodigoUsuario = b.getString("codigousuario");
+        //----------------------------------------------------------------------
+
         Guia = findViewById(R.id.txtGuia);
         Mensaje = findViewById(R.id.txtMensaje);
-        Manifiesto = findViewById(R.id.txtMfto);
+        //Manifiesto = findViewById(R.id.txtMfto);
         Valija = findViewById(R.id.txtValija);
         final String Codi = Guia.getText().toString();
         final GuiaSuc valijaValidar = new GuiaSuc(Codi);
@@ -196,118 +218,308 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
                 }
                 GuiaSuc postsResponse = response.body();
 
-                String Mft_Ano = postsResponse.mft_ano();
-                String Mft_Nro = postsResponse.mft_nro();
-                String Suc_Code = postsResponse.suc_code();
-                String Guia_det_nro_ref = postsResponse.guia_nro_ref();
-                String Guia_det_id = postsResponse.guia_det_id();
+                final String Mft_Ano = postsResponse.mft_ano();
+                final String Mft_Nro = postsResponse.mft_nro();
+                final String Suc_Code = postsResponse.suc_code();
+                final String Guia_det_nro_ref = postsResponse.guia_nro_ref();
+                final String Guia_det_id = postsResponse.guia_det_id();
+                final String Guia_det_con_ciu = postsResponse.guia_det_con_ciu();
 
-                ValidarGuia validarGuia = new ValidarGuia(""+Mft_Ano, ""+Mft_Nro, ""+Suc_Code, ""+Codi);
-                Call<ValidarGuia> cal = jsonPlaceHolderApi.createPost(validarGuia);
-                cal.enqueue(new Callback<ValidarGuia>() {
-                    @Override
-                    public void onResponse(Call<ValidarGuia> call, Response<ValidarGuia> response) {
-                        if (!response.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Guia no correcta", Toast.LENGTH_SHORT).show();
-                            Mensaje.setText("La guia "+Codi+" ya pertenece a la valija.");
-                            Mensaje.setBackgroundColor(Color.parseColor("#ff0000"));
-                            mp2.start();
+                String CiuDespF = CiuDesp.toString();
+                String CiuDespFi = CiuDespF.replace(" ","");
+                String Guia_det_con_ciuF = Guia_det_con_ciu.toString();
+                String Guia_det_con_ciuFi = Guia_det_con_ciuF.replace(" ","");
+
+                if(Mft_Nro.length()<2) {
+
+                    //Aqui se registra la incidencia ~
+                    AgregarIncidencia agregarIncidencia = new AgregarIncidencia("" + Guia_det_nro_ref, "" + Valijas, "" + usuario, "3602", ""+Suc+" - "+MftoAnio+ " - "+ MftoNro);
+                    Call<AgregarIncidencia> callm = jsonPlaceHolderApi.createPost(agregarIncidencia);
+                    callm.enqueue(new Callback<AgregarIncidencia>() {
+                        @Override
+                        public void onResponse(Call<AgregarIncidencia> call, Response<AgregarIncidencia> response) {
+                            if (!response.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), "Incidencia no registrada", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                            AgregarIncidencia postsResponse = response.body();
+
+                            String estado = postsResponse.Estado();
+                            String mensaje = postsResponse.Mensaje();
+                            Toast.makeText(getApplicationContext(), "Incidencia registrada.", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<AgregarIncidencia> call, Throwable t) {
+                            Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
+                            //Titulo.setText(t.getMessage());
                             return;
                         }
-                        ValidarGuia postsResponse = response.body();
+                    });
 
-                        String Estado = postsResponse.estado();
-                        String Guia = postsResponse.Guias();
-                        int Est = Integer.parseInt(Estado);
-                        //Toast.makeText(getApplicationContext(), "Guia validada correctamente", Toast.LENGTH_SHORT).show();
-                        if (Est != 0){
+                    Mensaje.setText("La guia " + Codi + " no tiene manifiesto.");
+                    Mensaje.setBackgroundColor(Color.parseColor("#FF7177"));
+                    Mensaje.setTextSize(15);
+                    mp2.start();
+                    return;
 
-                            Toast.makeText(getApplicationContext(), "La guia ya pertenece a la valija "+Estado, Toast.LENGTH_SHORT);
-                            Mensaje.setText("La guia ya pertenece a la valija "+Estado);
-                            Mensaje.setBackgroundColor(Color.parseColor("#FF0000"));
-                            mp2.start();
+                }
 
-                        }
-                        else{
+                    else {
 
-                            Guio = findViewById(R.id.txtGuia);
-                            Mensaje = findViewById(R.id.txtMensaje);
-                            Manifiesto = findViewById(R.id.txtMfto);
-                            Valija = findViewById(R.id.txtValija);
-                            //Llamar datos ---------------------------------------------------------
-                            Bundle b = getIntent().getExtras();
-                            String Valijas = b.getString("Valijas");
-                            String Mfto = b.getString("Mfto");
-                            String MftoAnio = b.getString("MftoAnio");
-                            String MftoNro = b.getString("MftoNro");
-                            String Suc = b.getString("Suc");
-                            String ValijaID = b.getString("ValijaID");
-                            //----------------------------------------------------------------------
+                    if (MftoNro.equals(Mft_Nro)) {
 
-                            final String Gui = Guio.getText().toString();
-                            Integer ValijID = Integer.parseInt(ValijaID);
-
-                            //Manifiesto.setText(Mfto+" "+MftoAnio+" "+MftoNro+" "+Suc+" "+Gui);
-                            //Valija.setText(Valijas);
-
-                            AdicionarGuias adicionarGuias = new AdicionarGuias(1234/*+MftoAnio*/,ValijID/*+MftoNro*/,Gui/*+Suc*/,"12345678");
-                            Call<AdicionarGuias> calli = jsonPlaceHolderApi.createPost(adicionarGuias);
-                            calli.enqueue(new Callback<AdicionarGuias>() {
+                        if (CiuDespFi.equalsIgnoreCase(Guia_det_con_ciuFi)) {
+                            ValidarGuia validarGuia = new ValidarGuia("" + Mft_Ano, "" + Mft_Nro, "" + Suc_Code, "" + Codi);
+                            Call<ValidarGuia> cal = jsonPlaceHolderApi.createPost(validarGuia);
+                            cal.enqueue(new Callback<ValidarGuia>() {
                                 @Override
-                                public void onResponse(Call<AdicionarGuias> call, Response<AdicionarGuias> response) {
-                                    if(!response.isSuccessful()){
-                                        Mensaje.setText("La guia "+Gui+" no es correcta ");
-                                        Mensaje.setBackgroundColor(Color.parseColor("#ff0000"));
-                                        Toast.makeText(getApplicationContext(),"Guia no correcta",Toast.LENGTH_SHORT).show();
+                                public void onResponse(Call<ValidarGuia> call, Response<ValidarGuia> response) {
+                                    if (!response.isSuccessful()) {
+
+                                        //Aqui se registra la incidencia ~
+                                        AgregarIncidencia agregarIncidencia = new AgregarIncidencia("" + Guia_det_nro_ref, "" + Valijas, "" + usuario, "1", ""+Suc_Code+" - "+Mft_Ano+ " - "+ Mft_Nro);
+                                        Call<AgregarIncidencia> callm = jsonPlaceHolderApi.createPost(agregarIncidencia);
+                                        callm.enqueue(new Callback<AgregarIncidencia>() {
+                                            @Override
+                                            public void onResponse(Call<AgregarIncidencia> call, Response<AgregarIncidencia> response) {
+                                                if (!response.isSuccessful()) {
+                                                    Toast.makeText(getApplicationContext(), "Incidencia no registrada", Toast.LENGTH_LONG).show();
+                                                    return;
+                                                }
+                                                AgregarIncidencia postsResponse = response.body();
+
+                                                String estado = postsResponse.Estado();
+                                                String mensaje = postsResponse.Mensaje();
+                                                Toast.makeText(getApplicationContext(), "Incidencia registrada.", Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<AgregarIncidencia> call, Throwable t) {
+                                                Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
+                                                //Titulo.setText(t.getMessage());
+                                                return;
+                                            }
+                                        });
+
+                                        //Toast.makeText(getApplicationContext(), "Guia no correcta", Toast.LENGTH_SHORT).show();
+                                        Mensaje.setText("La guia " + Codi + " no existe.");
+                                        Mensaje.setBackgroundColor(Color.parseColor("#FF7177"));
+
+                                        mp2.start();
                                         return;
                                     }
-                                    AdicionarGuias postsResponse = response.body();
+                                    ValidarGuia postsResponse = response.body();
 
-                                    String estado = postsResponse.Estado();
-                                    String mensaje = postsResponse.Mensaje();
-                                    if (estado!="true"){
-                                        Mensaje.setText("La guia "+Gui+" no es correcta, pertenece a la valija "+estado);
-                                        Mensaje.setBackgroundColor(Color.parseColor("#ff0000"));
-                                        Toast.makeText(getApplicationContext(),"Guia no correcta",Toast.LENGTH_SHORT).show();
-                                        mp2.start();
+                                    String Estado = postsResponse.estado();
+                                    String Guia = postsResponse.Guias();
+                                    String Codigo = postsResponse.codigo();
+
+                                    int Est = Integer.parseInt(Estado);
+                                    //Toast.makeText(getApplicationContext(), "Guia validada correctamente", Toast.LENGTH_SHORT).show();
+                                    if (Est != 0) {
+
+                                        if (Codigo.equals(Valijas)) {
+
+                                            //Toast.makeText(getApplicationContext(), "La guia ya está asignada a la valija.", Toast.LENGTH_SHORT);
+                                            Mensaje.setText("La guia ya está asignada en esta misma valija.");
+                                            Mensaje.setBackgroundColor(Color.parseColor("#FF7177"));
+                                            Mensaje.setTextSize(16);
+                                            mp2.start();
+
+                                        } else {
+                                            //Toast.makeText(getApplicationContext(), "La guia ya está asignada a la valija.", Toast.LENGTH_SHORT);
+                                            Mensaje.setText("La guia está asignada a la valija " + Codigo + ".");
+                                            Mensaje.setBackgroundColor(Color.parseColor("#FF7177"));
+                                            Mensaje.setTextSize(16);
+                                            mp2.start();
+
+                                        }
+
+                                    } else {
+
+                                        Guio = findViewById(R.id.txtGuia);
+                                        Mensaje = findViewById(R.id.txtMensaje);
+                                        //Manifiesto = findViewById(R.id.txtMfto);
+                                        Valija = findViewById(R.id.txtValija);
+                                        //Llamar datos ---------------------------------------------------------
+                                        Bundle b = getIntent().getExtras();
+                                        final String Valijas = b.getString("Valijas");
+                                        String Mfto = b.getString("Mfto");
+                                        String MftoAnio = b.getString("MftoAnio");
+                                        String MftoNro = b.getString("MftoNro");
+                                        String Suc = b.getString("Suc");
+                                        final String ValijaID = b.getString("ValijaID");
+                                        //----------------------------------------------------------------------
+
+                                        final String Gui = Guio.getText().toString();
+                                        Integer ValijID = Integer.parseInt(ValijaID);
+
+
+                                        //Manifiesto.setText(Mfto+" "+MftoAnio+" "+MftoNro+" "+Suc+" "+Gui);
+                                        //Valija.setText(Valijas);
+
+                                        AdicionarGuias adicionarGuias = new AdicionarGuias(1234, ValijID, "" + Guia_det_id, "" + CodigoUsuario, "" + Gui);
+                                        Call<AdicionarGuias> calli = jsonPlaceHolderApi.createPost(adicionarGuias);
+                                        calli.enqueue(new Callback<AdicionarGuias>() {
+                                            @Override
+                                            public void onResponse(Call<AdicionarGuias> call, Response<AdicionarGuias> response) {
+                                                if (!response.isSuccessful()) {
+                                                    Mensaje.setText("La guia " + Gui + " no es correcta ");
+                                                    Mensaje.setBackgroundColor(Color.parseColor("#FF7177"));
+                                                    Toast.makeText(getApplicationContext(), "Guia no correcta", Toast.LENGTH_SHORT).show();
+                                                    return;
+                                                }
+                                                AdicionarGuias postsResponse = response.body();
+
+                                                String estado = postsResponse.Estado();
+                                                String mensaje = postsResponse.Mensaje();
+
+                                                if (estado.equals("false")) {
+
+                                                    Mensaje.setText("La guia " + Gui + " no es correcta, pertenece a la valija " + estado);
+                                                    Mensaje.setBackgroundColor(Color.parseColor("#FF7177"));
+                                                    Toast.makeText(getApplicationContext(), "Guia no correcta", Toast.LENGTH_SHORT).show();
+                                                    mp2.start();
+                                                } else {
+
+                                                    //Aqui se registra la incidencia ~
+                                                    AgregarIncidencia agregarIncidencia = new AgregarIncidencia("" + Guia_det_nro_ref, "" + Valijas, "" + usuario, "3603", "" + Mft_Nro);
+                                                    Call<AgregarIncidencia> callm = jsonPlaceHolderApi.createPost(agregarIncidencia);
+                                                    callm.enqueue(new Callback<AgregarIncidencia>() {
+                                                        @Override
+                                                        public void onResponse(Call<AgregarIncidencia> call, Response<AgregarIncidencia> response) {
+                                                            if (!response.isSuccessful()) {
+                                                                Toast.makeText(getApplicationContext(), "Incidencia no registrada", Toast.LENGTH_LONG).show();
+                                                                return;
+                                                            }
+                                                            AgregarIncidencia postsResponse = response.body();
+
+                                                            String estado = postsResponse.Estado();
+                                                            String mensaje = postsResponse.Mensaje();
+                                                            Toast.makeText(getApplicationContext(), "Incidencia registrada.", Toast.LENGTH_SHORT).show();
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(Call<AgregarIncidencia> call, Throwable t) {
+                                                            Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
+                                                            //Titulo.setText(t.getMessage());
+                                                            return;
+                                                        }
+                                                    });
+
+                                                    arrayList.add("" + Gui);
+                                                    HashSet<String> hashSet = new HashSet<String>();
+                                                    hashSet.addAll(arrayList);
+                                                    arrayList.clear();
+                                                    arrayList.addAll(hashSet);
+                                                    adapter.notifyDataSetChanged();
+                                                    Toast.makeText(getApplicationContext(), "Guia añadida correctamente", Toast.LENGTH_SHORT).show();
+                                                    Mensaje.setTextSize(15);
+                                                    Mensaje.setText("La guia " + Gui + " fue añadida correctamente ");
+                                                    Mensaje.setBackgroundColor(Color.parseColor("#008f39"));
+                                                    //Contar elementos del spinner ~
+                                                    int count = listView.getAdapter().getCount();
+                                                    int ctf= totalelementoslist+count;
+                                                    contarelementos.setText(""+count);
+                                                    //---
+                                                    Guio.setText("");
+                                                    mp.start();
+
+                                                }
+
+                                                //Mensaje.append("" + estado);
+                                                return;
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<AdicionarGuias> call, Throwable t) {
+                                                Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
+                                                return;
+                                            }
+                                        });
+                                        //--
                                     }
-                                    else{
-                                        arrayList.add(""+Gui);
-                                        HashSet<String> hashSet = new HashSet<String>();
-                                        hashSet.addAll(arrayList);
-                                        arrayList.clear();
-                                        arrayList.addAll(hashSet);
-                                        adapter.notifyDataSetChanged();
-                                        Toast.makeText(getApplicationContext(),"Guia añadida correctamente",Toast.LENGTH_SHORT).show();
-                                        Mensaje.setTextSize(15);
-                                        Mensaje.setText("La guia "+Gui+" fue añadida correctamente ");
-                                        Mensaje.setBackgroundColor(Color.parseColor("#008f39"));
-                                        mp.start();
 
-                                    }
-
-                                    //Mensaje.append("" + estado);
                                     return;
                                 }
 
                                 @Override
-                                public void onFailure(Call<AdicionarGuias> call, Throwable t) {
+                                public void onFailure(Call<ValidarGuia> call, Throwable t) {
                                     Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
                                     return;
                                 }
                             });
-                            //--
                         }
+                        else {
+                            //Aqui se registra la incidencia ~
+                            AgregarIncidencia agregarIncidencia = new AgregarIncidencia("" + Guia_det_nro_ref, "" + Valijas, "" + usuario, "1", ""+Suc_Code+" - "+Mft_Ano+ " - "+ Mft_Nro);
+                            Call<AgregarIncidencia> callm = jsonPlaceHolderApi.createPost(agregarIncidencia);
+                            callm.enqueue(new Callback<AgregarIncidencia>() {
+                                @Override
+                                public void onResponse(Call<AgregarIncidencia> call, Response<AgregarIncidencia> response) {
+                                    if (!response.isSuccessful()) {
+                                        Toast.makeText(getApplicationContext(), "Incidencia no registrada", Toast.LENGTH_LONG).show();
+                                        return;
+                                    }
+                                    AgregarIncidencia postsResponse = response.body();
+
+                                    String estado = postsResponse.Estado();
+                                    String mensaje = postsResponse.Mensaje();
+                                    Toast.makeText(getApplicationContext(), "Incidencia registrada.", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onFailure(Call<AgregarIncidencia> call, Throwable t) {
+                                    Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
+                                    //Titulo.setText(t.getMessage());
+                                    return;
+                                }
+                            });
+                            //Toast.makeText(getApplicationContext(), "Guia no correct", Toast.LENGTH_SHORT).show();
+                            Mensaje.setText("La guia " + Codi + " pertenece al manifiesto " + Mft_Ano + "-" + Mft_Nro + ".");
+                            Mensaje.setBackgroundColor(Color.parseColor("#FF7177"));
+                            Mensaje.setTextSize(13);
+                            mp2.start();
+                            return;
+                        }
+                    }
+                    else{
+                        //Toast.makeText(getApplicationContext(), "La guia pertenece al manifiesto "+Mft_Nro, Toast.LENGTH_LONG).show();
+                        //Aqui se registra la incidencia ~
+                        AgregarIncidencia agregarIncidencia = new AgregarIncidencia("" + Guia_det_nro_ref, "" + Valijas, "" + usuario, "3602", ""+Suc_Code+" - "+Mft_Ano+ " - "+ Mft_Nro);
+                        Call<AgregarIncidencia> callm = jsonPlaceHolderApi.createPost(agregarIncidencia);
+                        callm.enqueue(new Callback<AgregarIncidencia>() {
+                            @Override
+                            public void onResponse(Call<AgregarIncidencia> call, Response<AgregarIncidencia> response) {
+                                if (!response.isSuccessful()) {
+                                    Toast.makeText(getApplicationContext(), "Incidencia no registrada", Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+                                AgregarIncidencia postsResponse = response.body();
+
+                                String estado = postsResponse.Estado();
+                                String mensaje = postsResponse.Mensaje();
+                                Toast.makeText(getApplicationContext(), "Incidencia registrada.", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<AgregarIncidencia> call, Throwable t) {
+                                Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
+                                //Titulo.setText(t.getMessage());
+                                return;
+                            }
+                        });
+
+                        Mensaje.setText("La guia "+Codi+" pertenece al manifiesto " + Mft_Ano + "-" + Mft_Nro + ".");
+                        Mensaje.setBackgroundColor(Color.parseColor("#FF7177"));
+                        Mensaje.setTextSize(13);
+                        mp2.start();
 
                         return;
                     }
 
-                    @Override
-                    public void onFailure(Call<ValidarGuia> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                });
+                }
 
                 return;
             }
@@ -322,21 +534,32 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
 
     public void onScanned(final Barcode barcode) {
 
+        //Llamar datos ---------------------------------------------------------
+        Bundle b = getIntent().getExtras();
+        final String Valijas = b.getString("Valijas");
+        String Mfto = b.getString("Mfto");
+        final String MftoAnio = b.getString("MftoAnio");
+        final String MftoNro = b.getString("MftoNro");
+        final String Suc = b.getString("Suc");
+        final String CiuDesp = b.getString("CiuDes");
+        final String ValijaID = b.getString("ValijaID");
+        final String usuario = b.getString("usuario");
+        final String password = b.getString("password");
+        final String CodigoUsuario = b.getString("codigousuario");
+        //----------------------------------------------------------------------
+
         Guia = findViewById(R.id.txtGuia);
         Mensaje = findViewById(R.id.txtMensaje);
-        Manifiesto = findViewById(R.id.txtMfto);
+        //Manifiesto = findViewById(R.id.txtMfto);
         Valija = findViewById(R.id.txtValija);
         final String Bardcodigo = barcode.rawValue;
-        final String Codi = Guia.getText().toString();
-
-        //final String Gui = Guia.getText().toString();
-        final GuiaSuc valijaValidar = new GuiaSuc(""+Bardcodigo);
+        final GuiaSuc valijaValidar = new GuiaSuc(Bardcodigo);
         Call<GuiaSuc> cal = jsonPlaceHolderApi.createPost(valijaValidar);
         cal.enqueue(new Callback<GuiaSuc>() {
             @Override
             public void onResponse(Call<GuiaSuc> call, Response<GuiaSuc> response) {
                 if (!response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Guia no correct", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Guia no correcta", Toast.LENGTH_SHORT).show();
                     Mensaje.setText("No existe la guia "+Bardcodigo+" ");
                     Mensaje.setBackgroundColor(Color.parseColor("#ff0000"));
                     Mensaje.setTextSize(16);
@@ -345,120 +568,311 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
                 }
                 GuiaSuc postsResponse = response.body();
 
-                String Mft_Ano = postsResponse.mft_ano();
-                String Mft_Nro = postsResponse.mft_nro();
-                String Suc_Code = postsResponse.suc_code();
-                String Guia_det_nro_ref = postsResponse.guia_nro_ref();
-                String Guia_det_id = postsResponse.guia_det_id();
+                final String Mft_Ano = postsResponse.mft_ano();
+                final String Mft_Nro = postsResponse.mft_nro();
+                final String Suc_Code = postsResponse.suc_code();
+                final String Guia_det_nro_ref = postsResponse.guia_nro_ref();
+                final String Guia_det_id = postsResponse.guia_det_id();
+                final String Guia_det_con_ciu = postsResponse.guia_det_con_ciu();
 
-                ValidarGuia validarGuia = new ValidarGuia("" + Mft_Ano, ""+Mft_Nro, ""+Suc_Code/*+Suc*/, ""+Bardcodigo);
-                Call<ValidarGuia> cal = jsonPlaceHolderApi.createPost(validarGuia);
-                cal.enqueue(new Callback<ValidarGuia>() {
-                    @Override
-                    public void onResponse(Call<ValidarGuia> call, Response<ValidarGuia> response) {
-                        if (!response.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Guia no correcta", Toast.LENGTH_SHORT).show();
-                            Mensaje.setText("La guia "+Bardcodigo+" ya pertenece a la valija ");
-                            Mensaje.setBackgroundColor(Color.parseColor("#ff0000"));
-                            mp2.start();
+                String CiuDespF = CiuDesp.toString();
+                String CiuDespFi = CiuDespF.replace(" ","");
+                String Guia_det_con_ciuF = Guia_det_con_ciu.toString();
+                String Guia_det_con_ciuFi = Guia_det_con_ciuF.replace(" ","");
+
+                if(Mft_Nro.length()<2) {
+
+                    //Aqui se registra la incidencia ~
+                    AgregarIncidencia agregarIncidencia = new AgregarIncidencia("" + Guia_det_nro_ref, "" + Valijas, "" + usuario, "3602", ""+Suc+" - "+MftoAnio+ " - "+ MftoNro);
+                    Call<AgregarIncidencia> callm = jsonPlaceHolderApi.createPost(agregarIncidencia);
+                    callm.enqueue(new Callback<AgregarIncidencia>() {
+                        @Override
+                        public void onResponse(Call<AgregarIncidencia> call, Response<AgregarIncidencia> response) {
+                            if (!response.isSuccessful()) {
+                                Toast.makeText(getApplicationContext(), "Incidencia no registrada", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                            AgregarIncidencia postsResponse = response.body();
+
+                            String estado = postsResponse.Estado();
+                            String mensaje = postsResponse.Mensaje();
+                            Toast.makeText(getApplicationContext(), "Incidencia registrada.", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<AgregarIncidencia> call, Throwable t) {
+                            Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
+                            //Titulo.setText(t.getMessage());
                             return;
                         }
-                        ValidarGuia postsResponse = response.body();
+                    });
 
-                        String Estado = postsResponse.estado();
-                        String Guia = postsResponse.Guias();
-                        int Est = Integer.parseInt(Estado);
-                        //Toast.makeText(getApplicationContext(), "Guia validada correctamente", Toast.LENGTH_SHORT).show();
-                        if (Est != 0){
+                    Mensaje.setText("La guia " + Bardcodigo + " no tiene manifiesto.");
+                    Mensaje.setBackgroundColor(Color.parseColor("#FF7177"));
+                    Mensaje.setTextSize(15);
+                    mp2.start();
+                    return;
 
-                            Toast.makeText(getApplicationContext(), "La guia ya pertenece a la valija "+Estado, Toast.LENGTH_SHORT);
-                            Mensaje.setText("La guia ya pertenece a la valija "+Estado);
-                            Mensaje.setBackgroundColor(Color.parseColor("#FF0000"));
-                            mp2.start();
+                }
 
-                        }
-                        else{
+                else {
 
-                            //Mensaje.append("" + postsResponse.Guias());
+                    if (MftoNro.equals(Mft_Nro)) {
 
-                            Guio = findViewById(R.id.txtGuia);
-                            Mensaje = findViewById(R.id.txtMensaje);
-                            Manifiesto = findViewById(R.id.txtMfto);
-                            Valija = findViewById(R.id.txtValija);
-                            //Llamar datos ---------------------------------------------------------
-                            Bundle b = getIntent().getExtras();
-                            String Valijas = b.getString("Valijas");
-                            String Mfto = b.getString("Mfto");
-                            String MftoAnio = b.getString("MftoAnio");
-                            String MftoNro = b.getString("MftoNro");
-                            String Suc = b.getString("Suc");
-                            String ValijaID = b.getString("ValijaID");
-                            //----------------------------------------------------------------------
-
-                            final String Gui = Guio.getText().toString();
-                            Integer ValijID = Integer.parseInt(ValijaID);
-
-                            //Manifiesto.setText(Mfto+" "+MftoAnio+" "+MftoNro+" "+Suc+" "+Bardcodigo);
-                            //Valija.setText(Valijas);
-
-                            AdicionarGuias adicionarGuias = new AdicionarGuias(1234/*+MftoAnio*/,ValijID/*+MftoNro*/,Bardcodigo/*+Suc*/,"12345678");
-                            Call<AdicionarGuias> calli = jsonPlaceHolderApi.createPost(adicionarGuias);
-                            calli.enqueue(new Callback<AdicionarGuias>() {
+                        if (CiuDespFi.equalsIgnoreCase(Guia_det_con_ciuFi)){
+                            ValidarGuia validarGuia = new ValidarGuia(""+Mft_Ano, ""+Mft_Nro, ""+Suc_Code, ""+Bardcodigo);
+                            Call<ValidarGuia> cal = jsonPlaceHolderApi.createPost(validarGuia);
+                            cal.enqueue(new Callback<ValidarGuia>() {
                                 @Override
-                                public void onResponse(Call<AdicionarGuias> call, Response<AdicionarGuias> response) {
-                                    if(!response.isSuccessful()){
-                                        Mensaje.setText("La guia "+Bardcodigo+" no es correcta ");
-                                        Mensaje.setBackgroundColor(Color.parseColor("#ff0000"));
-                                        Toast.makeText(getApplicationContext(),"Guia no correcta",Toast.LENGTH_SHORT).show();
+                                public void onResponse(Call<ValidarGuia> call, Response<ValidarGuia> response) {
+                                    if (!response.isSuccessful()) {
+
+                                        //Aqui se registra la incidencia ~
+                                        AgregarIncidencia agregarIncidencia = new AgregarIncidencia(""+Guia_det_nro_ref,""+Valijas,""+usuario,"1",""+Suc_Code+" - "+Mft_Ano+ " - "+ Mft_Nro);
+                                        Call<AgregarIncidencia> callm = jsonPlaceHolderApi.createPost(agregarIncidencia);
+                                        callm.enqueue(new Callback<AgregarIncidencia>() {
+                                            @Override
+                                            public void onResponse(Call<AgregarIncidencia> call, Response<AgregarIncidencia> response) {
+                                                if (!response.isSuccessful()) {
+                                                    Toast.makeText(getApplicationContext(), "Incidencia no registrada", Toast.LENGTH_LONG).show();
+                                                    return;
+                                                }
+                                                AgregarIncidencia postsResponse = response.body();
+
+                                                String estado = postsResponse.Estado();
+                                                String mensaje = postsResponse.Mensaje();
+                                                Toast.makeText(getApplicationContext(), "Incidencia registrada.", Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<AgregarIncidencia> call, Throwable t) {
+                                                Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
+                                                //Titulo.setText(t.getMessage());
+                                                return;
+                                            }
+                                        });
+
+                                        //Toast.makeText(getApplicationContext(), "Guia no correcta", Toast.LENGTH_SHORT).show();
+                                        Mensaje.setText("La guia "+Bardcodigo+" no existe.");
+                                        Mensaje.setBackgroundColor(Color.parseColor("#FF7177"));
+
+                                        mp2.start();
                                         return;
                                     }
-                                    AdicionarGuias postsResponse = response.body();
+                                    ValidarGuia postsResponse = response.body();
 
-                                    String estado = postsResponse.Estado();
-                                    String mensaje = postsResponse.Mensaje();
-                                    if (estado!="true"){
-                                        Mensaje.setText("La guia "+Bardcodigo+" no es correcta, pertenece a la valija "+estado);
-                                        Mensaje.setBackgroundColor(Color.parseColor("#ff0000"));
-                                        Toast.makeText(getApplicationContext(),"Guia no correcta",Toast.LENGTH_SHORT).show();
-                                        mp2.start();
+                                    String Estado = postsResponse.estado();
+                                    String Guia = postsResponse.Guias();
+                                    String Codigo = postsResponse.codigo();
+
+                                    int Est = Integer.parseInt(Estado);
+                                    //Toast.makeText(getApplicationContext(), "Guia validada correctamente", Toast.LENGTH_SHORT).show();
+                                    if (Est != 0){
+
+                                        if(Codigo.equals(Valijas)){
+
+                                            //Toast.makeText(getApplicationContext(), "La guia ya está asignada a la valija.", Toast.LENGTH_SHORT);
+                                            Mensaje.setText("La guia ya está asignada en esta misma valija.");
+                                            Mensaje.setBackgroundColor(Color.parseColor("#FF7177"));
+                                            Mensaje.setTextSize(16);
+                                            mp2.start();
+
+                                        }
+                                        else{
+                                            //Toast.makeText(getApplicationContext(), "La guia ya está asignada a la valija.", Toast.LENGTH_SHORT);
+                                            Mensaje.setText("La guia está asignada a la valija "+Codigo+".");
+                                            Mensaje.setBackgroundColor(Color.parseColor("#FF7177"));
+                                            Mensaje.setTextSize(16);
+                                            mp2.start();
+
+                                        }
+
                                     }
                                     else{
-                                        arrayList.add(""+Bardcodigo);
-                                        HashSet<String> hashSet = new HashSet<String>();
-                                        hashSet.addAll(arrayList);
-                                        arrayList.clear();
-                                        arrayList.addAll(hashSet);
-                                        adapter.notifyDataSetChanged();
-                                        Toast.makeText(getApplicationContext(),"Guia añadida correctamente",Toast.LENGTH_SHORT).show();
-                                        Mensaje.setTextSize(15);
-                                        Mensaje.setText("La guia "+Bardcodigo+" fue añadida correctamente ");
-                                        Mensaje.setBackgroundColor(Color.parseColor("#008f39"));
-                                        mp.start();
 
+                                        Guio = findViewById(R.id.txtGuia);
+                                        Mensaje = findViewById(R.id.txtMensaje);
+                                        //Manifiesto = findViewById(R.id.txtMfto);
+                                        Valija = findViewById(R.id.txtValija);
+                                        //Llamar datos ---------------------------------------------------------
+                                        Bundle b = getIntent().getExtras();
+                                        final String Valijas = b.getString("Valijas");
+                                        String Mfto = b.getString("Mfto");
+                                        final String MftoAnio = b.getString("MftoAnio");
+                                        final String MftoNro = b.getString("MftoNro");
+                                        final String Suc = b.getString("Suc");
+                                        final String ValijaID = b.getString("ValijaID");
+                                        //----------------------------------------------------------------------
+
+                                        Integer ValijID = Integer.parseInt(ValijaID);
+
+
+                                        //Manifiesto.setText(Mfto+" "+MftoAnio+" "+MftoNro+" "+Suc+" "+Gui);
+                                        //Valija.setText(Valijas);
+
+                                        AdicionarGuias adicionarGuias = new AdicionarGuias(1234,ValijID,""+Guia_det_id,""+CodigoUsuario,""+Bardcodigo);
+                                        Call<AdicionarGuias> calli = jsonPlaceHolderApi.createPost(adicionarGuias);
+                                        calli.enqueue(new Callback<AdicionarGuias>() {
+                                            @Override
+                                            public void onResponse(Call<AdicionarGuias> call, Response<AdicionarGuias> response) {
+                                                if(!response.isSuccessful()){
+                                                    Mensaje.setText("La guia "+Bardcodigo+" no es correcta ");
+                                                    Mensaje.setBackgroundColor(Color.parseColor("#FF7177"));
+                                                    Toast.makeText(getApplicationContext(),"Guia no correcta",Toast.LENGTH_SHORT).show();
+                                                    return;
+                                                }
+                                                AdicionarGuias postsResponse = response.body();
+
+                                                String estado = postsResponse.Estado();
+                                                String mensaje = postsResponse.Mensaje();
+
+                                                if (estado.equals("false")){
+
+                                                    Mensaje.setText("La guia "+Bardcodigo+" no es correcta, pertenece a la valija "+estado);
+                                                    Mensaje.setBackgroundColor(Color.parseColor("#FF7177"));
+                                                    Mensaje .setTextSize(13);
+                                                    Toast.makeText(getApplicationContext(),"Guia no correcta",Toast.LENGTH_SHORT).show();
+                                                    mp2.start();
+                                                }
+                                                else{
+
+                                                    //Aqui se registra la incidencia ~
+                                                    AgregarIncidencia agregarIncidencia = new AgregarIncidencia(""+Guia_det_nro_ref,""+Valijas,""+usuario,"3603",""+Suc+" - "+MftoAnio+ " - "+ MftoNro);
+                                                    Call<AgregarIncidencia> callm = jsonPlaceHolderApi.createPost(agregarIncidencia);
+                                                    callm.enqueue(new Callback<AgregarIncidencia>() {
+                                                        @Override
+                                                        public void onResponse(Call<AgregarIncidencia> call, Response<AgregarIncidencia> response) {
+                                                            if (!response.isSuccessful()) {
+                                                                Toast.makeText(getApplicationContext(), "Incidencia no registrada", Toast.LENGTH_LONG).show();
+                                                                return;
+                                                            }
+                                                            AgregarIncidencia postsResponse = response.body();
+
+                                                            String estado = postsResponse.Estado();
+                                                            String mensaje = postsResponse.Mensaje();
+                                                            Toast.makeText(getApplicationContext(), "Incidencia registrada.", Toast.LENGTH_SHORT).show();
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(Call<AgregarIncidencia> call, Throwable t) {
+                                                            Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
+                                                            //Titulo.setText(t.getMessage());
+                                                            return;
+                                                        }
+                                                    });
+
+                                                    arrayList.add(""+Bardcodigo);
+                                                    HashSet<String> hashSet = new HashSet<String>();
+                                                    hashSet.addAll(arrayList);
+                                                    arrayList.clear();
+                                                    arrayList.addAll(hashSet);
+                                                    adapter.notifyDataSetChanged();
+                                                    Toast.makeText(getApplicationContext(),"Guia añadida correctamente",Toast.LENGTH_SHORT).show();
+                                                    Mensaje.setTextSize(15);
+                                                    Mensaje.setText("La guia "+Bardcodigo+" fue añadida correctamente ");
+                                                    Mensaje.setBackgroundColor(Color.parseColor("#008f39"));
+                                                    //Contar elementos del spinner ~
+                                                    int count = listView.getAdapter().getCount();
+                                                    int ctf= totalelementoslist+count;
+                                                    contarelementos.setText(""+count);
+                                                    //---
+                                                    Guio.setText("");
+                                                    mp.start();
+
+                                                }
+
+                                                //Mensaje.append("" + estado);
+                                                return;
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<AdicionarGuias> call, Throwable t) {
+                                                Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
+                                                return;
+                                            }
+                                        });
+                                        //--
                                     }
 
-                                    //Mensaje.append("" + estado);
                                     return;
                                 }
 
                                 @Override
-                                public void onFailure(Call<AdicionarGuias> call, Throwable t) {
+                                public void onFailure(Call<ValidarGuia> call, Throwable t) {
                                     Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
                                     return;
                                 }
                             });
-                            //--
                         }
+                        else{
+                            //Aqui se registra la incidencia ~
+                            AgregarIncidencia agregarIncidencia = new AgregarIncidencia(""+Guia_det_nro_ref,""+Valijas,""+usuario,"1",""+Suc+" - "+MftoAnio+ " - "+ MftoNro);
+                            Call<AgregarIncidencia> callm = jsonPlaceHolderApi.createPost(agregarIncidencia);
+                            callm.enqueue(new Callback<AgregarIncidencia>() {
+                                @Override
+                                public void onResponse(Call<AgregarIncidencia> call, Response<AgregarIncidencia> response) {
+                                    if (!response.isSuccessful()) {
+                                        Toast.makeText(getApplicationContext(), "Incidencia no registrada", Toast.LENGTH_LONG).show();
+                                        return;
+                                    }
+                                    AgregarIncidencia postsResponse = response.body();
+
+                                    String estado = postsResponse.Estado();
+                                    String mensaje = postsResponse.Mensaje();
+                                    Toast.makeText(getApplicationContext(), "Incidencia registrada.", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onFailure(Call<AgregarIncidencia> call, Throwable t) {
+                                    Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
+                                    //Titulo.setText(t.getMessage());
+                                    return;
+                                }
+                            });
+                            //Toast.makeText(getApplicationContext(), "Guia no correcta", Toast.LENGTH_SHORT).show();
+                            Mensaje.setText("La guia " + Bardcodigo + " pertenece al manifiesto " + Mft_Ano + "-" + Mft_Nro + ".");
+                            Mensaje.setBackgroundColor(Color.parseColor("#FF7177"));
+                            Mensaje.setTextSize(13);
+                            mp2.start();
+                            return;
+                        }
+                    }
+                    else{
+
+                        //Aqui se registra la incidencia ~
+                        AgregarIncidencia agregarIncidencia = new AgregarIncidencia("" + Guia_det_nro_ref, "" + Valijas, "" + usuario, "3602", ""+Suc_Code+" - "+Mft_Ano+ " - "+ Mft_Nro);
+                        Call<AgregarIncidencia> callm = jsonPlaceHolderApi.createPost(agregarIncidencia);
+                        callm.enqueue(new Callback<AgregarIncidencia>() {
+                            @Override
+                            public void onResponse(Call<AgregarIncidencia> call, Response<AgregarIncidencia> response) {
+                                if (!response.isSuccessful()) {
+                                    Toast.makeText(getApplicationContext(), "Incidencia no registrada", Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+                                AgregarIncidencia postsResponse = response.body();
+
+                                String estado = postsResponse.Estado();
+                                String mensaje = postsResponse.Mensaje();
+                                Toast.makeText(getApplicationContext(), "Incidencia registrada.", Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onFailure(Call<AgregarIncidencia> call, Throwable t) {
+                                Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
+                                //Titulo.setText(t.getMessage());
+                                return;
+                            }
+                        });
+                        //Toast.makeText(getApplicationContext(), "La guia pertenece al manifiesto "+Mft_Nro, Toast.LENGTH_LONG).show();
+                        Mensaje.setText("La guia "+Bardcodigo+" pertenece al manifiesto " + Mft_Ano + "-" + Mft_Nro + ".");
+                        Mensaje.setBackgroundColor(Color.parseColor("#FF7177"));
+                        Mensaje.setTextSize(13);
+                        mp2.start();
 
                         return;
                     }
 
-                    @Override
-                    public void onFailure(Call<ValidarGuia> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                });
+                }
 
                 return;
             }
@@ -524,9 +938,9 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
         String CiuDes = b.getString("CiuDes");
         String Estado = b.getString("Estado");
         String ValijaID = b.getString("ValijaID");
-        //----------------------------------------------------------------------
-        Manifiesto.setText(Mfto);
-        Valija.setText(Valijas+"/"+ValijaID);
+        //-----------------------------------------------------------------------
+        Manifiesto.setText(Suc+" "+MftoAnio+"-"+MftoNro);
+        Valija.setText(Valijas);
     }
 
     public void PasarDatos(){
@@ -543,9 +957,14 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
         String PaisDes = b.getString("PaisDes");
         String CiuDes = b.getString("CiuDes");
         String Estado = b.getString("Estado");
+        String usuario = b.getString("usuario");
+        String password = b.getString("password");
+        String CodigoUsuario = b.getString("codigousuario");
         //----------------------------------------------------------------------
-        Manifiesto.setText(Mfto);
-        Valija.setText(Valijas + "/" +ValijaID);
+        String count = contarelementos.getText().toString();
+        //----------------------------------------------------------------------
+        Manifiesto.setText(Suc+" "+MftoAnio+"-"+MftoNro);
+        Valija.setText(Valijas);
         //Enviar datos----------------------------------------------------------
         Intent i = new Intent(GuiaAct.this, CerrarValijaAct.class);
         //String passingdata = LoginText.getText().toString();
@@ -559,6 +978,10 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
         c.putString("CiuDes", CiuDes);
         c.putString("Estado", Estado);
         c.putString("ValijaID", ValijaID);
+        c.putString("usuario", usuario);
+        c.putString("password", password);
+        c.putString("codigousuario", CodigoUsuario);
+        c.putString("count", count);
         i.putExtras(c);
         startActivity(i);
         //----------------------------------------------------------------------

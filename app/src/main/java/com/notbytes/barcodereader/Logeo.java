@@ -37,9 +37,8 @@ public class Logeo extends AppCompatActivity {
         LoginText = findViewById(R.id.editText_login_username);
         PasswordText = findViewById(R.id.editText_login_password);
 
-        //TestApi = findViewById(R.id.TestApi);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://200.37.50.53/ApiCyT/api/")
+                .baseUrl("http://200.37.50.53/ApiSGD/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
        jsonPlaceHolderApi = retrofit.create(APIRetrofitInterface.class);
@@ -69,60 +68,46 @@ public class Logeo extends AppCompatActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_login_login:
-                createPost();
+                Logearse();
                 break;
         }
     }
-    private void createPost(){
+    private void Logearse(){
 
-        Vars vars = new Vars(LoginText.getText().toString(), PasswordText.getText().toString());
+        String usuario = LoginText.getText().toString();
+        String password = PasswordText.getText().toString();
+
+        Vars vars    = new Vars(usuario, password);
 
         Call<Vars> call = jsonPlaceHolderApi.createPost(vars);
         call.enqueue(new Callback<Vars>() {
             @Override
             public void onResponse(Call<Vars> call, Response<Vars> response) {
                 if(!response.isSuccessful()){
-                    //TestApi.setText("Codigo:" + response.code());
+                    Toast.makeText(Logeo.this, "Usuario/Contraseña incorrecta.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 Vars postsResponse = response.body();
-                String content = "";
-                content += "Estado:" + postsResponse.estado() + "\n";
-                content += "Mensaje:" + postsResponse.mensaje() + "\n";
-                //TestApi.append(content);
-                if(postsResponse.estado() == "true") {
-                    Toast.makeText(Logeo.this, "Autentificación correcta", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(Logeo.this, Pre_estado.class);
-                    RecuperarUsuario();
-                    //startActivity(i);
-                }
-                else{
-                    Toast.makeText(Logeo.this, "Fallo al autenticarse", Toast.LENGTH_SHORT).show();
-                }
+
+                String Estado = postsResponse.login();
+                String Mensaje = postsResponse.password();
+                String CodigoUsuario = postsResponse.codigoUsuario();
+
+                Toast.makeText(Logeo.this, "Autentificación correcta", Toast.LENGTH_SHORT).show();
+                String usuario = LoginText.getText().toString();
+                String password = PasswordText.getText().toString();
+                Intent i = new Intent(Logeo.this, MenuPrincipal.class);
+                Bundle c = new Bundle();
+                c.putString("usuario", usuario);
+                c.putString("password", password);
+                c.putString("codigousuario", CodigoUsuario);
+                i.putExtras(c);
+                startActivity(i);
             }
             @Override
             public void onFailure(Call<Vars> call, Throwable t) {
                 Toast.makeText(Logeo.this, "Error de red, revise su conexión a internet.", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    public void RecuperarUsuario(){
-        String passingdata = LoginText.getText().toString();
-        //Intent i = new Intent(Logeo.this, MainActivity.class);
-        Intent i = new Intent(Logeo.this, MenuPrincipal.class);
-        //Intent a = new Intent(Logeo.this, Pre_estado.class);
-        Bundle c = new Bundle();
-        c.putString("Key", passingdata);
-        i.putExtras(c);
-        startActivity(i);
-    }
-
-    public String getUsuario() {
-        return this.Usuario;
-    }
-
-    public String getPassword() {
-        return this.Pass;
     }
 }

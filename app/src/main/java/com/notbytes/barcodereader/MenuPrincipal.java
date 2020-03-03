@@ -68,6 +68,9 @@ public class MenuPrincipal extends AppCompatActivity {
         String CiuDes = b.getString("CiuDes");
         String Estado = b.getString("Estado");
         String ValijaID = b.getString("ValijaID");
+        String usuario = b.getString("usuario");
+        String password = b.getString("password");
+        String CodigoUsuario = b.getString("codigousuario");
         //---------------------------------------------------------------
         if (MftoAnio == "null"){
             Intent i = new Intent(MenuPrincipal.this, ManifiestoAct.class);
@@ -86,6 +89,9 @@ public class MenuPrincipal extends AppCompatActivity {
             c.putString("CiuDes", CiuDes);
             c.putString("Estado", Estado);
             c.putString("ValijaID", ValijaID);
+            c.putString("usuario", usuario);
+            c.putString("password", password);
+            c.putString("codigousuario", CodigoUsuario);
             i.putExtras(c);
             startActivity(i);
             return;

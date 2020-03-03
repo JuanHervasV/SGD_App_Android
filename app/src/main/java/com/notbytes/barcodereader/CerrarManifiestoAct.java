@@ -37,6 +37,7 @@ public class CerrarManifiestoAct extends AppCompatActivity {
     private TextView Guia;
     private Button CerrarMfto;
     private Button Volver;
+    private Button AgregarValija;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,8 @@ public class CerrarManifiestoAct extends AppCompatActivity {
                     v.setBackgroundResource(R.drawable.rounded_cornersscharff);
                     //v.setBackgroundColor(Color.parseColor("#FF7177"));
                 }
+
+
                 return false;
             }
         });
@@ -86,11 +89,14 @@ public class CerrarManifiestoAct extends AppCompatActivity {
         String PaisDes = b.getString("PaisDes");
         String CiuDes = b.getString("CiuDes");
         String Estado = b.getString("Estado");
+        String usuario = b.getString("usuario");
+        String password = b.getString("password");
+        String CodigoUsuario = b.getString("codigousuario");
         //---------------------------------------------------------------
 
         Manifiesto = findViewById(R.id.txtMfto);
         //Manifiesto.setText(Mfto);
-        Manifiesto.setText("¿Desea cerrar el manifiesto "+Mfto+"?");
+        Manifiesto.setText("¿Desea cerrar el manifiesto "+MftoAnio+" - "+MftoNro+"?");
         /*Valija = findViewById(R.id.txtValija);
         Valija.append(""+Valijas+"?");
         Guia = findViewById(R.id.txtGuia);*/
@@ -108,6 +114,9 @@ public class CerrarManifiestoAct extends AppCompatActivity {
         c.putString("PaisDes", PaisDes);
         c.putString("CiuDes", CiuDes);
         c.putString("Estado", Estado);
+        c.putString("usuario", usuario);
+        c.putString("password", password);
+        c.putString("codigousuario", CodigoUsuario);
         i.putExtras(c);
         //startActivity(i);
         //----------------------------------------------------------------
@@ -124,13 +133,138 @@ public class CerrarManifiestoAct extends AppCompatActivity {
 
         switch (view.getId()) {
             case R.id.btnCerrar:
-                CerrarManifiesto();
+
+                PasarDatos();
+                //startActivity(new Intent(this, PopUp.class));
+                //CerrarManifiesto();
+                break;
+            case R.id.btnAgregarValija:
+                PasarDatosB();
                 break;
         }
 
     }
 
-        private void CerrarManifiesto(){
+    public void PasarDatos(){
+
+        //Llamar datos --------------------------------------------------
+        Bundle b = getIntent().getExtras();
+        String Mfto = b.getString("Mfto");
+        String Valijas = b.getString("Valijas");
+        String MftoAnio = b.getString("MftoAnio");
+        String MftoNro = b.getString("MftoNro");
+        String Suc = b.getString("Suc");
+        String PaisDes = b.getString("PaisDes");
+        String CiuDes = b.getString("CiuDes");
+        String Estado = b.getString("Estado");
+        String usuario = b.getString("usuario");
+        String password = b.getString("password");
+        String CodigoUsuario = b.getString("codigousuario");
+        String count = b.getString("count");
+        //---------------------------------------------------------------
+
+        //Enviar datos-----------------------------------------------------------------
+        Intent i = new Intent(CerrarManifiestoAct.this, PopUp.class);
+        //String passingdata = LoginText.getText().toString();
+        Bundle c = new Bundle();
+        //c.putString("Valijas", Estado);
+        c.putString("Mfto", Mfto);
+        c.putString("MftoAnio", MftoAnio);
+        c.putString("MftoNro", MftoNro);
+        c.putString("Suc", Suc);
+        c.putString("PaisDes", PaisDes);
+        c.putString("CiuDes", CiuDes);
+        c.putString("Estado", Estado);
+        c.putString("usuario", usuario);
+        c.putString("password", password);
+        c.putString("codigousuario", CodigoUsuario);
+        c.putString("count", count);
+        i.putExtras(c);
+        startActivity(i);
+        //------------------------------------------------------------------------------
+
+    }
+
+    public void PasarDatosA(){
+
+        //Llamar datos --------------------------------------------------
+        Bundle b = getIntent().getExtras();
+        String Mfto = b.getString("Mfto");
+        String Valijas = b.getString("Valijas");
+        String MftoAnio = b.getString("MftoAnio");
+        String MftoNro = b.getString("MftoNro");
+        String Suc = b.getString("Suc");
+        String PaisDes = b.getString("PaisDes");
+        String CiuDes = b.getString("CiuDes");
+        String Estado = b.getString("Estado");
+        String usuario = b.getString("usuario");
+        String password = b.getString("password");
+        String CodigoUsuario = b.getString("codigousuario");
+        String count = b.getString("count");
+        //---------------------------------------------------------------
+
+        //Enviar datos-----------------------------------------------------------------
+        Intent i = new Intent(CerrarManifiestoAct.this, PopUp.class);
+        //String passingdata = LoginText.getText().toString();
+        Bundle c = new Bundle();
+        //c.putString("Valijas", Estado);
+        c.putString("Mfto", Mfto);
+        c.putString("MftoAnio", MftoAnio);
+        c.putString("MftoNro", MftoNro);
+        c.putString("Suc", Suc);
+        c.putString("PaisDes", PaisDes);
+        c.putString("CiuDes", CiuDes);
+        c.putString("Estado", Estado);
+        c.putString("usuario", usuario);
+        c.putString("password", password);
+        c.putString("codigousuario", CodigoUsuario);
+        c.putString("count", count);
+        i.putExtras(c);
+        startActivity(i);
+        //------------------------------------------------------------------------------
+
+    }
+
+    public void PasarDatosB(){
+
+        //Llamar datos --------------------------------------------------
+        Bundle b = getIntent().getExtras();
+        String Mfto = b.getString("Mfto");
+        String Valijas = b.getString("Valijas");
+        String MftoAnio = b.getString("MftoAnio");
+        String MftoNro = b.getString("MftoNro");
+        String Suc = b.getString("Suc");
+        String PaisDes = b.getString("PaisDes");
+        String CiuDes = b.getString("CiuDes");
+        String Estado = b.getString("Estado");
+        String usuario = b.getString("usuario");
+        String password = b.getString("password");
+        String CodigoUsuario = b.getString("codigousuario");
+        //---------------------------------------------------------------
+
+        //Enviar datos-----------------------------------------------------------------
+        Intent i = new Intent(CerrarManifiestoAct.this, ValijaAct.class);
+        //String passingdata = LoginText.getText().toString();
+        Bundle c = new Bundle();
+        //c.putString("Valijas", Estado);
+        c.putString("Mfto", Mfto);
+        c.putString("MftoAnio", MftoAnio);
+        c.putString("MftoNro", MftoNro);
+        c.putString("Suc", Suc);
+        c.putString("PaisDes", PaisDes);
+        c.putString("CiuDes", CiuDes);
+        c.putString("Estado", Estado);
+        c.putString("usuario", usuario);
+        c.putString("password", password);
+        c.putString("codigousuario", CodigoUsuario);
+        i.putExtras(c);
+        startActivity(i);
+        //------------------------------------------------------------------------------
+
+    }
+
+
+    private void CerrarManifiesto(){
 
         //Llamar datos --------------------------------------------------
             Bundle b = getIntent().getExtras();
@@ -142,11 +276,14 @@ public class CerrarManifiestoAct extends AppCompatActivity {
             final String PaisDes = b.getString("PaisDes");
             final String CiuDes = b.getString("CiuDes");
             final String Estado = b.getString("Estado");
+            final String usuario = b.getString("usuario");
+            final String password = b.getString("password");
+            final String CodigoUsuario= b.getString("codigousuario");
         //---------------------------------------------------------------
 
         //Aqui enviar los datos-------------------------------------------------------------------------------------------
             //String resul = mTvResult.getText().toString();
-                    ManifiestoCerrar manifiestoCerrar = new ManifiestoCerrar(""+MftoNro,""+Suc,""+MftoAnio,"pruebaUsuario","3619");
+                    ManifiestoCerrar manifiestoCerrar = new ManifiestoCerrar(""+MftoNro,""+Suc,""+MftoAnio,""+usuario,"3619");
                     Call<ManifiestoCerrar> call = jsonPlaceHolderApi.createPost(manifiestoCerrar);
                     call.enqueue(new Callback<ManifiestoCerrar>() {
                 @Override
@@ -173,6 +310,9 @@ public class CerrarManifiestoAct extends AppCompatActivity {
                     c.putString("PaisDes", PaisDes);
                     c.putString("CiuDes", CiuDes);
                     c.putString("Estado", Estado);
+                    c.putString("usuario", usuario);
+                    c.putString("password", password);
+                    c.putString("codigousuario", CodigoUsuario);
                     i.putExtras(c);
                     startActivity(i);
                     //----------------------------------------------------------------

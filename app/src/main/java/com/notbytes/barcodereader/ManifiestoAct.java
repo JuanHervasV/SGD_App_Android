@@ -40,18 +40,13 @@ public class ManifiestoAct extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manifiesto);
 
-        //Button BtnEnviar = findViewById()
-
         //Retrofit------------------------------------------------------
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://200.37.50.53/ApiSGD/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         jsonPlaceHolderApi = retrofit.create(APIRetrofitInterface.class);
         onTouch();
-
-        //createPost();
     }
 
     public void onTouch() {
@@ -66,7 +61,7 @@ public class ManifiestoAct extends AppCompatActivity {
                 }
 
                 if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                    v.setBackgroundResource(R.drawable.rounded_corners);
+                    v.setBackgroundResource(R.drawable.rounded_corneramarillo);
                     //v.setBackgroundColor(Color.parseColor("#FF7177"));
                 }
                 return false;
@@ -168,6 +163,14 @@ public class ManifiestoAct extends AppCompatActivity {
                 else{
                     Toast.makeText(getApplicationContext(),"Manifiesto validado correctamente",Toast.LENGTH_LONG).show();
 
+                    //Llamar datos --------------------------------
+                    Bundle b = getIntent().getExtras();
+                    String usuario = b.getString("usuario");
+                    String password = b.getString("password");
+                    String CodigoUsuario = b.getString("codigousuario");
+
+                    //----------------------------------------------
+
                     Intent i = new Intent(ManifiestoAct.this, ValijaAct.class);
                     Bundle c = new Bundle();
                     String Mftf = Mfto.getText().toString();
@@ -178,9 +181,12 @@ public class ManifiestoAct extends AppCompatActivity {
                     c.putString("PaisDes", PaisDes);
                     c.putString("CiuDes", CiuDes);
                     c.putString("Estado", Estado);
+                    c.putString("usuario", usuario);
+                    c.putString("password", password);
+                    c.putString("codigousuario", CodigoUsuario);
+
                     i.putExtras(c);
                     startActivity(i);
-                    //Titulo.append(""+postsResponse.ciuDes());
                     return;
                 }
 

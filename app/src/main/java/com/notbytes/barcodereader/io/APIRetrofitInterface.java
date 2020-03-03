@@ -1,7 +1,10 @@
 package com.notbytes.barcodereader.io;
 
 import com.notbytes.barcodereader.Model.AdicionarGuias;
+import com.notbytes.barcodereader.Model.AgregarIncidencia;
+import com.notbytes.barcodereader.Model.ContadorGuiasMfto;
 import com.notbytes.barcodereader.Model.GuiaSuc;
+import com.notbytes.barcodereader.Model.LoginSGD;
 import com.notbytes.barcodereader.Model.ManifiestoCerrar;
 import com.notbytes.barcodereader.Model.ManifiestoContador;
 import com.notbytes.barcodereader.Model.MftoValijas;
@@ -78,4 +81,13 @@ public interface APIRetrofitInterface {
 
     @POST("ValijaGDNValidar")
     Call<ValijaGDNValidar> createPost(@Body ValijaGDNValidar valijaGDNValidar);
+
+    @POST("AgregarIncidencia")
+    Call<AgregarIncidencia> createPost(@Body AgregarIncidencia agregarIncidencia);
+
+    @POST("LoginSGD")
+    Call<LoginSGD> createPost(@Body LoginSGD loginSGD);
+
+    @POST("ContadorGuiasMfto")
+    Call<ContadorGuiasMfto> createPost(@Body ContadorGuiasMfto contadorGuiasMfto);
 }

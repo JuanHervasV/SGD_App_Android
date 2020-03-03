@@ -90,6 +90,9 @@ public class CerrarValijaAct extends AppCompatActivity {
         String PaisDes = b.getString("PaisDes");
         String CiuDes = b.getString("CiuDes");
         String Estado = b.getString("Estado");
+        String usuario = b.getString("usuario");
+        String password = b.getString("password");
+        String count = b.getString("count");
         //----------------------------------------------------------------------
         Manifiesto.setText(Mfto);
         Valija.setText(Valijas);
@@ -106,6 +109,9 @@ public class CerrarValijaAct extends AppCompatActivity {
         c.putString("PaisDes", PaisDes);
         c.putString("CiuDes", CiuDes);
         c.putString("Estado", Estado);
+        c.putString("usuario", usuario);
+        c.putString("password", password);
+        c.putString("count", count);
         i.putExtras(c);
         startActivity(i);
         //----------------------------------------------------------------------
@@ -124,6 +130,8 @@ public class CerrarValijaAct extends AppCompatActivity {
         String CiuDes = b.getString("CiuDes");
         String Estado = b.getString("Estado");
         String ValijaID = b.getString("ValijaID");
+        String usuario = b.getString("usuario");
+        String password = b.getString("password");
         //---------------------------------------------------------------
 
         Manifiesto = findViewById(R.id.txtMfto);
@@ -147,6 +155,8 @@ public class CerrarValijaAct extends AppCompatActivity {
         c.putString("CiuDes", CiuDes);
         c.putString("Estado", Estado);
         c.putString("ValijaID", ValijaID);
+        c.putString("usuario", usuario);
+        c.putString("password", password);
         i.putExtras(c);
         //startActivity(i);
         //----------------------------------------------------------------
@@ -166,6 +176,9 @@ public class CerrarValijaAct extends AppCompatActivity {
         final String CiuDes = b.getString("CiuDes");
         final String Estado = b.getString("Estado");
         final String ValijaID = b.getString("ValijaID");
+        final String usuario = b.getString("usuario");
+        final String password = b.getString("password");
+        final String count = b.getString("count");
         //---------------------------------------------------------------
         ValijaCerrar valijaCerrar = new ValijaCerrar(ValijaID);
         Call<ValijaCerrar> call = jsonPlaceHolderApi.createPost(valijaCerrar);
@@ -191,6 +204,9 @@ public class CerrarValijaAct extends AppCompatActivity {
                 c.putString("CiuDes", CiuDes);
                 c.putString("Estado", Estado);
                 c.putString("ValijaID", ValijaID);
+                c.putString("usuario", usuario);
+                c.putString("password", password);
+                c.putString("count", count);
                 i.putExtras(c);
                 //startActivity(i);
                 //----------------------------------------------------------------
@@ -283,7 +299,7 @@ public class CerrarValijaAct extends AppCompatActivity {
                 Intent i = new Intent(CerrarValijaAct.this, CerrarManifiestoAct.class);
                 Bundle c = new Bundle();
                 i.putExtras(c);
-                Guia.append(" "+Total+" // "+Valija);
+                Guia.append(" "+Total);
                 return;
 
             }

@@ -10,6 +10,7 @@ public class ValidarGuia {
     private String guia;
     private String estado;
     private String Guia;
+    private String Codigo;
 
     //Esto se ingresa como parametros--------------------------------------
 
@@ -29,6 +30,8 @@ public class ValidarGuia {
     public String estado(){return Estado;}
 
     public String Guias() {return guia;}
+
+    public String codigo() {return Codigo;}
 
     //---------------------------------------------------------------------
 }

@@ -3,6 +3,7 @@ package com.notbytes.barcodereader;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +18,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.vision.barcode.Barcode;
 import com.notbytes.barcode_reader.BarcodeReaderActivity;
+import com.notbytes.barcodereader.Model.ContadorGuiasMfto;
 import com.notbytes.barcodereader.Model.ManifiestoCerrar;
+import com.notbytes.barcodereader.Model.ManifiestoContador;
 import com.notbytes.barcodereader.Model.ValijaAdicionar;
 import com.notbytes.barcodereader.Model.ValijaGDNValidar;
 import com.notbytes.barcodereader.Model.ValijaValidar;
@@ -42,6 +45,9 @@ public class ValijaAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_valija);
+
+        Valija = findViewById(R.id.txtValija);
+        Valija.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
 
         //Retrofit------------------------------------------------------
 
@@ -70,7 +76,7 @@ public class ValijaAct extends AppCompatActivity {
                 }
 
                 if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                    v.setBackgroundResource(R.drawable.rounded_corners);
+                    v.setBackgroundResource(R.drawable.rounded_cornerverde);
                     //v.setBackgroundColor(Color.parseColor("#FF7177"));
                 }
                 return false;
@@ -87,7 +93,7 @@ public class ValijaAct extends AppCompatActivity {
                 }
 
                 if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
-                    v.setBackgroundResource(R.drawable.rounded_corners);
+                    v.setBackgroundResource(R.drawable.rounded_cornerverde);
                     //v.setBackgroundColor(Color.parseColor("#FF7177"));
                 }
                 return false;
@@ -109,6 +115,8 @@ public class ValijaAct extends AppCompatActivity {
         String PaisDes = b.getString("PaisDes");
         String CiuDes = b.getString("CiuDes");
         String Estado = b.getString("Estado");
+        String usuario = b.getString("usuario");
+        String password = b.getString("password");
         //----------------------------------------------
 
         Manifiesto.setText(Suc+" "+MftoAnio+"-"+MftoNro);
@@ -134,9 +142,49 @@ public class ValijaAct extends AppCompatActivity {
                 launchBarCodeActivity();
                 break;
             case R.id.btnCerrar:
-                CerrarManifiesto();
+                PasarDatos();
                 break;
         }
+    }
+
+    public void PasarDatos(){
+
+        //Llamar datos --------------------------------------------------
+        Bundle b = getIntent().getExtras();
+        String Mfto = b.getString("Mfto");
+        String Valijas = b.getString("Valijas");
+        String MftoAnio = b.getString("MftoAnio");
+        String MftoNro = b.getString("MftoNro");
+        String Suc = b.getString("Suc");
+        String PaisDes = b.getString("PaisDes");
+        String CiuDes = b.getString("CiuDes");
+        String Estado = b.getString("Estado");
+        String usuario = b.getString("usuario");
+        String password = b.getString("password");
+        String CodigoUsuario = b.getString("codigousuario");
+        String count = b.getString("count");
+        //---------------------------------------------------------------
+
+        //Enviar datos-----------------------------------------------------------------
+        Intent i = new Intent(ValijaAct.this, PopUp.class);
+        //String passingdata = LoginText.getText().toString();
+        Bundle c = new Bundle();
+        //c.putString("Valijas", Estado);
+        c.putString("Mfto", Mfto);
+        c.putString("MftoAnio", MftoAnio);
+        c.putString("MftoNro", MftoNro);
+        c.putString("Suc", Suc);
+        c.putString("PaisDes", PaisDes);
+        c.putString("CiuDes", CiuDes);
+        c.putString("Estado", Estado);
+        c.putString("usuario", usuario);
+        c.putString("password", password);
+        c.putString("codigousuario", CodigoUsuario);
+        c.putString("count", count);
+        i.putExtras(c);
+        startActivity(i);
+        //------------------------------------------------------------------------------
+
     }
 
     private void launchBarCodeActivity() {
@@ -193,9 +241,10 @@ public class ValijaAct extends AppCompatActivity {
         final String PaisDes = b.getString("PaisDes");
         final String CiuDes = b.getString("CiuDes");
         final String Estado = b.getString("Estado");
+        final String usuario = b.getString("usuario");
         //----------------------------------------------------
 
-            ValijaAdicionar valijaAdicionar = new ValijaAdicionar(""+Valijas,""+MftoAnio,""+MftoNro,""+Suc,""+CiuDes,"pruebaUsuario");
+            ValijaAdicionar valijaAdicionar = new ValijaAdicionar(""+Valijas,""+MftoAnio,""+MftoNro,""+Suc,""+CiuDes,""+usuario);
 
             Call<ValijaAdicionar> call = jsonPlaceHolderApi.createPost(valijaAdicionar);
             call.enqueue(new Callback<ValijaAdicionar>() {
@@ -301,6 +350,7 @@ public class ValijaAct extends AppCompatActivity {
     public void ValijaValidar(){
 
         Valija = findViewById(R.id.txtValija);
+        Valija.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
         final String Valijas = Valija.getText().toString();
 
         //Llamar datos ---------------------------------------------------------------------------------------------------
@@ -312,6 +362,9 @@ public class ValijaAct extends AppCompatActivity {
         final String PaisDes = b.getString("PaisDes");
         final String CiuDes = b.getString("CiuDes");
         final String Estado = b.getString("Estado");
+        final String usuario = b.getString("usuario");
+        final String password = b.getString("password");
+        final String CodigoUsuario = b.getString("codigousuario");
         //----------------------------------------------------------------------------------------------------------------
 
         //Aqui enviar los datos-------------------------------------------------------------------------------------------
@@ -358,9 +411,10 @@ public class ValijaAct extends AppCompatActivity {
                             final String PaisDes = b.getString("PaisDes");
                             final String CiuDes = b.getString("CiuDes");
                             final String Estado = b.getString("Estado");
+
                             //----------------------------------------------------
 
-                            ValijaAdicionar valijaAdicionar = new ValijaAdicionar(""+Valijas,""+MftoAnio,""+MftoNro,""+Suc,""+CiuDes,"pruebaUsuario");
+                            ValijaAdicionar valijaAdicionar = new ValijaAdicionar(""+Valijas,""+MftoAnio,""+MftoNro,""+Suc,""+CiuDes,""+usuario);
 
                             Call<ValijaAdicionar> callo = jsonPlaceHolderApi.createPost(valijaAdicionar);
                             callo.enqueue(new Callback<ValijaAdicionar>() {
@@ -390,6 +444,9 @@ public class ValijaAct extends AppCompatActivity {
                                         c.putString("CiuDes", CiuDes);
                                         c.putString("Estado", Estado);
                                         c.putInt("ValijaID",ValijaID);
+                                        c.putString("usuario", usuario);
+                                        c.putString("password", password);
+                                        c.putString("codigousuario", CodigoUsuario);
                                         i.putExtras(c);
                                         startActivity(i);
                                     }
@@ -404,14 +461,9 @@ public class ValijaAct extends AppCompatActivity {
                             });
 
                             ValijaGDNValidar postsResponse = response.body();
-                            //String content = "";
-                            //content += "Estado:" + postsResponse.Estado() + "\n";
-                            //content += "Mensaje:" + postsResponse.Mensaje() + "\n";
-                            //TestApi.append(content);
+
                             String existe = postsResponse.Existe();
                             String id = postsResponse.ID();
-                            String codigo = postsResponse.Codigo();
-                            String usuario = postsResponse.Usuario();
 
                             Toast.makeText(ValijaAct.this, "Valija asignada correctamente", Toast.LENGTH_SHORT).show();
                             Intent i = new Intent(ValijaAct.this, GuiaAct.class);
@@ -426,6 +478,9 @@ public class ValijaAct extends AppCompatActivity {
                             c.putString("CiuDes", CiuDes);
                             c.putString("Estado", Estado);
                             c.putString("ValijaID", id);
+                            c.putString("usuario", usuario);
+                            c.putString("password", password);
+                            c.putString("codigousuario", CodigoUsuario);
                             i.putExtras(c);
                             //startActivity(i);
                         }
@@ -462,6 +517,9 @@ public class ValijaAct extends AppCompatActivity {
                     c.putString("CiuDes", CiuDes);
                     c.putInt("Estado", Estado);
                     c.putString("ValijaID", ValijaID);
+                    c.putString("usuario", usuario);
+                    c.putString("password", password);
+                    c.putString("codigousuario", CodigoUsuario);
                     i.putExtras(c);
                     startActivity(i);
 
@@ -489,7 +547,7 @@ public class ValijaAct extends AppCompatActivity {
 
     private void CerrarManifiesto(){
 
-        //Llamar datos ---------------------------------------------------------------------------------------------------
+        //Llamar datos --------------------------------------------------
         Bundle b = getIntent().getExtras();
         final String Mfto = b.getString("Mfto");
         String Valijas = b.getString("Valijas");
@@ -499,45 +557,116 @@ public class ValijaAct extends AppCompatActivity {
         final String PaisDes = b.getString("PaisDes");
         final String CiuDes = b.getString("CiuDes");
         final String Estado = b.getString("Estado");
-        //----------------------------------------------------------------------------------------------------------------
+        final String usuario = b.getString("usuario");
+        final String password = b.getString("password");
+        final String CodigoUsuario= b.getString("codigousuario");
+        //---------------------------------------------------------------
 
         //Aqui enviar los datos-------------------------------------------------------------------------------------------
         //String resul = mTvResult.getText().toString();
-        ManifiestoCerrar manifiestoCerrar = new ManifiestoCerrar(""+MftoNro,""+Suc,""+MftoAnio,"pruebaUsuario","3619");
-        Call<ManifiestoCerrar> call = jsonPlaceHolderApi.createPost(manifiestoCerrar);
-        call.enqueue(new Callback<ManifiestoCerrar>() {
+        ManifiestoContador manifiestoContador = new ManifiestoContador(""+MftoNro,""+Suc,""+MftoAnio);
+        Call<ManifiestoContador> call = jsonPlaceHolderApi.createPost(manifiestoContador);
+        call.enqueue(new Callback<ManifiestoContador>() {
             @Override
-            public void onResponse(Call<ManifiestoCerrar> call, Response<ManifiestoCerrar> response) {
+            public void onResponse(Call<ManifiestoContador> call, Response<ManifiestoContador> response) {
                 if (!response.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "Ha ocurrido un error con el manifiesto.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Ha ocurrido un error al contar las guias.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                ManifiestoCerrar postsResponse = response.body();
+                ManifiestoContador postsResponse = response.body();
 
-                String estado = postsResponse.Estado();
-                String mensaje = postsResponse.Mensaje();
-                Toast.makeText(getApplicationContext(), "Manifiesto cerrado correctamente.", Toast.LENGTH_SHORT).show();
+                final String total = postsResponse.total();
+                String total2 = postsResponse.tot2();
 
-                Intent i = new Intent(ValijaAct.this, DespacharFinal.class);
-                Bundle c = new Bundle();
-                //c.putString("Estado", Estado);
-                //Enviar datos----------------------------------------------------------------------
-                c.putString("Valijas", Estado);
-                c.putString("Mfto", Mfto);
-                c.putString("MftoAnio", MftoAnio);
-                c.putString("MftoNro", MftoNro);
-                c.putString("Suc", Suc);
-                c.putString("PaisDes", PaisDes);
-                c.putString("CiuDes", CiuDes);
-                c.putString("Estado", Estado);
-                i.putExtras(c);
-                startActivity(i);
-                //----------------------------------------------------------------------------------
+                //Aqui enviar los datos-------------------------------------------------------------------------------------------
+                //String resul = mTvResult.getText().toString();
+                ContadorGuiasMfto contadorGuiasMfto = new ContadorGuiasMfto(""+MftoAnio,""+Suc,""+MftoNro);
+                Call<ContadorGuiasMfto> callo = jsonPlaceHolderApi.createPost(contadorGuiasMfto);
+                callo.enqueue(new Callback<ContadorGuiasMfto>() {
+                    @Override
+                    public void onResponse(Call<ContadorGuiasMfto> call, Response<ContadorGuiasMfto> response) {
+                        if (!response.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(), "Ha ocurrido un error al contar las guias.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        ContadorGuiasMfto postsResponse = response.body();
+
+                        String Total = postsResponse.total();
+                        String total2 = postsResponse.tot2();
+
+                        String codi;
+
+                        //Aqui enviar los datos-------------------------------------------------------------------------------------------
+                        //String resul = mTvResult.getText().toString();
+                        if(Total.equals(total)){
+                            codi = "3619";
+                        }
+                        else{
+                            codi = "3620";
+                        }
+
+                        ManifiestoCerrar manifiestoCerrar = new ManifiestoCerrar(""+MftoNro,""+Suc,""+MftoAnio,""+usuario,""+codi);
+                        Call<ManifiestoCerrar> calle = jsonPlaceHolderApi.createPost(manifiestoCerrar);
+                        calle.enqueue(new Callback<ManifiestoCerrar>() {
+                            @Override
+                            public void onResponse(Call<ManifiestoCerrar> call, Response<ManifiestoCerrar> response) {
+                                if (!response.isSuccessful()) {
+                                    Toast.makeText(getApplicationContext(), "Ha ocurrido un error con el manifiesto.", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                ManifiestoCerrar postsResponse = response.body();
+
+                                String estado = postsResponse.Estado();
+                                String mensaje = postsResponse.Mensaje();
+                                Toast.makeText(getApplicationContext(), "Manifiesto cerrado correctamente.", Toast.LENGTH_SHORT).show();
+
+                                Intent i = new Intent(ValijaAct.this, DespacharFinal.class);
+                                Bundle c = new Bundle();
+                                //c.putString("Estado", Estado);
+                                //Enviar datos---------------------------------------------------
+                                c.putString("Valijas", Estado);
+                                c.putString("Mfto", Mfto);
+                                c.putString("MftoAnio", MftoAnio);
+                                c.putString("MftoNro", MftoNro);
+                                c.putString("Suc", Suc);
+                                c.putString("PaisDes", PaisDes);
+                                c.putString("CiuDes", CiuDes);
+                                c.putString("Estado", Estado);
+                                c.putString("usuario", usuario);
+                                c.putString("password", password);
+                                c.putString("codigousuario", CodigoUsuario);
+                                i.putExtras(c);
+                                startActivity(i);
+                                //----------------------------------------------------------------
+                                return;
+                            }
+
+                            @Override
+                            public void onFailure(Call<ManifiestoCerrar> call, Throwable t) {
+                                Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
+                                //Titulo.setText(t.getMessage());
+                                return;
+                            }
+                        });
+
+                        //Toast.makeText(getApplicationContext(), "Manifiesto cerrado con éxito", Toast.LENGTH_SHORT).show();
+
+                        return;
+                    }
+
+                    @Override
+                    public void onFailure(Call<ContadorGuiasMfto> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
+                        //Titulo.setText(t.getMessage());
+                        return;
+                    }
+                });
+
                 return;
             }
 
             @Override
-            public void onFailure(Call<ManifiestoCerrar> call, Throwable t) {
+            public void onFailure(Call<ManifiestoContador> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
                 //Titulo.setText(t.getMessage());
                 return;

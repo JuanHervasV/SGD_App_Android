@@ -7,6 +7,7 @@ public class GuiaSuc {
     private String MFT_NRO;
     private String GUIA_DET_NRO_REF;
     private String GUIA_DET_ID;
+    private String GUIA_DET_CON_CIU;
 
     public GuiaSuc(String idguia){
         IDGuia = idguia;
@@ -17,4 +18,5 @@ public class GuiaSuc {
     public String mft_nro(){return MFT_NRO;}
     public String guia_nro_ref(){return GUIA_DET_NRO_REF;}
     public String guia_det_id(){return GUIA_DET_ID;}
+    public String guia_det_con_ciu(){return GUIA_DET_CON_CIU;}
 }

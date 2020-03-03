@@ -14,28 +14,60 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".splash_screen">
+        android:usesCleartextTraffic="true"
+        android:configChanges="orientation"
+        android:screenOrientation="portrait">
+        <activity android:name=".splash_screen"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PopupCerrarValija" />
-        <activity android:name=".DespacharFinal" />
-        <activity android:name=".CerrarManifiestoAct" />
-        <activity android:name=".CerrarValijaAct" />
-        <activity android:name=".GuiaAct" />
-        <activity android:name=".ValijaAct" />
-        <activity android:name=".ManifiestoAct" />
-        <activity android:name=".Pre_estado" />
-        <activity android:name=".sinametm" />
-        <activity android:name=".Logeo">
-
+        <activity android:name=".PopupCerrarValija"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".DespacharFinal"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".CerrarManifiestoAct"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".CerrarValijaAct"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".GuiaAct"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ValijaAct"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ManifiestoAct"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Pre_estado"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".sinametm"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Logeo"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".MenuPrincipal" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".PopUp"
+            android:theme="@style/AppTheme.CustomTheme"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".MenuPrincipal"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

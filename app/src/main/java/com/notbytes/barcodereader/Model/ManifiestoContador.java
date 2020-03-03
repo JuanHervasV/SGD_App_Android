@@ -5,8 +5,9 @@ public class ManifiestoContador {
     private String Mfto_Nro;
     private String Suc_Cod;
     private String Mfto_Anio;
-    private String estado;
-    private String mensaje;
+    private String Total;
+    private String Tot2;
+
 
         public ManifiestoContador(String mfto_nro, String suc_cod, String mfto_anio){
             Mfto_Nro = mfto_nro;
@@ -14,8 +15,8 @@ public class ManifiestoContador {
             Mfto_Anio = mfto_anio;
         }
 
-        public String Estado(){return estado;}
+        public String total(){return Total;}
 
-        public String Mensaje(){return mensaje;}
+        public String tot2(){return Tot2;}
 
 }
