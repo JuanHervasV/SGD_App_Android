@@ -290,7 +290,6 @@ public class CerrarValijaAct extends AppCompatActivity {
                     return;
                 }
                 ValijaContador postsResponse = response.body();
-
                 String Valija = postsResponse.valija();
                 String Total = postsResponse.total();
 

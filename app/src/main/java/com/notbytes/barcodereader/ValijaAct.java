@@ -427,28 +427,66 @@ public class ValijaAct extends AppCompatActivity {
                                     ValijaAdicionar postsResponse = response.body();
                                     String content = "";
                                     content += "Estado:" + postsResponse.Estado() + "\n";
-                                    //content += "Mensaje:" + postsResponse.Mensaje() + "\n";
-                                    int ValijaID = postsResponse.ValijaID();
-                                    //TestApi.append(content);
+
                                     if(postsResponse.Estado() == "true") {
-                                        Toast.makeText(ValijaAct.this, "Valija asignada correctamente", Toast.LENGTH_SHORT).show();
-                                        Intent i = new Intent(ValijaAct.this, GuiaAct.class);
-                                        //String passingdata = LoginText.getText().toString();
-                                        Bundle c = new Bundle();
-                                        c.putString("Valijas", Valijas);
-                                        c.putString("Mfto", Mfto);
-                                        c.putString("MftoAnio", MftoAnio);
-                                        c.putString("MftoNro", MftoNro);
-                                        c.putString("Suc", Suc);
-                                        c.putString("PaisDes", PaisDes);
-                                        c.putString("CiuDes", CiuDes);
-                                        c.putString("Estado", Estado);
-                                        c.putInt("ValijaID",ValijaID);
-                                        c.putString("usuario", usuario);
-                                        c.putString("password", password);
-                                        c.putString("codigousuario", CodigoUsuario);
-                                        i.putExtras(c);
-                                        startActivity(i);
+
+                                        ValijaValidar valijaValidar = new ValijaValidar(""+Valijas);
+                                        Call<ValijaValidar> calll = jsonPlaceHolderApi.createPost(valijaValidar);
+                                        calll.enqueue(new Callback<ValijaValidar>() {
+                                            @Override
+                                            public void onResponse(Call<ValijaValidar> call, Response<ValijaValidar> response) {
+                                                if (!response.isSuccessful()) {
+                                                    Toast.makeText(getApplicationContext(), "Error.", Toast.LENGTH_SHORT).show();
+                                                    return;
+                                                }
+                                                ValijaValidar postsResponse = response.body();
+
+                                                int Estado = postsResponse.Estado();
+                                                //int est = Estado.replace(" ", "");
+                                                String Anio = postsResponse.Anio();
+                                                String Existe = postsResponse.Existe();
+                                                String Nro = postsResponse.Nro();
+                                                String Suc = postsResponse.Suc();
+                                                String ValijaID = postsResponse.ValijaID();
+
+                                                if(Estado == 3615){
+                                                    Toast.makeText(ValijaAct.this, "Ingreso correcto de la valija", Toast.LENGTH_SHORT).show();
+
+                                                    Intent i = new Intent(ValijaAct.this, GuiaAct.class);
+                                                    Bundle c = new Bundle();
+                                                    c.putString("Valijas", Valijas);
+                                                    c.putString("Mfto", Mfto);
+                                                    c.putString("MftoAnio", MftoAnio);
+                                                    c.putString("MftoNro", MftoNro);
+                                                    c.putString("Suc", Suc);
+                                                    c.putString("PaisDes", PaisDes);
+                                                    c.putString("CiuDes", CiuDes);
+                                                    c.putInt("Estado", Estado);
+                                                    c.putString("ValijaID", ValijaID);
+                                                    c.putString("usuario", usuario);
+                                                    c.putString("password", password);
+                                                    c.putString("codigousuario", CodigoUsuario);
+                                                    i.putExtras(c);
+                                                    startActivity(i);
+
+                                                    return;
+                                                }
+                                                else if(Estado == 3616){
+                                                    Toast.makeText(ValijaAct.this, "La valija se encuentra cerrada.", Toast.LENGTH_SHORT).show();
+                                                    return;
+                                                }
+                                                else{
+                                                    Toast.makeText(ValijaAct.this, "Ha ocurrido un error con su valija: "+Estado, Toast.LENGTH_SHORT).show();
+                                                    return;
+                                                }
+                                            }
+                                            @Override
+                                            public void onFailure(Call<ValijaValidar> call, Throwable t) {
+                                                Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
+                                                //Titulo.setText(t.getMessage());
+                                                return;
+                                            }
+                                        });
                                     }
                                     else{
                                         Toast.makeText(ValijaAct.this, "Fallo al asignar valjia", Toast.LENGTH_SHORT).show();
@@ -459,39 +497,13 @@ public class ValijaAct extends AppCompatActivity {
                                     Toast.makeText(ValijaAct.this, "Fallo al asignar valjia", Toast.LENGTH_SHORT).show();
                                 }
                             });
-
-                            ValijaGDNValidar postsResponse = response.body();
-
-                            String existe = postsResponse.Existe();
-                            String id = postsResponse.ID();
-
-                            Toast.makeText(ValijaAct.this, "Valija asignada correctamente", Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(ValijaAct.this, GuiaAct.class);
-                            //String passingdata = LoginText.getText().toString();
-                            Bundle c = new Bundle();
-                            c.putString("Valijas", Valijas);
-                            c.putString("Mfto", Mfto);
-                            c.putString("MftoAnio", MftoAnio);
-                            c.putString("MftoNro", MftoNro);
-                            c.putString("Suc", Suc);
-                            c.putString("PaisDes", PaisDes);
-                            c.putString("CiuDes", CiuDes);
-                            c.putString("Estado", Estado);
-                            c.putString("ValijaID", id);
-                            c.putString("usuario", usuario);
-                            c.putString("password", password);
-                            c.putString("codigousuario", CodigoUsuario);
-                            i.putExtras(c);
-                            //startActivity(i);
                         }
                         @Override
                         public void onFailure(Call<ValijaGDNValidar> call, Throwable t) {
                             Toast.makeText(ValijaAct.this, "Fallo al asignar valjia", Toast.LENGTH_SHORT).show();
                         }
                     });
-                    //Toast.makeText(getApplicationContext(),"Código de valija incorrecto/No pertenece al manifiesto",Toast.LENGTH_SHORT).show();
                     return;
-
                 }
                 ValijaValidar postsResponse = response.body();
 
@@ -505,8 +517,8 @@ public class ValijaAct extends AppCompatActivity {
 
                 if(Estado == 3615){
                     Toast.makeText(ValijaAct.this, "Ingreso correcto de la valija", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(ValijaAct.this, GuiaAct.class);
 
+                    Intent i = new Intent(ValijaAct.this, GuiaAct.class);
                     Bundle c = new Bundle();
                     c.putString("Valijas", Valijas);
                     c.putString("Mfto", Mfto);
@@ -522,6 +534,7 @@ public class ValijaAct extends AppCompatActivity {
                     c.putString("codigousuario", CodigoUsuario);
                     i.putExtras(c);
                     startActivity(i);
+
 
                 }
                 else if(Estado == 3616){

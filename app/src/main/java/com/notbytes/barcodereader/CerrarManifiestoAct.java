@@ -329,30 +329,14 @@ public class CerrarManifiestoAct extends AppCompatActivity {
         }
 
     private void ContadorManifiestos(){
-        //Aqui enviar los datos-------------------------------------------------------------------------------------------
-        //String resul = mTvResult.getText().toString();
+
         ManifiestoContador manifiestoContador = new ManifiestoContador("1","","");
         Call<ManifiestoContador> call = jsonPlaceHolderApi.createPost(manifiestoContador);
         call.enqueue(new Callback<ManifiestoContador>() {
             @Override
             public void onResponse(Call<ManifiestoContador> call, Response<ManifiestoContador> response) {
                 if (!response.isSuccessful()) {
-                    //mJsonTxtView.setText("Codigo:" + response.code());
-                    ManifiestoContador postsResponse = response.body();
-
-                    //String Estado = postsResponse.estado();
-                    //String Guia = postsResponse.Guias();
-                    Toast.makeText(getApplicationContext(), "API Contador Manifiesto Iniciado", Toast.LENGTH_SHORT).show();
-
-                    Intent i = new Intent(CerrarManifiestoAct.this, DespacharFinal.class);
-                    Bundle c = new Bundle();
-                    //c.putString("Estado", Estado);
-                    //c.putString("Guia", Guia);
-                    //i.putExtras(c);
-                    //Mensaje.append(""+response.body());
-                    //Mensaje.append(""+response.headers());
-                    //startActivity(i);
-                    //Titulo.append(""+postsResponse.estado());
+                    Toast.makeText(getApplicationContext(), "Error.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 ManifiestoContador postsResponse = response.body();
@@ -372,7 +356,6 @@ public class CerrarManifiestoAct extends AppCompatActivity {
                 //Titulo.append(""+postsResponse.estado());
                 return;
             }
-
             @Override
             public void onFailure(Call<ManifiestoContador> call, Throwable t) {
                 Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
