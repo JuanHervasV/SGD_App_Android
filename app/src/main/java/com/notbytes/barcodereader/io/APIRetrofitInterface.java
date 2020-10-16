@@ -8,6 +8,8 @@ import com.notbytes.barcodereader.Model.LoginSGD;
 import com.notbytes.barcodereader.Model.ManifiestoCerrar;
 import com.notbytes.barcodereader.Model.ManifiestoContador;
 import com.notbytes.barcodereader.Model.MftoValijas;
+import com.notbytes.barcodereader.Model.PesoValija;
+import com.notbytes.barcodereader.Model.PesosManifiesto;
 import com.notbytes.barcodereader.Model.Posts;
 import com.notbytes.barcodereader.Model.ValidarGuia;
 import com.notbytes.barcodereader.Model.ValidarMfto;
@@ -90,4 +92,10 @@ public interface APIRetrofitInterface {
 
     @POST("ContadorGuiasMfto")
     Call<ContadorGuiasMfto> createPost(@Body ContadorGuiasMfto contadorGuiasMfto);
+
+    @POST("PesoValija")
+    Call<PesoValija> createPost(@Body PesoValija PesoValija);
+
+    @POST("PesosManifiesto")
+    Call<PesosManifiesto> createPost(@Body PesosManifiesto pesosManifiesto);
 }

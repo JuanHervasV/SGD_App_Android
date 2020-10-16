@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.notbytes.barcodereader.Model.ManifiestoCerrar;
 import com.notbytes.barcodereader.Model.ManifiestoContador;
 import com.notbytes.barcodereader.Model.MftoValijas;
+import com.notbytes.barcodereader.Model.PesosManifiesto;
 import com.notbytes.barcodereader.io.APIRetrofitInterface;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class CerrarManifiestoAct extends AppCompatActivity {
     private APIRetrofitInterface jsonPlaceHolderApi;
     private TextView Valija;
     private TextView Guia;
+    private TextView PesoTotal;
     private Button CerrarMfto;
     private Button Volver;
     private Button AgregarValija;
@@ -43,12 +45,15 @@ public class CerrarManifiestoAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cerrar_manifiesto);
+        PesoTotal = findViewById(R.id.txtPesoTotal);
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://200.37.50.53/ApiSGD/api/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         jsonPlaceHolderApi = retrofit.create(APIRetrofitInterface.class);
         RecuperarDatos();
+        PesoManifiesto();
         //ManifiestoValija();
         onTouch();
     }
@@ -56,6 +61,7 @@ public class CerrarManifiestoAct extends AppCompatActivity {
     public void onTouch() {
         CerrarMfto = findViewById(R.id.btnCerrar);
         Volver = findViewById(R.id.btnVolver);
+
 
         CerrarMfto.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -106,7 +112,7 @@ public class CerrarManifiestoAct extends AppCompatActivity {
         Intent i = new Intent(CerrarManifiestoAct.this, MenuPrincipal.class);
         //String passingdata = LoginText.getText().toString();
         Bundle c = new Bundle();
-        c.putString("Valijas", Estado);
+        c.putString("Valijas", Valijas);
         c.putString("Mfto", Mfto);
         c.putString("MftoAnio", MftoAnio);
         c.putString("MftoNro", MftoNro);
@@ -125,7 +131,6 @@ public class CerrarManifiestoAct extends AppCompatActivity {
     public void RelletarTabla(){
         data.add("Valija");
         data2.add("Cerrado");
-        table = findViewById(R.id.tabla);
 
     }
 
@@ -133,7 +138,6 @@ public class CerrarManifiestoAct extends AppCompatActivity {
 
         switch (view.getId()) {
             case R.id.btnCerrar:
-
                 PasarDatos();
                 //startActivity(new Intent(this, PopUp.class));
                 //CerrarManifiesto();
@@ -144,6 +148,7 @@ public class CerrarManifiestoAct extends AppCompatActivity {
         }
 
     }
+
 
     public void PasarDatos(){
 
@@ -262,7 +267,6 @@ public class CerrarManifiestoAct extends AppCompatActivity {
         //------------------------------------------------------------------------------
 
     }
-
 
     private void CerrarManifiesto(){
 
@@ -390,6 +394,42 @@ public class CerrarManifiestoAct extends AppCompatActivity {
             }
             @Override
             public void onFailure(Call<List<MftoValijas>> call, Throwable t) {
+                Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
+                return;
+            }
+        });
+    }
+
+    private void PesoManifiesto(){
+
+        PesoTotal = findViewById(R.id.txtPesoTotal);
+
+        //Llamar datos --------------------------------------------------
+        Bundle b = getIntent().getExtras();
+        final String MftoNro = b.getString("MftoNro");
+
+        //---------------------------------------------------------------
+
+        PesosManifiesto pesosManifiesto = new PesosManifiesto(MftoNro);//
+        Call<PesosManifiesto> call = jsonPlaceHolderApi.createPost(pesosManifiesto);
+        call.enqueue(new Callback<PesosManifiesto>() {
+            //<MftoValijas> call = jsonPlaceHolderApi.createPost(mftoValijas);
+            //call.enqueue(new Callback<MftoValijas>() {
+            @Override
+            public void onResponse(Call<PesosManifiesto> call, Response<PesosManifiesto> response) {
+                if(!response.isSuccessful()){
+                    Toast.makeText(getApplicationContext(),"No correcto",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                PesosManifiesto rptas = response.body();
+                //SocialData data = response.body();
+                String PesoManifiesto = rptas.PesoTotal();
+                PesoTotal.setText("El peso total del manifiesto es de "+PesoManifiesto+" kg.");
+                //Toast.makeText(getApplicationContext(),"Pasó correctamente"+rptas,Toast.LENGTH_SHORT).show();
+                return;
+            }
+            @Override
+            public void onFailure(Call<PesosManifiesto> call, Throwable t) {
                 Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
                 return;
             }

@@ -20,11 +20,7 @@
         <activity android:name=".splash_screen"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".PopupCerrarValija"
             android:configChanges="orientation"
@@ -56,6 +52,11 @@
         <activity android:name=".Logeo"
             android:configChanges="orientation"
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".PopUp"
             android:theme="@style/AppTheme.CustomTheme"

@@ -8,6 +8,7 @@ import android.text.InputFilter;
 import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -88,6 +89,23 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
             arrayList.clear();
             arrayList.addAll(hashSet);
         }
+
+        listView.setClickable(true);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+
+                Object o = listView.getItemAtPosition(position);
+                arrayList.remove(o);
+                adapter.notifyDataSetChanged();
+                //Contar elementos del spinner ~
+                int count = listView.getAdapter().getCount();
+                int ctf= totalelementoslist+count;
+                contarelementos.setText(""+count);
+                //---
+            }
+        });
         //listarpro = findViewById(R.id.lista);
         //String resul = mTvResult.getText().toString();-------------------------------------------------
         Retrofit retrofit = new Retrofit.Builder()

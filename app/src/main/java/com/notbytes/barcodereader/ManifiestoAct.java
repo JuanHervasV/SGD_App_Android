@@ -123,8 +123,13 @@ public class ManifiestoAct extends AppCompatActivity {
             mp.start();
             //--
             //mTvResultHeader.setText("Resultado");
+            if(barcode.rawValue.toString().length() == 12){
+                Mfto.setText(barcode.rawValue);
+            }
+            else{
+                Mfto.setText('0'+barcode.rawValue);
+            }
 
-            Mfto.setText('0'+barcode.rawValue);
         }
     }
 
@@ -134,70 +139,79 @@ public class ManifiestoAct extends AppCompatActivity {
         String Mft = Mfto.getText().toString();
 
         Titulo = findViewById(R.id.txtTitulo);
-        //Aqui enviar los datos
-        //String resul = mTvResult.getText().toString();
-        ValidarMfto validarMfto = new ValidarMfto(Mft);
-        Call<ValidarMfto> call = jsonPlaceHolderApi.createPost(validarMfto);
-        call.enqueue(new Callback<ValidarMfto>() {
-            @Override
-            public void onResponse(Call<ValidarMfto> call, Response<ValidarMfto> response) {
-                if(!response.isSuccessful()){
-                    Toast.makeText(getApplicationContext(),"Manifiesto no encontrado",Toast.LENGTH_LONG).show();
+
+        if (Mft.matches("")) {
+            Toast.makeText(this, "Ingrese su manifiesto", Toast.LENGTH_LONG).show();
+            return;
+
+        }
+        else {
+            //Aqui enviar los datos
+            //String resul = mTvResult.getText().toString();
+            ValidarMfto validarMfto = new ValidarMfto(Mft);
+            Call<ValidarMfto> call = jsonPlaceHolderApi.createPost(validarMfto);
+            call.enqueue(new Callback<ValidarMfto>() {
+                @Override
+                public void onResponse(Call<ValidarMfto> call, Response<ValidarMfto> response) {
+                    if(!response.isSuccessful()){
+                        Toast.makeText(getApplicationContext(),"Manifiesto no encontrado",Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    ValidarMfto postsResponse = response.body();
+
+                    String MftoAnio = postsResponse.mftoAnio();
+                    String MftoNro = postsResponse.mftoNro();
+                    String Suc = postsResponse.suc();
+                    String PaisDes = postsResponse.paisDes();
+                    String CiuDes = postsResponse.ciuDes();
+                    String Estado = postsResponse.estado();
+                    //
+
+                    if (Estado != "") {
+                        Toast.makeText(getApplicationContext(),"El manifiesto se encuentra cerrado.",Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    else{
+                        Toast.makeText(getApplicationContext(),"Manifiesto validado correctamente",Toast.LENGTH_LONG).show();
+
+                        //Llamar datos --------------------------------
+                        Bundle b = getIntent().getExtras();
+                        String usuario = b.getString("usuario");
+                        String password = b.getString("password");
+                        String CodigoUsuario = b.getString("codigousuario");
+
+                        //----------------------------------------------
+
+                        Intent i = new Intent(ManifiestoAct.this, ValijaAct.class);
+                        Bundle c = new Bundle();
+                        String Mftf = Mfto.getText().toString();
+                        c.putString("Mfto", Mftf);
+                        c.putString("MftoAnio", MftoAnio);
+                        c.putString("MftoNro", MftoNro);
+                        c.putString("Suc", Suc);
+                        c.putString("PaisDes", PaisDes);
+                        c.putString("CiuDes", CiuDes);
+                        c.putString("Estado", Estado);
+                        c.putString("usuario", usuario);
+                        c.putString("password", password);
+                        c.putString("codigousuario", CodigoUsuario);
+
+                        i.putExtras(c);
+                        startActivity(i);
+                        return;
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ValidarMfto> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
+                    //Titulo.setText(t.getMessage());
                     return;
                 }
-                ValidarMfto postsResponse = response.body();
+            });
+        }
+        }
 
-                String MftoAnio = postsResponse.mftoAnio();
-                String MftoNro = postsResponse.mftoNro();
-                String Suc = postsResponse.suc();
-                String PaisDes = postsResponse.paisDes();
-                String CiuDes = postsResponse.ciuDes();
-                String Estado = postsResponse.estado();
-                //
-
-                if (Estado != "") {
-                    Toast.makeText(getApplicationContext(),"El manifiesto se encuentra cerrado.",Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                else{
-                    Toast.makeText(getApplicationContext(),"Manifiesto validado correctamente",Toast.LENGTH_LONG).show();
-
-                    //Llamar datos --------------------------------
-                    Bundle b = getIntent().getExtras();
-                    String usuario = b.getString("usuario");
-                    String password = b.getString("password");
-                    String CodigoUsuario = b.getString("codigousuario");
-
-                    //----------------------------------------------
-
-                    Intent i = new Intent(ManifiestoAct.this, ValijaAct.class);
-                    Bundle c = new Bundle();
-                    String Mftf = Mfto.getText().toString();
-                    c.putString("Mfto", Mftf);
-                    c.putString("MftoAnio", MftoAnio);
-                    c.putString("MftoNro", MftoNro);
-                    c.putString("Suc", Suc);
-                    c.putString("PaisDes", PaisDes);
-                    c.putString("CiuDes", CiuDes);
-                    c.putString("Estado", Estado);
-                    c.putString("usuario", usuario);
-                    c.putString("password", password);
-                    c.putString("codigousuario", CodigoUsuario);
-
-                    i.putExtras(c);
-                    startActivity(i);
-                    return;
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ValidarMfto> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
-                //Titulo.setText(t.getMessage());
-                return;
-            }
-        });
-    }
 }

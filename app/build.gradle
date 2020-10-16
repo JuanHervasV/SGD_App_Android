@@ -1,10 +1,16 @@
 apply plugin: 'com.android.application'
 
 android {
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
     compileSdkVersion 29
     defaultConfig {
-        applicationId "JH.SGDScharff"
-        minSdkVersion 17
+        applicationId "com.JH.SGDScharffAgo"
+        minSdkVersion 15
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -20,7 +26,7 @@ android {
 
 dependencies {
     //Gif
-    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
+    //implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
     // Retrofit
     implementation 'com.google.code.gson:gson:2.6.2'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'

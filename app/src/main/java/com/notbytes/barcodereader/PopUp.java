@@ -194,7 +194,7 @@ public class PopUp extends Activity {
                 CerrarManifiesto();
                 break;
             case R.id.btnNo:
-                PasarDatos();
+                finish();
                 break;
         }
     }
@@ -204,7 +204,7 @@ public class PopUp extends Activity {
         //Llamar datos --------------------------------------------------
         Bundle b = getIntent().getExtras();
         final String Mfto = b.getString("Mfto");
-        String Valijas = b.getString("Valijas");
+        final String Valijas = b.getString("Valijas");
         final String MftoAnio = b.getString("MftoAnio");
         final String MftoNro = b.getString("MftoNro");
         final String Suc = b.getString("Suc");
@@ -265,7 +265,7 @@ public class PopUp extends Activity {
                         Bundle c = new Bundle();
                         //c.putString("Estado", Estado);
                         //Enviar datos---------------------------------------------------
-                        c.putString("Valijas", Estado);
+                        c.putString("Valijas", Valijas);
                         c.putString("Mfto", Mfto);
                         c.putString("MftoAnio", MftoAnio);
                         c.putString("MftoNro", MftoNro);

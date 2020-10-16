@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/amarilloclaro"
     tools:context="com.notbytes.barcodereader.ManifiestoAct">
 
     <androidx.appcompat.widget.Toolbar
@@ -13,75 +12,118 @@
         android:layout_height="wrap_content"
         android:background="@color/AmarilloScharff"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme" />
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/textView10"
-        android:layout_width="120dp"
-        android:layout_height="21dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
         android:text="Escoger Manifiesto"
         android:textColor="@color/white"
-        android:textSize="11dp"
-        android:textStyle="bold" />
+        android:textSize="19dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="48dp"
-        android:layout_height="11dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginRight="35dp"
-        android:text="Manifiesto"
-        android:textSize="6dp" />
+    <ScrollView
+        android:id="@+id/conste"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:layout_marginTop="72dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+
+            android:id="@+id/textView3"
+            android:layout_width="301dp"
+            android:layout_height="59dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="15dp"
+            android:text="Escribe o escanee el número del manifiesto "
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.421"
+            app:layout_constraintStart_toStartOf="parent"
+             />
 
     <Button
         android:id="@+id/btnBr"
-        android:layout_width="46dp"
-        android:layout_height="14dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:drawableTop="@drawable/barcodesymbol"
+        android:layout_width="51dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/ic_barcordeamarillo"
         android:onClick="onClick"
-        android:text="" />
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="@+id/layout_username"
+        app:layout_constraintEnd_toEndOf="@+id/textView3"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/layout_username"
+        app:layout_constraintTop_toTopOf="@+id/layout_username" />
 
-    <EditText
-        android:id="@+id/mfto"
-        android:layout_width="55dp"
-        android:layout_height="15dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="67dp"
-        android:layout_marginLeft="67dp"
-        android:layout_marginBottom="59dp"
-        android:background="@drawable/rounded_cornerneutral"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="011800000077"
-        android:textSize="6dp" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_username"
+        android:layout_width="199dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="64dp"
+        app:hintTextAppearance="@style/MyHintTextAmarillo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+        <EditText
+            android:id="@+id/mfto"
+            android:layout_width="197dp"
+            android:layout_height="43dp"
+            android:layout_alignBottom="@+id/mfto"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:ems="10"
+            android:hint="Manifiesto"
+            android:textSize="20dp"
+            tools:ignore="NotSibling"
+            tools:layout_editor_absoluteX="30dp"
+            tools:layout_editor_absoluteY="246dp" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
     <Button
         android:id="@+id/btnEnviar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="428dp"
-        android:background="@drawable/rounded_corners"
+        android:layout_width="141dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="76dp"
+        android:background="@drawable/rounded_corneramarillo"
         android:onClick="onClick"
-        android:text="Enviar" />
+        android:text="Enviar"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.514"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_username"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="165dp"
-        android:layout_height="26dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="68dp"
-        android:layout_marginEnd="10dp"
-        android:text="Escriba o scanee su manifiesto a continuación: "
-        android:textSize="8dp" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+

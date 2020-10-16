@@ -402,17 +402,7 @@ public class ValijaAct extends AppCompatActivity {
                             }
                             Valija = findViewById(R.id.txtValija);
                             final String Valijas = Valija.getText().toString();
-                            //Llamar datos ---------------------------------------
-                            Bundle b = getIntent().getExtras();
-                            final String Mfto = b.getString("Mfto");
-                            final String MftoAnio = b.getString("MftoAnio");
-                            final String MftoNro = b.getString("MftoNro");
-                            final String Suc = b.getString("Suc");
-                            final String PaisDes = b.getString("PaisDes");
-                            final String CiuDes = b.getString("CiuDes");
-                            final String Estado = b.getString("Estado");
 
-                            //----------------------------------------------------
 
                             ValijaAdicionar valijaAdicionar = new ValijaAdicionar(""+Valijas,""+MftoAnio,""+MftoNro,""+Suc,""+CiuDes,""+usuario);
 
@@ -446,12 +436,15 @@ public class ValijaAct extends AppCompatActivity {
                                                 String Anio = postsResponse.Anio();
                                                 String Existe = postsResponse.Existe();
                                                 String Nro = postsResponse.Nro();
-                                                String Suc = postsResponse.Suc();
+                                                String suc = postsResponse.Suc();
                                                 String ValijaID = postsResponse.ValijaID();
 
                                                 if(Estado == 3615){
-                                                    Toast.makeText(ValijaAct.this, "Ingreso correcto de la valija", Toast.LENGTH_SHORT).show();
 
+                                                    String EstadoS = String.valueOf(Estado);
+
+                                                    if(MftoNro.equals(Nro) && MftoAnio.equals(Anio) && Suc.equals(suc)){
+                                                        Toast.makeText(ValijaAct.this, "Ingreso correcto de la valija", Toast.LENGTH_SHORT).show();
                                                     Intent i = new Intent(ValijaAct.this, GuiaAct.class);
                                                     Bundle c = new Bundle();
                                                     c.putString("Valijas", Valijas);
@@ -461,7 +454,7 @@ public class ValijaAct extends AppCompatActivity {
                                                     c.putString("Suc", Suc);
                                                     c.putString("PaisDes", PaisDes);
                                                     c.putString("CiuDes", CiuDes);
-                                                    c.putInt("Estado", Estado);
+                                                    c.putString("Estado", EstadoS);
                                                     c.putString("ValijaID", ValijaID);
                                                     c.putString("usuario", usuario);
                                                     c.putString("password", password);
@@ -469,6 +462,10 @@ public class ValijaAct extends AppCompatActivity {
                                                     i.putExtras(c);
                                                     startActivity(i);
 
+                                                    }
+                                                    else{
+                                                        Toast.makeText(ValijaAct.this, "La valija pertenece al manifiesto "+suc+"-"+Anio+"-"+Nro, Toast.LENGTH_LONG).show();
+                                                    }
                                                     return;
                                                 }
                                                 else if(Estado == 3616){
@@ -512,8 +509,36 @@ public class ValijaAct extends AppCompatActivity {
                 String Anio = postsResponse.Anio();
                 String Existe = postsResponse.Existe();
                 String Nro = postsResponse.Nro();
-                String Suc = postsResponse.Suc();
+                String suc = postsResponse.Suc();
                 String ValijaID = postsResponse.ValijaID();
+
+                if(Estado == 3615){
+
+                    if(MftoNro.equals(Nro) && MftoAnio.equals(Anio) && Suc.equals(suc)){
+                        Toast.makeText(ValijaAct.this, "Ingreso correcto de la valija", Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(ValijaAct.this, GuiaAct.class);
+                        Bundle c = new Bundle();
+                        c.putString("Valijas", Valijas);
+                        c.putString("Mfto", Mfto);
+                        c.putString("MftoAnio", MftoAnio);
+                        c.putString("MftoNro", MftoNro);
+                        c.putString("Suc", Suc);
+                        c.putString("PaisDes", PaisDes);
+                        c.putString("CiuDes", CiuDes);
+                        c.putInt("Estado", Estado);
+                        c.putString("ValijaID", ValijaID);
+                        c.putString("usuario", usuario);
+                        c.putString("password", password);
+                        c.putString("codigousuario", CodigoUsuario);
+                        i.putExtras(c);
+                        startActivity(i);
+
+                    }
+                    else{
+                        Toast.makeText(ValijaAct.this, "La valija pertenece al manifiesto "+suc+"-"+Anio+"-"+Nro, Toast.LENGTH_LONG).show();
+                    }
+                    return;
+                }
 
                 if(Estado == 3615){
                     Toast.makeText(ValijaAct.this, "Ingreso correcto de la valija", Toast.LENGTH_SHORT).show();

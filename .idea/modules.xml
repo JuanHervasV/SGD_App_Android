@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SGD-App.iml" filepath="$PROJECT_DIR$/SGD-App.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SGD-App.iml" filepath="$PROJECT_DIR$/SGD-App.iml" group="SGD-App" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/SGD-App-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/SGD-App-app.iml" group="SGD-App/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/barcode-reader/SGD-App-barcode-reader.iml" filepath="$PROJECT_DIR$/.idea/modules/barcode-reader/SGD-App-barcode-reader.iml" group="SGD-App/barcode-reader" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/barcode-reader/barcode-reader.iml" filepath="$PROJECT_DIR$/barcode-reader/barcode-reader.iml" />
     </modules>

@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.notbytes.barcodereader.Model.PesoValija;
 import com.notbytes.barcodereader.Model.ValijaCerrar;
 import com.notbytes.barcodereader.Model.ValijaContador;
 import com.notbytes.barcodereader.Model.ValijaStatus;
@@ -28,6 +30,7 @@ public class CerrarValijaAct extends AppCompatActivity {
     private TextView Valija;
     private Button CerrarValija;
     private Button Volver;
+    private EditText Peso;
     private APIRetrofitInterface jsonPlaceHolderApi;
 
     @Override
@@ -72,8 +75,52 @@ public class CerrarValijaAct extends AppCompatActivity {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnCerrar:
+                ActualizarPesoV();
                 cerrarValija();
                 break;
+        }
+    }
+
+    public void ActualizarPesoV(){
+        Peso = findViewById(R.id.pesonum);
+        //int PesVal = Integer.parseInt(Peso.getText().toString());
+        String PesoVa = Peso.getText().toString();
+
+        if (PesoVa.matches("")) {
+            //Toast.makeText(this, "Ingrese su peso en Kg", Toast.LENGTH_LONG).show();
+            return;
+
+        }
+        else {
+
+
+            //Llamar datos ----------------------------------------------------------
+            Bundle b = getIntent().getExtras();
+            String Valijas = b.getString("Valijas");
+
+            PesoValija pesoValija = new PesoValija(Valijas, PesoVa);
+            Call<PesoValija> call = jsonPlaceHolderApi.createPost(pesoValija);
+            call.enqueue(new Callback<PesoValija>() {
+                @Override
+                public void onResponse(Call<PesoValija> call, Response<PesoValija> response) {
+                    if (!response.isSuccessful()) {
+                        Toast.makeText(getApplicationContext(), "Error.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    PesoValija postsResponse = response.body();
+
+                   Toast.makeText(getApplicationContext(), "Peso Actualizado", Toast.LENGTH_SHORT).show();
+
+                    return;
+                }
+
+                @Override
+                public void onFailure(Call<PesoValija> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Fallo al ingresar los datos, compruebe su red.", Toast.LENGTH_SHORT).show();
+                    //Titulo.setText(t.getMessage());
+                    return;
+                }
+            });
         }
     }
 
@@ -89,7 +136,7 @@ public class CerrarValijaAct extends AppCompatActivity {
         String Suc = b.getString("Suc");
         String PaisDes = b.getString("PaisDes");
         String CiuDes = b.getString("CiuDes");
-        String Estado = b.getString("Estado");
+        //String Estado = b.getString("Estado");
         String usuario = b.getString("usuario");
         String password = b.getString("password");
         String count = b.getString("count");
@@ -108,7 +155,7 @@ public class CerrarValijaAct extends AppCompatActivity {
         c.putString("Suc", Suc);
         c.putString("PaisDes", PaisDes);
         c.putString("CiuDes", CiuDes);
-        c.putString("Estado", Estado);
+        //c.putString("Estado", Estado);
         c.putString("usuario", usuario);
         c.putString("password", password);
         c.putString("count", count);
@@ -128,7 +175,7 @@ public class CerrarValijaAct extends AppCompatActivity {
         String Suc = b.getString("Suc");
         String PaisDes = b.getString("PaisDes");
         String CiuDes = b.getString("CiuDes");
-        String Estado = b.getString("Estado");
+        //String Estado = b.getString("Estado");
         String ValijaID = b.getString("ValijaID");
         String usuario = b.getString("usuario");
         String password = b.getString("password");
@@ -146,14 +193,14 @@ public class CerrarValijaAct extends AppCompatActivity {
         Intent i = new Intent(CerrarValijaAct.this, CerrarManifiestoAct.class);
         //String passingdata = LoginText.getText().toString();
         Bundle c = new Bundle();
-        c.putString("Valijas", Estado);
+        //c.putString("Valijas", Estado);
         c.putString("Mfto", Mfto);
         c.putString("MftoAnio", MftoAnio);
         c.putString("MftoNro", MftoNro);
         c.putString("Suc", Suc);
         c.putString("PaisDes", PaisDes);
         c.putString("CiuDes", CiuDes);
-        c.putString("Estado", Estado);
+        //c.putString("Estado", Estado);
         c.putString("ValijaID", ValijaID);
         c.putString("usuario", usuario);
         c.putString("password", password);
@@ -168,7 +215,7 @@ public class CerrarValijaAct extends AppCompatActivity {
         //Llamar datos -------------------------------------------------
         Bundle b = getIntent().getExtras();
         final String Mfto = b.getString("Mfto");
-        String Valijas = b.getString("Valijas");
+        final String Valijas = b.getString("Valijas");
         final String MftoAnio = b.getString("MftoAnio");
         final String MftoNro = b.getString("MftoNro");
         final String Suc = b.getString("Suc");
@@ -179,49 +226,62 @@ public class CerrarValijaAct extends AppCompatActivity {
         final String usuario = b.getString("usuario");
         final String password = b.getString("password");
         final String count = b.getString("count");
-        //---------------------------------------------------------------
-        ValijaCerrar valijaCerrar = new ValijaCerrar(ValijaID);
-        Call<ValijaCerrar> call = jsonPlaceHolderApi.createPost(valijaCerrar);
-        call.enqueue(new Callback<ValijaCerrar>() {
-            @Override
-            public void onResponse(Call<ValijaCerrar> call, Response<ValijaCerrar> response) {
-                if(!response.isSuccessful()){
-                    Toast.makeText(getApplicationContext(),"Valija no correcta.",Toast.LENGTH_SHORT).show();
+        //-----------------------------------------------------------------------------------------------------------------
+
+        Peso = findViewById(R.id.pesonum);
+        //int PesVal = Integer.parseInt(Peso.getText().toString());
+        String PesoVa = Peso.getText().toString();
+        if (PesoVa.matches("")) {
+            Toast.makeText(this, "Ingrese su peso en Kg", Toast.LENGTH_LONG).show();
+            return;
+
+        }
+        else {
+            ValijaCerrar valijaCerrar = new ValijaCerrar(ValijaID);
+            Call<ValijaCerrar> call = jsonPlaceHolderApi.createPost(valijaCerrar);
+            call.enqueue(new Callback<ValijaCerrar>() {
+                @Override
+                public void onResponse(Call<ValijaCerrar> call, Response<ValijaCerrar> response) {
+                    if(!response.isSuccessful()){
+                        Toast.makeText(getApplicationContext(),"Valija no correcta.",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    ValijaCerrar postsResponse = response.body();
+                    Toast.makeText(getApplicationContext(),"Valija cerrada correctamente",Toast.LENGTH_SHORT).show();
+
+                    Intent i = new Intent(CerrarValijaAct.this, CerrarManifiestoAct.class);
+                    Bundle c = new Bundle();
+                    //Enviar datos---------------------------------------------------
+                    c.putString("Valijas", Valijas);
+                    c.putString("Mfto", Mfto);
+                    c.putString("MftoAnio", MftoAnio);
+                    c.putString("MftoNro", MftoNro);
+                    c.putString("Suc", Suc);
+                    c.putString("PaisDes", PaisDes);
+                    c.putString("CiuDes", CiuDes);
+                    c.putString("Estado", Estado);
+                    c.putString("ValijaID", ValijaID);
+                    c.putString("usuario", usuario);
+                    c.putString("password", password);
+                    c.putString("count", count);
+                    i.putExtras(c);
+                    //startActivity(i);
+                    //----------------------------------------------------------------
+                    i.putExtras(c);
+                    startActivity(i);
+
                     return;
                 }
-                ValijaCerrar postsResponse = response.body();
-                Toast.makeText(getApplicationContext(),"Valija cerrada correctamente",Toast.LENGTH_SHORT).show();
+                @Override
+                public void onFailure(Call<ValijaCerrar> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
+                    //Titulo.setText(t.getMessage());
+                    return;
+                }
+            });
+        }
 
-                Intent i = new Intent(CerrarValijaAct.this, CerrarManifiestoAct.class);
-                Bundle c = new Bundle();
-                //Enviar datos---------------------------------------------------
-                c.putString("Valijas", Estado);
-                c.putString("Mfto", Mfto);
-                c.putString("MftoAnio", MftoAnio);
-                c.putString("MftoNro", MftoNro);
-                c.putString("Suc", Suc);
-                c.putString("PaisDes", PaisDes);
-                c.putString("CiuDes", CiuDes);
-                c.putString("Estado", Estado);
-                c.putString("ValijaID", ValijaID);
-                c.putString("usuario", usuario);
-                c.putString("password", password);
-                c.putString("count", count);
-                i.putExtras(c);
-                //startActivity(i);
-                //----------------------------------------------------------------
-                i.putExtras(c);
-                startActivity(i);
 
-                return;
-            }
-            @Override
-            public void onFailure(Call<ValijaCerrar> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
-                //Titulo.setText(t.getMessage());
-                return;
-            }
-        });
     }
 
     private void cerrarStatus(){

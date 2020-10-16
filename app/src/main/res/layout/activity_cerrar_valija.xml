@@ -1,93 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.notbytes.barcodereader.CerrarValijaAct">
 
-    <androidx.appcompat.widget.Toolbar
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:scrollbars="vertical">
+
+        <RelativeLayout
+            android:id="@+id/layoutscroll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+        <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:theme="?attr/actionBarTheme" />
 
     <TextView
         android:id="@+id/txtTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="10dp"
         android:text="Cerrar Valija"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="25dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.059"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.545" />
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:id="@+id/txtIntro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="34dp"
+        android:text="Indique el peso total de su valija"
+        android:textColor="@color/grey"
+        android:textSize="20dp">
+
+    </TextView>
+
+    <LinearLayout
+        android:id="@+id/linearPesoValija"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtIntro"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="Peso de valija: "
+            android:textSize="18dp">
+
+        </TextView>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <EditText
+            android:id="@+id/pesonum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="15dp"
+            android:gravity="right"
+            android:textSize="18dp"
+            android:inputType="number"
+            android:hint="Ingresa su peso">
+        </EditText>
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/txtMfto"
         android:layout_width="335dp"
         android:layout_height="52dp"
-        android:layout_marginBottom="584dp"
+        android:layout_marginTop="50dp"
         android:text="Manifiesto: "
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textAlignment="center"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/linearPesoValija"
+        android:textSize="15dp" />
 
     <TextView
         android:id="@+id/txtValija"
-        android:layout_width="335dp"
-        android:layout_height="86dp"
-        android:layout_marginTop="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtMfto"
+        android:layout_marginTop="15dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
         android:text="¿Está seguro que desea cerrar la valija "
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/txtMfto"
-        app:layout_constraintStart_toStartOf="@+id/txtMfto"
-        app:layout_constraintTop_toBottomOf="@+id/txtMfto"
-        app:layout_constraintVertical_bias="0.0" />
+        android:textAlignment="center"
+        android:textSize="15dp" />
 
     <TextView
         android:id="@+id/txtGuia"
         android:layout_width="339dp"
         android:layout_height="107dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginBottom="216dp"
+        android:layout_marginTop="40dp"
+        android:layout_below="@id/txtValija"
         android:text="Número de guias asignadas: "
-        android:textSize="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/txtValija"
-        app:layout_constraintStart_toStartOf="@+id/txtValija"
-        app:layout_constraintTop_toBottomOf="@+id/txtValija"
-        app:layout_constraintVertical_bias="0.074" />
+        android:layout_centerHorizontal="true"
+        android:textSize="15dp" />
 
     <Button
         android:id="@+id/btnCerrar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="57dp"
-        android:layout_marginBottom="140dp"
+        android:layout_marginTop="40dp"
+        android:layout_below="@id/txtGuia"
         android:background="@drawable/rounded_cornersscharff"
         android:onClick="onClick"
+        android:layout_centerHorizontal="true"
         android:text="Cerrar Valija"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtGuia"
-        app:layout_constraintVertical_bias="0.0" />
+        android:textColor="@color/white" />
 
+        </RelativeLayout>
+    </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
