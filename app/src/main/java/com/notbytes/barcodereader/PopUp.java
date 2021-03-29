@@ -28,11 +28,12 @@ public class PopUp extends Activity {
     private Button ButtonNo;
     private TextView Texto;
     private APIRetrofitInterface jsonPlaceHolderApi;
+    static PopUp popUp;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        popUp = this;
         setContentView(R.layout.popup);
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://200.37.50.53/ApiSGD/api/")
@@ -55,6 +56,10 @@ public class PopUp extends Activity {
 
         ContadorGuiasMftoGeneral();
 
+    }
+
+    static PopUp getInstance(){
+        return popUp;
     }
 
     public void RecuperarDatos(){
@@ -431,6 +436,7 @@ public class PopUp extends Activity {
                                 c.putString("password", password);
                                 c.putString("codigousuario", CodigoUsuario);
                                 i.putExtras(c);
+
                                 startActivity(i);
                                 //----------------------------------------------------------------
                                 return;

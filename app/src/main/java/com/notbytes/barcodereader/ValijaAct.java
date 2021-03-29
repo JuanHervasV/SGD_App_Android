@@ -40,11 +40,14 @@ public class ValijaAct extends AppCompatActivity {
     private static final int BARCODE_READER_ACTIVITY_REQUEST = 1208;
     private Button Asignar;
     private Button Cerrar;
+    static ValijaAct valijaAct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_valija);
+
+        valijaAct = this;
 
         Valija = findViewById(R.id.txtValija);
         Valija.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
@@ -60,6 +63,10 @@ public class ValijaAct extends AppCompatActivity {
         RecuperarDatos();
         onTouch();
         //createPost();
+    }
+
+    public static ValijaAct getInstance(){
+        return valijaAct;
     }
 
     public void onTouch() {
@@ -388,6 +395,7 @@ public class ValijaAct extends AppCompatActivity {
                     final String PaisDes = b.getString("PaisDes");
                     final String CiuDes = b.getString("CiuDes");
                     final String Estado = b.getString("Estado");
+                    final String usuario = b.getString("usuario");
                     //----------------------------------------------------
 
                     ValijaGDNValidar valijaGDNValidar = new ValijaGDNValidar(Valijas);

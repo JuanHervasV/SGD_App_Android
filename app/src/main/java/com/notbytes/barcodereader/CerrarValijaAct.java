@@ -32,11 +32,14 @@ public class CerrarValijaAct extends AppCompatActivity {
     private Button Volver;
     private EditText Peso;
     private APIRetrofitInterface jsonPlaceHolderApi;
+    static CerrarValijaAct cerrarValijaAct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cerrar_valija);
+
+        cerrarValijaAct = this;
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://200.37.50.53/ApiSGD/api/")
@@ -46,6 +49,10 @@ public class CerrarValijaAct extends AppCompatActivity {
         RecuperarDatos();
         ValijasContador();
         onTouch();
+    }
+
+    public static CerrarValijaAct getInstance(){
+        return cerrarValijaAct;
     }
 
     public void onTouch() {

@@ -1,5 +1,6 @@
 package com.notbytes.barcodereader;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
@@ -8,6 +9,7 @@ import android.text.InputFilter;
 import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -55,6 +57,7 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
     private ListView listView;
     private TextView contarelementos;
     int totalelementoslist = 1;
+    static GuiaAct guiaAct;
     ArrayAdapter<String> adapter;
     ArrayList<String> arrayList;
     MediaPlayer mp2;
@@ -66,6 +69,8 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
         setContentView(R.layout.activity_guia);
         mp2 = MediaPlayer.create(this, R.raw.wrong);
         mp = MediaPlayer.create(this, R.raw.beeps);
+
+        guiaAct = this;
 
         Guia = findViewById(R.id.txtGuia);
         Guia.setFilters(new InputFilter[]{new InputFilter.AllCaps()});
@@ -119,6 +124,10 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
         //createPost();
     }
 
+    public static GuiaAct getInstance(){
+        return guiaAct;
+    }
+
     public void onTouch() {
         Agregar = findViewById(R.id.btnAgregar);
         Cerrar = findViewById(R.id.btnCerrar);
@@ -157,6 +166,11 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
         switch (v.getId()){
             case R.id.btnAgregar:
                 AdicionarGuia();
+                InputMethodManager inputManager = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                inputManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
                 break;
             case R.id.btnBr:
                 Guia = findViewById(R.id.txtGuia);

@@ -1,6 +1,5 @@
 package com.notbytes.barcodereader;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,7 +19,14 @@ public class DespacharFinal extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnVolver:
-                Intent i = new Intent(DespacharFinal.this, MenuPrincipal.class);
+                ManifiestoAct.getInstance().finish();
+                ValijaAct.getInstance().finish();
+                GuiaAct.getInstance().finish();
+                CerrarValijaAct.getInstance().finish();
+                CerrarManifiestoAct.getInstance().finish();
+                PopUp.getInstance().finish();
+                finish();
+                /*Intent i = new Intent(DespacharFinal.this, MenuPrincipal.class);
                 //Llamar datos -------------------------------------------------
                 Bundle b = getIntent().getExtras();
                 final String Mfto = b.getString("Mfto");
@@ -49,7 +55,8 @@ public class DespacharFinal extends AppCompatActivity {
                 i.putExtras(c);
                 //----------------------------------------------------------------
                 startActivity(i);
-                break;
+                break;*/
+
         }
     }
 

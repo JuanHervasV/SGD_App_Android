@@ -33,6 +33,7 @@ public class ManifiestoAct extends AppCompatActivity {
     private EditText Mfto;
     private TextView Titulo;
     private static final int BARCODE_READER_ACTIVITY_REQUEST = 1208;
+    static ManifiestoAct manifiestoAct;
 
     @SuppressLint("NewApi")
     @Override
@@ -46,7 +47,13 @@ public class ManifiestoAct extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         jsonPlaceHolderApi = retrofit.create(APIRetrofitInterface.class);
+        manifiestoAct = this;
         onTouch();
+
+    }
+
+    public static ManifiestoAct getInstance(){
+        return manifiestoAct;
     }
 
     public void onTouch() {

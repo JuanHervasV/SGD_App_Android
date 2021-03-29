@@ -40,12 +40,15 @@ public class CerrarManifiestoAct extends AppCompatActivity {
     private Button CerrarMfto;
     private Button Volver;
     private Button AgregarValija;
+    static CerrarManifiestoAct cerrarManifiestoAct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cerrar_manifiesto);
         PesoTotal = findViewById(R.id.txtPesoTotal);
+
+        cerrarManifiestoAct = this;
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://200.37.50.53/ApiSGD/api/")
@@ -56,6 +59,10 @@ public class CerrarManifiestoAct extends AppCompatActivity {
         PesoManifiesto();
         //ManifiestoValija();
         onTouch();
+    }
+
+    public static CerrarManifiestoAct getInstance(){
+        return cerrarManifiestoAct;
     }
 
     public void onTouch() {

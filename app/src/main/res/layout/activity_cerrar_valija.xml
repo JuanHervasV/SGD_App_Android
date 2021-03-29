@@ -80,7 +80,7 @@
             android:layout_marginRight="15dp"
             android:gravity="right"
             android:textSize="18dp"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:hint="Ingresa su peso">
         </EditText>
 
