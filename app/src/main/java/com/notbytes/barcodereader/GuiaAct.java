@@ -10,7 +10,6 @@ import android.util.SparseArray;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -95,22 +94,6 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
             arrayList.addAll(hashSet);
         }
 
-        listView.setClickable(true);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-
-                Object o = listView.getItemAtPosition(position);
-                arrayList.remove(o);
-                adapter.notifyDataSetChanged();
-                //Contar elementos del spinner ~
-                int count = listView.getAdapter().getCount();
-                int ctf= totalelementoslist+count;
-                contarelementos.setText(""+count);
-                //---
-            }
-        });
         //listarpro = findViewById(R.id.lista);
         //String resul = mTvResult.getText().toString();-------------------------------------------------
         Retrofit retrofit = new Retrofit.Builder()
@@ -235,7 +218,7 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
         //Manifiesto = findViewById(R.id.txtMfto);
         Valija = findViewById(R.id.txtValija);
         final String Codi = Guia.getText().toString();
-        final GuiaSuc valijaValidar = new GuiaSuc(Codi);
+        final GuiaSuc valijaValidar = new GuiaSuc(Codi, MftoNro, MftoAnio);
         Call<GuiaSuc> cal = jsonPlaceHolderApi.createPost(valijaValidar);
         cal.enqueue(new Callback<GuiaSuc>() {
             @Override
@@ -585,7 +568,7 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
         //Manifiesto = findViewById(R.id.txtMfto);
         Valija = findViewById(R.id.txtValija);
         final String Bardcodigo = barcode.rawValue;
-        final GuiaSuc valijaValidar = new GuiaSuc(Bardcodigo);
+        final GuiaSuc valijaValidar = new GuiaSuc(Bardcodigo, MftoNro, MftoAnio);
         Call<GuiaSuc> cal = jsonPlaceHolderApi.createPost(valijaValidar);
         cal.enqueue(new Callback<GuiaSuc>() {
             @Override
@@ -1018,34 +1001,4 @@ public class GuiaAct extends AppCompatActivity implements BarcodeReaderFragment.
         startActivity(i);
         //----------------------------------------------------------------------
     }
-
-    private void SucGuia(){
-        Guia = findViewById(R.id.txtGuia);
-        String Gui = Guia.getText().toString();
-        GuiaSuc valijaValidar = new GuiaSuc(""+Gui);
-        Call<GuiaSuc> call = jsonPlaceHolderApi.createPost(valijaValidar);
-        call.enqueue(new Callback<GuiaSuc>() {
-            @Override
-            public void onResponse(Call<GuiaSuc> call, Response<GuiaSuc> response) {
-                if(!response.isSuccessful()){
-                    Toast.makeText(getApplicationContext(),"Guia no correcta",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                GuiaSuc postsResponse = response.body();
-
-                String Mft_Ano = postsResponse.mft_ano();
-                String Mft_Nro = postsResponse.mft_nro();
-                String Suc_Code = postsResponse.suc_code();
-
-                Toast.makeText(getApplicationContext(),"Guia agregada correctamente "+Suc_Code,Toast.LENGTH_SHORT).show();
-                return;
-            }
-            @Override
-            public void onFailure(Call<GuiaSuc> call, Throwable t) {
-                Toast.makeText(getApplicationContext(),"Fallo al ingresar los datos, compruebe su red.",Toast.LENGTH_SHORT).show();
-                return;
-            }
-        });
-    }
-
 }

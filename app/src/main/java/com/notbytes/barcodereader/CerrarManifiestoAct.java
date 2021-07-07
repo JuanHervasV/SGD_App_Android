@@ -270,6 +270,11 @@ public class CerrarManifiestoAct extends AppCompatActivity {
         c.putString("password", password);
         c.putString("codigousuario", CodigoUsuario);
         i.putExtras(c);
+        ManifiestoAct.getInstance().finish();
+        ValijaAct.getInstance().finish();
+        GuiaAct.getInstance().finish();
+        CerrarValijaAct.getInstance().finish();
+        CerrarManifiestoAct.getInstance().finish();
         startActivity(i);
         //------------------------------------------------------------------------------
 

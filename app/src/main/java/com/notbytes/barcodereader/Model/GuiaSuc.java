@@ -2,6 +2,8 @@ package com.notbytes.barcodereader.Model;
 
 public class GuiaSuc {
     private String IDGuia;
+    private String MftoNro;
+    private String MftoAno;
     private String SUC_COD;
     private String MFT_ANO;
     private String MFT_NRO;
@@ -9,8 +11,10 @@ public class GuiaSuc {
     private String GUIA_DET_ID;
     private String GUIA_DET_CON_CIU;
 
-    public GuiaSuc(String idguia){
+    public GuiaSuc(String idguia, String mftoNro, String mftoAno){
         IDGuia = idguia;
+        MftoNro = mftoNro;
+        MftoAno = mftoAno;
     }
 
     public String suc_code(){return SUC_COD;}
